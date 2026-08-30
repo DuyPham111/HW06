@@ -1,0 +1,157 @@
+# ============================================================================
+# api-tests — hien thuc yeu cau CI/CD cua §6:
+#   "Add your API test cases to a CI/CD pipeline for the SUT (for example, run Newman in
+#    GitHub Actions in your repository)", kem HAI LUOT MAU: mot luot tat ca pass, mot luot co fail.
+#
+# Ba quyet dinh thiet ke (giai thich trong ci/ci-report.md):
+#
+# 1. SUT duoc checkout ngay trong job tu repo goc ttbhanh/eshop-sut. Runner cua GitHub khong co
+#    SUT san; mot pipeline chi chay duoc tren may sinh vien thi khong phai pipeline.
+#
+# 2. HAI bo test, HAI cong:
+#      - regression suite  = tap con cac case DANG XANH -> cong 0 do (--strict).
+#        Day chinh la luot "all API test cases passing" ma §6 doi.
+#      - 3 collection bug-hunting = co y bat bug that -> luon co assertion do.
+#        Cong: so voi ci/expected-failures.json (baseline da ky nhan).
+#
+# 3. Input gate_mode=strict cho phep tao LUOT DO MAU ma §6 doi, khong can co tinh
+#    viet mot test sai vao repo.
+#
+# Chay tay tao luot do:  gh workflow run api-tests.yml -f gate_mode=strict
+# (hoac tab Actions -> api-tests -> Run workflow -> chon strict)
+# ============================================================================
+name: api-tests
+
+on:
+  workflow_dispatch:
+    inputs:
+      gate_mode:
+        description: 'baseline = so voi ci/expected-failures.json | strict = do neu co bat ky assertion do'
+        required: true
+        default: baseline
+        type: choice
+        options: [baseline, strict]
+  push:
+    branches: [main]
+    paths:
+      - 'postman/**'
+      - 'tools/run-newman.sh'
+      - 'tools/ci-gate.mjs'
+      - 'ci/expected-failures.json'
+      - '.github/workflows/api-tests.yml'
+
+# Hai luot song song se tranh cung cong 3000 va cung file database.sqlite -> ket qua lan nhau.
+concurrency:
+  group: api-tests
+  cancel-in-progress: false
+
+jobs:
+  newman:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout bai lam HW06
+        uses: actions/checkout@v4
+
+      - name: Checkout SUT (eshop-sut)
+        uses: actions/checkout@v4
+        with:
+          repository: ttbhanh/eshop-sut
+          path: eshop-sut
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Cai Newman + reporter
+        run: npm i -g newman newman-reporter-htmlextra
+
+      - name: Khoi dong SUT
+        working-directory: eshop-sut/backend
+        run: |
+          set -euo pipefail
+          npm ci --omit=dev 2>/dev/null || npm install --omit=dev
+          node server.js > "$GITHUB_WORKSPACE/sut.log" 2>&1 &
+          for i in $(seq 1 40); do
+            if curl -fsS http://localhost:3000/api/products >/dev/null 2>&1; then
+              echo "SUT san sang sau ${i}s"; exit 0
+            fi
+            sleep 1
+          done
+          echo "SUT khong len sau 40s:"; cat "$GITHUB_WORKSPACE/sut.log"; exit 1
+
+      - name: Ghi dieu kien luot chay
+        run: |
+          {
+            echo "### Dieu kien luot chay CI"
+            echo ""
+            echo '| | |'
+            echo '|---|---|'
+            echo "| Runner | \`$(uname -sm)\` - $(nproc) vCPU |"
+            echo "| Node | $(node -v) - Newman $(newman --version) |"
+            echo "| Che do cong | **${{ inputs.gate_mode || 'baseline' }}** |"
+          } | tee -a "$GITHUB_STEP_SUMMARY"
+
+      - name: Preflight
+        run: node tools/preflight.mjs
+
+      # Luot "tat ca pass" cua §6: regression suite phai 0 do.
+      - name: Chay regression suite (cong 0 do)
+        run: |
+          set -uo pipefail
+          mkdir -p reports/newman
+          COL=postman/collections/23127183_regression.postman_collection.json
+          if [ ! -f "$COL" ]; then echo "::warning::chua co $COL - bo qua"; exit 0; fi
+          newman run "$COL" \
+            -e postman/environments/HW06-local.postman_environment.json \
+            --reporters cli,json,htmlextra \
+            --reporter-json-export reports/newman/ci-regression.json \
+            --reporter-htmlextra-export reports/newman/ci-regression.html \
+            --reporter-htmlextra-logs \
+            --timeout-request 10000 || true
+          node tools/ci-gate.mjs reports/newman/ci-regression.json --strict
+
+      - name: Chay 3 collection bang Newman
+        run: |
+          set -uo pipefail
+          mkdir -p reports/newman
+          rc=0
+          for slug in api-01-login api-02-apply-coupon api-03-product-update; do
+            col="postman/collections/23127183_${slug}.postman_collection.json"
+            if [ ! -f "$col" ]; then echo "::warning::chua co $col - bo qua"; continue; fi
+            newman run "$col" \
+              -e postman/environments/HW06-local.postman_environment.json \
+              --reporters cli,json,htmlextra \
+              --reporter-json-export "reports/newman/ci-${slug}.json" \
+              --reporter-htmlextra-export "reports/newman/ci-${slug}.html" \
+              --reporter-htmlextra-logs \
+              --timeout-request 10000 || rc=$?
+          done
+          echo "newman exit code (chi de tham khao): $rc"
+
+      - name: Cong do/xanh
+        run: |
+          shopt -s nullglob
+          files=(reports/newman/ci-api-*.json)
+          if [ ${#files[@]} -eq 0 ]; then
+            echo "::error::Khong co collection bug-hunting nao chay duoc - thieu file collection?"
+            exit 1
+          fi
+          if [ "${{ inputs.gate_mode || 'baseline' }}" = "strict" ]; then
+            node tools/ci-gate.mjs "${files[@]}" --strict
+          else
+            node tools/ci-gate.mjs "${files[@]}"
+          fi
+
+      # Chay ca khi cong do — luc do moi la luc can bang chung nhat (§6 doi anh + link cho CA HAI luot).
+      - name: Luu bang chung
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: newman-${{ inputs.gate_mode || 'baseline' }}-${{ github.run_number }}
+          path: |
+            reports/newman/ci-*.html
+            reports/newman/ci-*.json
+            sut.log
+          retention-days: 30
