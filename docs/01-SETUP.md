@@ -4,6 +4,11 @@
 > Postman đã tạo workspace + environment, Newman gõ `newman --version` ra số.
 > **Commit:** `chore: setup moi truong HW06 + preflight`
 
+> **Trạng thái:** phần dòng lệnh (§1–§4) **đã chạy xong** trong phiên dựng khung — SUT đang chạy nền
+> ở `http://localhost:3000`, `npm run preflight` đã xanh hết. Phần còn lại (§5, §6) là thao tác
+> **Postman GUI, bạn phải tự làm** — xem checklist gộp ở
+> [`CAN-LAM-PHIEN-1-2.md`](CAN-LAM-PHIEN-1-2.md).
+
 ---
 
 ## 1. Cài đặt — danh sách tối thiểu
@@ -12,9 +17,13 @@
 |---|---|---|---|
 | Node.js | ≥ 18 (khuyên 20 LTS) | `node -v` | cần `fetch` sẵn có cho `tools/preflight.mjs` |
 | Postman Desktop | bản mới nhất | mở app | **phải là bản desktop**, không dùng web — bản web không có Postman Console để chụp ảnh §11 |
-| Newman | ≥ 6 | `newman --version` | `npm i -g newman newman-reporter-htmlextra` |
+| Newman | ≥ 6 | `npx newman --version` | cài **local** qua `npm install` trong repo (đã làm — xem `package.json`), không cần cài global |
 | Git | bất kỳ | `git --version` | |
 | Python + openpyxl | 3.x | `python --version` | chỉ để xuất Excel ở [14](14-EXCEL-TEST-CASES.md) |
+
+**Đã làm:** `node -v` → `v22.16.0` · `npm install` trong `HW06-API-Testing/` đã cài `newman@6.2.2` +
+`newman-reporter-htmlextra` local · `tools/run-newman.sh` tự dùng `npx newman` khi không có bản global.
+Nếu muốn gõ tắt `newman ...` thay vì `npx newman ...`, cài thêm global:
 
 ```bash
 npm i -g newman newman-reporter-htmlextra
@@ -39,7 +48,7 @@ Thấy dòng này là được:
 ```
 Connected to database
 Database initialized and seeded (Phase 2).
-Server running on http://localhost:3000
+Server is running on http://localhost:3000
 ```
 
 > **Nhớ kỹ:** mỗi lần `node server.js` là DB bị `DROP TABLE` rồi seed lại (`database.js:15-20`).
@@ -47,6 +56,13 @@ Server running on http://localhost:3000
 > **bắt buộc dùng trước mỗi lượt Newman chính thức** để số liệu tái lập được.
 
 Kiểm nhanh bằng trình duyệt: mở `http://localhost:3000/api/products` phải thấy 5 sản phẩm JSON.
+
+> **Đã làm:** SUT đang chạy tại `D:/Nam3/HK3/Kiểm thử phần mềm/HW06/eshop-sut/backend` (copy từ
+> `eshop-sut-main` đã có sẵn `node_modules`, tương đương `git clone` + `npm install`), chạy nền bằng
+> `node server.js`, log ở `HW06/eshop-sut/sut.log`. `curl http://localhost:3000/api/products` trả
+> `200`. **Muốn khởi động lại (reset DB):** đóng terminal đang chạy nó rồi mở terminal mới, `cd` vào
+> thư mục đó, chạy lại `node server.js` — nhớ đúng thứ tự này trước mỗi lượt Newman chính thức
+> (§5 của [07](07-CHAY-NEWMAN-BANG-CHUNG.md)).
 
 ---
 
@@ -84,6 +100,25 @@ cd "D:/Nam3/HK3/Kiểm thử phần mềm/HW06/HW06-API-Testing"
 npm install          # cài newman + htmlextra vào devDependencies (tuỳ chọn nếu đã cài global)
 npm run preflight    # SUT sống chưa? tài khoản seed còn không? 3 API có phản hồi không?
 ```
+
+> **Đã làm — kết quả thật:**
+> ```
+> [preflight] SUT = http://localhost:3000
+>   OK   SUT song - 5 san pham trong DB
+>   OK   login admin (admin@eshop.com) -> token, role=admin
+>   OK   login user (test@eshop.com) -> token, role=user
+>   OK   coupon SAVE10 ton tai (HTTP 200)
+>   OK   coupon BIGBUY ton tai (HTTP 200)
+>   OK   coupon VIP100 ton tai (HTTP 200)
+>   OK   coupon EXPIRED ton tai (HTTP 400)
+>   OK   POST /api/login phan hoi HTTP 401
+>   OK   POST /api/apply-coupon phan hoi HTTP 400
+>   OK   PUT  /api/products/:id phan hoi HTTP 200
+> [preflight] San sang.
+> ```
+> Dòng cuối cùng (`PUT /api/products/:id` với id không tồn tại trả **200** thay vì 404) trùng đúng
+> giả thuyết **A3-7** đã ghi ở [`docs/api-selection.md`](api-selection.md) — dấu hiệu sớm của một bug,
+> chưa phải kết luận (phải test case thật + assertion thật mới tính).
 
 `preflight` phải in ra toàn `OK`. Ba lỗi hay gặp:
 
@@ -154,12 +189,15 @@ Thiếu một trong hai thì dừng lại sửa ngay — §11 sẽ kiểm đúng
 
 ## 7. Checklist kết thúc phiên 1
 
-- [ ] `node -v` ≥ 18, `newman --version` ra số
-- [ ] SUT chạy, `http://localhost:3000/api/products` trả 5 sản phẩm
-- [ ] `npm run preflight` toàn `OK`
-- [ ] Workspace `HW06-API-Testing-23127183` đã tạo, có ảnh chụp
-- [ ] Environment `HW06-local-23127183` đã import và **đang được chọn**
-- [ ] Pre-request script cấp collection đã dán, Console in ra dòng `[HW06] X-Student-Id = 23127183`
+- [x] `node -v` ≥ 18 (`v22.16.0`), `npx newman --version` ra số (`6.2.2`)
+- [x] SUT chạy, `http://localhost:3000/api/products` trả 5 sản phẩm
+- [x] `npm run preflight` toàn `OK`
+- [ ] **Workspace** `HW06-API-Testing-23127183` đã tạo, có ảnh chụp — *(bạn tự làm, xem §5.1)*
+- [ ] **Environment** đã import và **đang được chọn** trong Postman GUI — *(bạn tự làm, xem §5.2 — file `.json` đã có sẵn ở `postman/environments/`)*
+- [ ] **Pre-request script** đã dán vào collection thật + Console in dòng `X-Student-Id` — *(bạn tự làm, xem §6 — nội dung script đã viết sẵn ở `postman/prerequest-collection.js`, chỉ cần copy-dán)*
 - [ ] Commit: `chore: setup moi truong HW06 + preflight`
+
+Ba việc còn lại (☐) là thao tác **Postman GUI**, không có công cụ dòng lệnh nào làm thay được.
+Checklist chi tiết từng bước: [`CAN-LAM-PHIEN-1-2.md`](CAN-LAM-PHIEN-1-2.md).
 
 Ghi lượt AI (nếu có hỏi AI ở phiên này) vào `ai-audit/ai-audit-report.md` theo mẫu ở [13](13-AI-AUDIT-CRITIQUE.md).

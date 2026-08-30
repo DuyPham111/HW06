@@ -19,6 +19,13 @@ TS="$(date +%Y%m%d-%H%M%S)"
 
 mkdir -p "$OUT"
 
+# Dung newman global neu co; khong thi fallback ve npx (node_modules cuc bo, xem package.json).
+if command -v newman >/dev/null 2>&1; then
+  NEWMAN=(newman)
+else
+  NEWMAN=(npx --no-install newman)
+fi
+
 node "$ROOT/tools/preflight.mjs" || { echo "preflight that bai - dung lai"; exit 1; }
 
 run_one() {
@@ -26,7 +33,7 @@ run_one() {
   local col="$ROOT/postman/collections/${SID}_${slug}.postman_collection.json"
   [ -f "$col" ] || { echo "::bo qua:: chua co $col"; return 0; }
   echo "=== Newman: $slug ==="
-  newman run "$col" \
+  "${NEWMAN[@]}" run "$col" \
     -e "$ENVF" \
     --reporters cli,json,htmlextra \
     --reporter-json-export "$OUT/${SID}_${slug}_${TS}.json" \

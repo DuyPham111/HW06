@@ -9,6 +9,7 @@
 |---|---|---|
 | [`00-ROADMAP.md`](00-ROADMAP.md) | Bản đồ toàn bài · phạm vi 3 API · 12 phiên làm việc · luật vàng | tất cả |
 | [`01-SETUP.md`](01-SETUP.md) | Cài đặt · chạy SUT · dữ liệu seed · Postman workspace + environment | — |
+| [`CAN-LAM-PHIEN-1-2.md`](CAN-LAM-PHIEN-1-2.md) | **Việc còn lại của bạn** cho phiên 1+2 (phần dòng lệnh đã chạy xong) | — |
 | [`02-CHON-API.md`](02-CHON-API.md) | Chọn 3 API · bảng giả thuyết bug từ mã nguồn | §5 |
 | [`03-GENERATE-AI.md`](03-GENERATE-AI.md) | **Sinh test case bằng AI theo 5 bước** — prompt copy dán được cho cả 3 API | §6.1 |
 | [`04-AUDIT.md`](04-AUDIT.md) | Dán nhãn VALID/INVALID/INCOMPLETE — 5 phép soát | §6.2 |
