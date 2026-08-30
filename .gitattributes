@@ -1,0 +1,7 @@
+# Shell script phải giữ LF: CRLF làm bash báo `$'\r': command not found`
+*.sh   text eol=lf
+*.mjs  text eol=lf
+*.yml  text eol=lf
+*.json text eol=lf
+*.py   text eol=lf
+*.md   text

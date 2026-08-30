@@ -1,0 +1,10 @@
+node_modules/
+.run-logs/
+*.log
+!jmeter.log
+.DS_Store
+Thumbs.db
+*.zip
+eshop-sut/
+database.sqlite
+.env
