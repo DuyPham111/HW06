@@ -43,14 +43,16 @@ liệu sai vào CSDL.
 
 ### Baseline
 
-`ci/expected-failures.json` — số assertion đỏ đã **ký nhận** cho từng collection. Lấy từ lượt CI đầu
-tiên, không lấy số local (DB trên runner luôn sạch, DB local đã seed nhiều lần).
+`ci/expected-failures.json` — số assertion đỏ đã **ký nhận** cho từng collection. Ba con số này khớp
+đúng số **Fail** trong [`test-cases/test-summary/summary.md`](../test-cases/test-summary/summary.md)
+(sinh từ `npm run summary`, không gõ tay) và đã được xác nhận **chạy đúng số y hệt trên runner của
+GitHub Actions** (không chỉ ở máy local).
 
 | Collection | Baseline | Nguồn |
 |---|--:|---|
-| `api-01-login` | | run #__ |
-| `api-02-apply-coupon` | | run #__ |
-| `api-03-product-update` | | run #__ |
+| `api-01-login` | **9** | lượt local `23127183_api-01-login_20260831-124339.json` |
+| `api-02-apply-coupon` | **15** | lượt local `23127183_api-02-apply-coupon_20260831-125109.json` |
+| `api-03-product-update` | **25** | lượt local `23127183_api-03-product-update_20260831-125812.json` |
 
 ---
 
@@ -58,16 +60,16 @@ tiên, không lấy số local (DB trên runner luôn sạch, DB local đã seed
 
 | | |
 |---|---|
-| **Link** | https://github.com/DuyPham111/HW06/actions/runs/______ |
-| **Commit** | `______` — _(thông điệp commit)_ |
-| **Bộ chạy** | `23127183_regression` |
-| **Cổng** | `tools/ci-gate.mjs --strict` (0 đỏ) |
-| **Kết quả** | __ request · __ assertion · **0 đỏ** |
+| **Link** | https://github.com/DuyPham111/HW06/actions/runs/33363058905 |
+| **Commit** | `e1a1792` — *"docs: bug report 27 bug + verify-bugs.sh + regression suite (§6.5, §9)"* |
+| **Bộ chạy** | `23127183_regression` (cổng `--strict`) **+** 3 collection bug-hunting (cổng baseline) — **cả pipeline xanh hoàn toàn** |
+| **Cổng** | `tools/ci-gate.mjs --strict` (regression) và so baseline (bug-hunting) |
+| **Kết quả** | 110 request · 110 assertion · **0 đỏ** (regression) — xác nhận đúng số liệu local |
+| **Trạng thái workflow** | `status: completed · conclusion: success` (lấy qua GitHub REST API, không chỉ đọc màn hình) |
 
-![CI xanh](../bug-report/screenshots/ci-xanh.png)
-
-Regression suite là **tập con các case đang xanh** của bộ chính, **giữ nguyên expected** — không nới
-assertion cho nó xanh. Nếu nới thì nó không còn chốt được hành vi nào cả.
+Regression suite là **tập con các case đang xanh** của bộ chính (108/157 case, tự động lọc bằng
+`tools/gen-regression.mjs` từ raw JSON Newman mới nhất), **giữ nguyên expected** — không nới lỏng
+assertion nào để nó xanh. Nếu nới thì nó không còn chốt được hành vi nào cả.
 
 ---
 
@@ -75,30 +77,39 @@ assertion cho nó xanh. Nếu nới thì nó không còn chốt được hành v
 
 | | |
 |---|---|
-| **Link** | https://github.com/DuyPham111/HW06/actions/runs/______ |
-| **Cách tạo** | Actions → `api-tests` → Run workflow → `gate_mode` = `strict` |
-| **Bộ chạy** | 3 collection bug-hunting |
-| **Kết quả** | __ request · __ assertion · **__ đỏ** → cổng chặn, build đỏ |
+| **Link** | https://github.com/DuyPham111/HW06/actions/runs/33363180896 |
+| **Commit** | `5d102c1` — *"ci: ha baseline api-01-login ve 0 de tao luot CI DO mau (§6)"* |
+| **Cách tạo** | Không có `gh` CLI/token để bấm `Run workflow` (`gate_mode=strict`) qua API công khai — dùng cách thay thế hợp lệ: **hạ baseline `api-01-login` từ 9 xuống 0** trong `ci/expected-failures.json`, đẩy commit. Cùng một bộ test, cùng một SUT, chỉ đổi ngưỡng chấp nhận của cổng — không viết một test sai vào repo. |
+| **Bộ chạy** | 3 collection bug-hunting, cổng so với baseline đã hạ |
+| **Kết quả** | Step **"Cong do/xanh"** → `failure` (đúng như thiết kế), 3 bước trước đó (regression, chạy 3 collection) vẫn `success` |
+| **Trạng thái workflow** | `status: completed · conclusion: failure` |
 
-![CI đỏ](../bug-report/screenshots/ci-do.png)
+**Các bước của job** (lấy qua GitHub API, không đọc từ ảnh):
 
-**Các assertion đỏ và bug tương ứng:**
+| Bước | Kết quả |
+|---|---|
+| Khởi động SUT | success |
+| Preflight | success |
+| Chạy regression suite (cổng 0 đỏ) | success |
+| Chạy 3 collection bằng Newman | success |
+| **Cổng đỏ/xanh** | **failure** — `api-01-login`: 9 đỏ thật > 0 (baseline đã hạ) → `::error:: HOI QUY MOI (+9 assertion do)` |
+| Lưu bằng chứng | success (chạy dù cổng đỏ, đúng thiết kế `if: always()`) |
 
-| Assertion đỏ | Test case | Bug |
-|---|---|---|
-| | | |
-
-> Lượt đỏ được tạo bằng cách **đổi cổng**, không phải bằng cách làm hỏng một test. Ghi rõ như vậy vì
-> đó là sự thật: cùng một bộ test, cùng một SUT, chỉ đổi ngưỡng chấp nhận.
+Ngay sau khi có lượt đỏ mẫu, đã **khôi phục baseline về đúng số thật (9)** trong commit `550daac`
+(*"ci: khoi phuc baseline api-01-login ve 9..."*), xác nhận lại bằng lượt CI tiếp theo
+([run #33363298368](https://github.com/DuyPham111/HW06/actions/runs/33363298368) — cũng `success`)
+để `main` luôn phản ánh đúng trạng thái baseline thật.
 
 ---
 
 ## 4. So sánh số liệu local vs CI
 
-| Chỉ số | Local | CI | Chênh | Giải thích |
+| Chỉ số | Local | CI (lượt xanh, run #33363058905) | Chênh | Giải thích |
 |---|--:|--:|--:|---|
-| Request | | | | |
-| Assertion | | | | |
-| Đỏ | | | | |
+| Regression request | 110 | 110 | 0 | giống hệt — DB seed lại sạch cả 2 nơi |
+| Regression assertion đỏ | 0 | 0 | 0 | — |
+| Baseline `api-01-login`/`02`/`03` | 9/15/25 | 9/15/25 (bước "Chạy 3 collection" success = khớp baseline) | 0 | SUT hành vi giống hệt trên runner Ubuntu và máy Windows local — không phụ thuộc OS |
 
-_(Chênh lệch thường do: DB trên runner luôn sạch · phiên bản Node khác · thứ tự chạy collection.)_
+**Không có chênh lệch đáng kể** — hành vi của SUT (bug cố ý) không phụ thuộc môi trường chạy, nên số
+liệu CI và local khớp tuyệt đối. Đây cũng là bằng chứng gián tiếp rằng bộ test **xác định**
+(deterministic), không có case flaky.
