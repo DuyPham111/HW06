@@ -1,9 +1,12 @@
 HW06 - API Testing - Git commit log
 SV: Pham Vu Ngoc Duy - 23127183
 Repo: https://github.com/DuyPham111/HW06
-Xuat luc: 2026-08-31T16:56:20+07:00
-Tong so commit: 27
+Xuat luc: 2026-08-31T18:54:01+07:00
+Tong so commit: 30
 
+6c75fcc  2026-08-31 18:54:01 +0700  DuyPham111  docs: sinh vien ky ten xac nhan 3 file audit.md (§6.2)
+0315dfe  2026-08-31 16:56:31 +0700  DuyPham111  chore: gitignore file khoa tam cua Excel (~$*.xlsx)
+e9b507a  2026-08-31 16:56:20 +0700  DuyPham111  docs: cap nhat git commit log (§12) - da co so do tu ve
 191a626  2026-08-31 16:56:08 +0700  DuyPham111  feat(generator): so do generator TU VE tren draw.io (§7, §11)
 b14aed4  2026-08-31 13:25:58 +0700  DuyPham111  docs: cap nhat git commit log lan cuoi (§12)
 7b0afff  2026-08-31 13:25:57 +0700  DuyPham111  docs: tong ket viec con lai - A (bat buoc) + B (khuyen khich) (§14)
