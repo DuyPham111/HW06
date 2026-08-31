@@ -1,8 +1,9 @@
 # Việc bạn cần tự làm — từ phiên 3 trở đi
 
-> Toàn bộ phần dòng lệnh (§6.1–§6.5, §9, §12, §14) **đã làm xong và đã push lên GitHub** — xem tóm
-> tắt ở §0 dưới đây. Phần còn lại chia làm 2 nhóm: **(A) bắt buộc để đủ điểm** và
-> **(B) khuyến khích/bằng chứng bổ sung**. Ước tính tổng: **~2–3 giờ**, phần lớn là (A.1).
+> Toàn bộ phần dòng lệnh (§6.1–§6.5, §9, §12, §14) **đã làm xong và đã push lên GitHub**, và
+> **sơ đồ generator (A.1, việc quan trọng nhất) bạn đã tự vẽ xong trên draw.io** — xem tóm tắt ở §0.
+> **Tự chấm hiện tại: 100/100.** Phần còn lại (A.2–A.4) là bằng chứng bắt buộc theo câu chữ đề
+> nhưng không đổi điểm 4 tiêu chí chính; nhóm (B) là khuyến khích. Ước tính tổng còn lại: **~1–1,5 giờ**.
 
 ---
 
@@ -22,37 +23,13 @@
 | Data-driven CSV | 3 file thật trong `postman/data/` |
 | README, main-report, ci-report, api-selection | đã điền số liệu thật, không còn placeholder |
 | Git commit log | `git-log/commit-log.txt`, 24+ commit |
+| **A.1 — Sơ đồ generator tự vẽ** | ✅ **đã xong** — bạn vẽ trên draw.io, có ảnh + `.drawio`, đã commit vào `generator/diagram/` |
 
-**Tự chấm hiện tại: 94/100** (xem `README.md` §3) — chỉ còn thiếu đúng 1 việc bắt buộc (A.1 dưới đây).
+**Tự chấm hiện tại: 100/100** (xem `README.md` §3).
 
 ---
 
-## A. Bắt buộc để đủ điểm
-
-### A.1 — Vẽ sơ đồ generator (§7, §11) — **~30–45 phút, việc quan trọng nhất còn lại**
-
-§11 cấm rõ: *"The AI test generator diagram... must be self-drawn — designed by you, not generated
-directly by an AI."* Đây là **việc duy nhất AI không được làm thay**, và là lý do điểm tự chấm đang
-94/100 thay vì 100/100.
-
-**Làm theo:** [`generator/diagram/README.md`](../generator/diagram/README.md) — đã có sẵn danh sách
-chính xác 6 hộp giai đoạn, 3 nguồn đầu vào, 3 hình thoi quyết định cần vẽ, và checklist tự kiểm.
-
-1. Mở https://app.diagrams.net (không cần tài khoản).
-2. Vẽ theo đúng nội dung đã liệt kê trong file trên (thiết kế đã có sẵn, bạn chỉ cần **thao tác vẽ**).
-3. Export PNG → `generator/diagram/generator-flow-selfdrawn.png`.
-4. Save file gốc → `generator/diagram/generator-flow.drawio` (bằng chứng tự vẽ — **commit cả file này**).
-5. Mở `generator/design.md` §4, sửa dòng *"Sơ đồ do sinh viên tự dựng trên ___, ngày ___"* điền công
-   cụ + ngày thật.
-
-```bash
-cd "D:/Nam3/HK3/Kiểm thử phần mềm/HW06/HW06-API-Testing"
-git add generator/diagram/ generator/design.md
-git commit -m "feat(generator): so do tu ve bang draw.io (§7, §11)"
-git push
-```
-
-Xong bước này, sửa README.md §3: đổi dòng "Agent Skills" từ `4/10` thành `10/10`, tổng thành `100/100`.
+## A. Bằng chứng bắt buộc theo câu chữ đề (không đổi điểm 4 tiêu chí chính)
 
 ### A.2 — Đọc lại và ký tên 3 file `audit.md` (§6.2 — *"You are fully responsible"*)
 
@@ -147,7 +124,7 @@ phản hồi, điền thêm bảng đối chiếu (không bắt buộc, chỉ gi
 
 ## Checklist tổng — theo đúng thứ tự ưu tiên
 
-- [ ] **A.1** Vẽ sơ đồ generator + commit → tự chấm lên 100/100
+- [x] **A.1** Vẽ sơ đồ generator + commit → tự chấm **100/100**
 - [ ] **A.2** Đọc + ký tên 3 file `audit.md`
 - [ ] **A.3** Tự tay chạy `verify-bugs.sh` cho ≥3 bug nặng nhất
 - [ ] **A.4** Tạo ≥5 GitHub Issues (ưu tiên Critical), cập nhật link vào README
@@ -156,5 +133,4 @@ phản hồi, điền thêm bảng đối chiếu (không bắt buộc, chỉ gi
 - [ ] **B.3** Xuất PDF 6 file
 - [ ] **B.4** Bảng đối chiếu nhóm (tuỳ chọn)
 - [ ] Đóng gói cuối: xem [`docs/16-DONG-GOI-CHECKLIST.md`](16-DONG-GOI-CHECKLIST.md) — kiểm đủ 13
-      mục §14, đặt tên zip đúng `23127183_HW06_AI_API_<###>.zip` (điểm tự chấm sau khi hoàn tất A.1
-      là `100`)
+      mục §14, đặt tên zip đúng `23127183_HW06_AI_API_100.zip`

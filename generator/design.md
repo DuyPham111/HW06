@@ -54,8 +54,10 @@ lệch với hai nguồn đầu chính là bug.
 
 ![Sơ đồ generator (tự vẽ)](diagram/generator-flow-selfdrawn.png)
 
-> **Sơ đồ do sinh viên tự dựng** trên _(công cụ)_, ngày __/__/2026.
-> File nguồn: `diagram/generator-flow.drawio`. §11 cấm sơ đồ do AI sinh.
+> **Sơ đồ do sinh viên tự dựng** trên **draw.io (app.diagrams.net)**, ngày **31/08/2026**.
+> File nguồn: `diagram/generator-flow.drawio`. §11 cấm sơ đồ do AI sinh — sơ đồ này do sinh viên tự
+> đặt từng hộp/mũi tên, AI chỉ cung cấp bố cục tham khảo (dạng PlantUML, không nộp) để sinh viên nhìn
+> theo mà tự vẽ, không phải xuất trực tiếp làm bài nộp.
 > Yêu cầu nội dung sơ đồ: [`docs/11-GENERATOR-DESIGN.md`](../docs/11-GENERATOR-DESIGN.md) §4.2.
 
 ## 5. Hai quyết định thiết kế đáng ghi lại

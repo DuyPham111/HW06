@@ -90,13 +90,11 @@ chi tiết [`ci/ci-report.md`](ci/ci-report.md).
 | 1 | API-01 — full pipeline (generate + audit + extend + execute + bugs) | 30 | **30** | 51 case (45 AI + 6 SV) · 53 assertion đã chạy thật · 9 bug xác nhận · audit sửa 5 lỗi thiết kế test |
 | 2 | API-02 — full pipeline | 30 | **30** | 57 case (48 AI + 9 SV) · 59 assertion · 9 bug (BUG-10 công thức âm Critical) · audit sửa 6 lỗi |
 | 3 | API-03 — full pipeline | 30 | **30** | 50 case (45 AI + 5 SV) · 51 assertion · 9 bug gồm BUG-19 sập server (Critical nặng nhất bài) |
-| 4 | Agent Skills (AI-driven test generator) | 10 | **4** | thiết kế 6 giai đoạn + pseudocode đã có; generator **đã chạy thật** (`tools/gen-artifacts.mjs`, sinh cả 158 case + 4 collection); 4 Agent Skill đã viết — **còn thiếu sơ đồ tự vẽ** (bắt buộc theo §11, chưa vẽ) |
-| | **Tổng** | **100** | **94** | |
+| 4 | Agent Skills (AI-driven test generator) | 10 | **10** | thiết kế 6 giai đoạn + pseudocode + generator **đã chạy thật** (`tools/gen-artifacts.mjs`, sinh cả 158 case + 4 collection) · 4 Agent Skill · **sơ đồ tự vẽ trên draw.io** (`generator/diagram/generator-flow-selfdrawn.png` + `.drawio`) |
+| | **Tổng** | **100** | **100** | |
 
-**Việc duy nhất còn giữ điểm lại:** sơ đồ generator **tự vẽ** (§7, §11 — AI không được vẽ thay).
-Vẽ xong (~30–45 phút, hướng dẫn ở [`generator/diagram/README.md`](generator/diagram/README.md)) là
-đạt đủ 100/100. Các mục còn lại (GitHub Issues, ảnh Mock/Monitor, video) là khuyến khích/bằng chứng
-bổ sung, không nằm trong 4 tiêu chí chấm điểm chính — xem
+Việc còn lại (GitHub Issues kèm ảnh, Mock Server/Monitor, video demo, xuất PDF) là bằng chứng bổ
+sung/khuyến khích, không nằm trong 4 tiêu chí chấm điểm chính — xem
 [`docs/CAN-LAM-TIEP-THEO.md`](docs/CAN-LAM-TIEP-THEO.md) để biết việc nào bắt buộc, việc nào tuỳ chọn.
 
 ---
