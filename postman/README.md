@@ -31,7 +31,7 @@ Mỗi collection có 6 folder: `00-setup` · `01-domain` · `02-state` · `03-se
 | 1 | Workspace | `HW06-API-Testing-23127183` chứa cả 4 collection | ![](../bug-report/screenshots/postman-workspace.png) |
 | 2 | Collections | 3 bug-hunting + 1 regression | `collections/*.json` |
 | 3 | Folders | 6 folder/collection theo kỹ thuật → báo cáo Newman tự nhóm kết quả | |
-| 4 | Environment | `HW06-local-23127183` — __ biến | `environments/*.json` |
+| 4 | Environment | `HW06-local-23127183` — 16 biến | `environments/*.json` |
 | 5 | Variables (env · collection · dynamic) | `{{base_url}}`, `{{admin_token}}`, `{{order_id}}`; `{{$randomEmail}}` cho tài khoản mồi | §3 dưới |
 | 6 | Secret variable type | mật khẩu và token đặt type `secret` | |
 | 7 | **Pre-request script cấp collection** | gắn `X-Student-Id` cho **mọi** request + log Console (§6.4, §11) | `prerequest-collection.js` |
