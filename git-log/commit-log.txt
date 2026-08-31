@@ -1,0 +1,25 @@
+HW06 - API Testing - Git commit log
+SV: Pham Vu Ngoc Duy - 23127183
+Repo: https://github.com/DuyPham111/HW06
+Xuat luc: 2026-08-31T13:19:50+07:00
+Tong so commit: 19
+
+8e95b80  2026-08-31 13:19:39 +0700  DuyPham111  docs: cap nhat README voi so lieu that (§14, §15)
+947a284  2026-08-31 13:18:34 +0700  DuyPham111  docs: AI audit report (12 log that) + AI critique 294 tu (§9, §10)
+500c574  2026-08-31 13:15:43 +0700  DuyPham111  docs: xuat Excel test case + test summary (§14)
+8520845  2026-08-31 13:14:56 +0700  DuyPham111  docs: cap nhat ci-report.md voi 2 luot CI that (§6)
+550daac  2026-08-31 13:12:56 +0700  DuyPham111  ci: khoi phuc baseline api-01-login ve 9 (dung so that) sau khi da co luot DO mau
+5d102c1  2026-08-31 13:11:09 +0700  DuyPham111  ci: ha baseline api-01-login ve 0 de tao luot CI DO mau (§6)
+e1a1792  2026-08-31 13:09:19 +0700  DuyPham111  docs: bug report 27 bug + verify-bugs.sh + regression suite (§6.5, §9)
+3ee1315  2026-08-31 13:01:20 +0700  DuyPham111  test(api-03): sinh test case + audit + collection + chay Newman that (§6.1-6.4)
+c155a90  2026-08-31 13:01:19 +0700  DuyPham111  test(api-02): sinh test case + audit + collection + chay Newman that (§6.1-6.4)
+50b09df  2026-08-31 13:01:19 +0700  DuyPham111  test(api-01): sinh test case + audit + collection + chay Newman that (§6.1-6.4)
+498c9ae  2026-08-31 13:01:19 +0700  DuyPham111  feat(generator): script sinh test case + collection tu spec (§7)
+a86722f  2026-08-31 12:25:30 +0700  DuyPham111  docs: kiem tra va gan anh bang chung phien 1+2 (§5, §11)
+d456ae2  2026-08-30 15:27:09 +0700  DuyPham111  chore: setup moi truong HW06 + preflight (phien 1 thuc thi that)
+c941657  2026-08-30 11:31:57 +0700  DuyPham111  docs: README - pham vi 3 API, khung test summary va bang tu cham (§14, §15)
+fc14515  2026-08-30 11:31:50 +0700  DuyPham111  feat: 4 Agent Skill cho pipeline HW06 (§7)
+4d41660  2026-08-30 11:31:49 +0700  DuyPham111  ci: pipeline Newman GitHub Actions + prerequest X-Student-Id (§6, §6.4, §11)
+e34daa1  2026-08-30 11:31:49 +0700  DuyPham111  docs: khung cac file bai nop (§14)
+e938629  2026-08-30 11:31:49 +0700  DuyPham111  docs: bo huong dan lam HW06 (17 file trong docs/)
+c1c0186  2026-08-30 11:31:32 +0700  DuyPham111  chore: khoi tao repo HW06 - cau truc thu muc va tooling
