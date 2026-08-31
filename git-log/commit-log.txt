@@ -1,9 +1,11 @@
 HW06 - API Testing - Git commit log
 SV: Pham Vu Ngoc Duy - 23127183
 Repo: https://github.com/DuyPham111/HW06
-Xuat luc: 2026-08-31T13:25:57+07:00
-Tong so commit: 25
+Xuat luc: 2026-08-31T16:56:20+07:00
+Tong so commit: 27
 
+191a626  2026-08-31 16:56:08 +0700  DuyPham111  feat(generator): so do generator TU VE tren draw.io (§7, §11)
+b14aed4  2026-08-31 13:25:58 +0700  DuyPham111  docs: cap nhat git commit log lan cuoi (§12)
 7b0afff  2026-08-31 13:25:57 +0700  DuyPham111  docs: tong ket viec con lai - A (bat buoc) + B (khuyen khich) (§14)
 0818ffb  2026-08-31 13:24:43 +0700  DuyPham111  docs: tach 27 bug thanh file issue rieng + 3 file CSV data-driven that (§6, §6.5)
 0fe2afc  2026-08-31 13:23:12 +0700  DuyPham111  docs: dien so bien environment trong postman/README.md
