@@ -1,24 +1,68 @@
 # API-01 — Pool A · `POST /api/login` · bước 1 (§6.1): test case do AI sinh
 
-- **Pool A · FR-02 Đăng nhập & khóa tài khoản** · prefix `TC-LOGIN-###` · **__ test case** *(đề đòi ≥35/API)*
-- Sinh theo quy trình **5 bước riêng** của [`docs/03-GENERATE-AI.md`](../../docs/03-GENERATE-AI.md);
-  mỗi bước một lượt AI riêng, mỗi bước một mục trong [`ai-audit/ai-audit-report.md`](../../ai-audit/ai-audit-report.md).
-- **File này là bằng chứng lượt AI đầu tiên — sau khi audit thì ĐỪNG sửa nữa.** Bản đúng nằm ở `audit.md`.
+- **FR-02 Đăng nhập & khóa tài khoản** · prefix `TC-LOGIN-###` · **45 test case** (đề đòi ≥35, tính cả case tự thêm)
+- Sinh từ `generator/specs/api-01-login.mjs` bằng `node tools/gen-artifacts.mjs api-01-login` — **đừng sửa file này bằng tay**, sửa spec rồi sinh lại.
+- Quy trình 5 bước của [`docs/03-GENERATE-AI.md`](../../docs/03-GENERATE-AI.md); mỗi bước một lượt AI riêng.
+- **File này là bằng chứng lượt AI đầu tiên (bao gồm cả chỗ AI dự đoán sai) — sau audit thì đừng sửa nữa. Bản đúng nằm ở `audit.md`.**
 
 ## Phân bố theo kỹ thuật
 
 | Kỹ thuật | Số case |
 |---|--:|
-| Domain | |
-| State | |
-| Security | |
-| Schema | |
-| **Tổng** | |
+| Domain | 18 |
+| State | 12 |
+| Security | 9 |
+| Schema | 6 |
+| **Tổng** | **45** |
 
 ## Bảng test case
 
-> Cột `Audit` và `Kết quả` để **trống** ở bước này.
+> Cột `Audit` và `Kết quả` để **trống** ở bước này — điền ở `audit.md` và sau khi chạy Newman.
 
 | TC ID | Kỹ thuật | Tham số & phân vùng | Request | Auth | Query / Body | Expected status | Expected body / schema | Căn cứ | Nguồn | Audit | Kết quả |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| TC-LOGIN-001 | | | `POST /api/login` | | | | | | AI | | |
+| TC-LOGIN-001 | Domain | hợp lệ điển hình — email/password đúng của user seed | `POST /api/login` | không có header | {"email":"test@eshop.com","password":"Test1234!"} | 200 | `{message, token, user}`, `token` là string không rỗng | spec §1.2 | AI |  |  |
+| TC-LOGIN-002 | Domain | mật khẩu sai — tài khoản chưa từng bị khóa | `POST /api/login` | không có header | {"email":"test@eshop.com","password":"SaiRoi123"} | 401 | `{error}`, không tiết lộ lý do cụ thể | FR-02: không để lộ chi tiết nguyên nhân | AI |  |  |
+| TC-LOGIN-003 | Domain | email không tồn tại — thông báo phải GIỐNG lỗi sai mật khẩu | `POST /api/login` | không có header | {"email":"khong-ton-tai-xyz@eshop.com","password":"x"} | 401 | cùng `{error:"Invalid email or password"}` như case sai mật khẩu | FR-02 | AI |  |  |
+| TC-LOGIN-004 | Domain | thiếu hẳn field `password` (dùng tài khoản mồi riêng — KHÔNG dùng tài khoản dùng chung, vì request này chạm nhánh sai mật khẩu và sẽ cộng dồn bộ đếm khóa) | `POST /api/login` | không có header | {"email":"{{domain_email_04}}"} | 401 | `{error}`, không 500 | spec §1.2 (password bắt buộc) — đặc tả im lặng về cách báo lỗi khi thiếu, chỉ đảm bảo không 500 | AI |  |  |
+| TC-LOGIN-005 | Domain | thiếu hẳn field `email` | `POST /api/login` | không có header | {"password":"Test1234!"} | 401 | `{error}`, không 500 | spec §1.2 — đặc tả im lặng, chỉ đảm bảo không 500 | AI |  |  |
+| TC-LOGIN-006 | Domain | body hoàn toàn rỗng `{}` | `POST /api/login` | không có header | {} | 401 | `{error}`, không 500 | spec §1.2 — đặc tả im lặng | AI |  |  |
+| TC-LOGIN-007 | Domain | email rỗng `` | `POST /api/login` | không có header | {"email":"","password":"x"} | 401 | `{error}` | spec §1.2 — đặc tả im lặng | AI |  |  |
+| TC-LOGIN-008 | Domain | email không đúng định dạng (thiếu @) | `POST /api/login` | không có header | {"email":"khong-dung-dinh-dang","password":"x"} | 401 | `{error}`, không 500 — FR-01 kiểm định dạng ở UI (`type="email"`), API không đảm bảo | spec §1.2 im lặng về validate định dạng phía API | AI |  |  |
+| TC-LOGIN-009 | Domain | khác hoa/thường trong email — `TEST@ESHOP.COM` | `POST /api/login` | không có header | {"email":"TEST@ESHOP.COM","password":"Test1234!"} | 401 | 401 — SQL `WHERE email = ?` phân biệt hoa/thường trong SQLite mặc định, đặc tả không đòi case-insensitive | spec §1.2 im lặng — suy từ hành vi so khớp chuỗi mặc định của SQLite | AI |  |  |
+| TC-LOGIN-010 | Domain | khoảng trắng đầu/cuối email — ` test@eshop.com ` | `POST /api/login` | không có header | {"email":" test@eshop.com ","password":"Test1234!"} | 401 | 401 — không có `.trim()` trong code, đặc tả không định nghĩa trim | spec §1.2 im lặng về trim | AI |  |  |
+| TC-LOGIN-011 | Domain | email rất dài (300 ký tự) | `POST /api/login` | không có header | {"email":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa@x.com","password":"x"} | 401 | 401, KHÔNG 500 — đặc tả không giới hạn độ dài | spec §1.2 im lặng — chỉ đảm bảo không 500 | AI |  |  |
+| TC-LOGIN-012 | Domain | email sai kiểu — số nguyên | `POST /api/login` | không có header | {"email":12345,"password":"x"} | 401 | 401 hoặc 400, KHÔNG 500 | spec §1.2 im lặng về kiểu sai — chỉ đảm bảo không 500 | AI |  |  |
+| TC-LOGIN-013 | Domain | email sai kiểu — object (NoSQL-like) `{"$ne":null}` | `POST /api/login` | không có header | {"email":{"$ne":null},"password":"x"} | 401 | 401, KHÔNG 500, KHÔNG bypass đăng nhập | spec §1.2 im lặng — kiểm không có lỗ hổng kiểu NoSQL-injection dù dùng SQLite | AI |  |  |
+| TC-LOGIN-014 | Domain | password sai kiểu — mảng (dùng tài khoản mồi — tránh cộng dồn bộ đếm khóa của tài khoản dùng chung) | `POST /api/login` | không có header | {"email":"{{domain_email_14}}","password":["a","b"]} | 401 | 401, KHÔNG 500 | spec §1.2 im lặng | AI |  |  |
+| TC-LOGIN-015 | Domain | field lạ thêm vào body — `role: "admin"` | `POST /api/login` | không có header | {"email":"test@eshop.com","password":"Test1234!","role":"admin"} | 200 | 200 — field lạ bị bỏ qua, `user.role` vẫn là role thật trong DB (`user`), không bị field client ghi đè | spec §1.2 — endpoint chỉ định nghĩa email/password | AI |  |  |
+| TC-LOGIN-016 | Domain | Content-Type sai — gửi `text/plain` thay vì JSON | `POST /api/login` | không có header | "{\"email\":\"test@eshop.com\",\"password\":\"Test1234!\"}" | 400 | KHÔNG được là 500 kèm stack trace — phải trả lỗi JSON `{error}` gọn (vd 400 'thiếu dữ liệu') | spec §1.2 im lặng — chỉ đảm bảo KHÔNG được crash lộ nội bộ server khi thiếu Content-Type đúng | AI |  |  |
+| TC-LOGIN-017 | Domain | Unicode trong email — miền có dấu | `POST /api/login` | không có header | {"email":"tệst@eshop.com","password":"x"} | 401 | 401, KHÔNG 500 | spec §1.2 im lặng | AI |  |  |
+| TC-LOGIN-018 | Domain | method không được hỗ trợ — `GET /api/login` | `GET /api/login` | không có header | – | 404 | 404 (Express mặc định — không định nghĩa route GET) | spec §1.2 chỉ định nghĩa POST | AI |  |  |
+| TC-LOGIN-019 | State | bước 1: đăng ký tài khoản mồi cho chuỗi khóa | `POST /api/register` | không có header | {"name":"State Lockout","email":"{{lockout_email}}","password":"RightPass1!"} | 200 | `{message, id}` | spec §1.1 | AI |  |  |
+| TC-LOGIN-020 | State | bước 2: sai mật khẩu LẦN 1 — chưa khóa | `POST /api/login` | không có header | {"email":"{{lockout_email}}","password":"SAI"} | 401 | 401, CHƯA khóa (bộ đếm 0→2) | FR-02 (+1 lần sai theo văn bản đặc tả) | AI |  |  |
+| TC-LOGIN-021 | State | bước 3: sai mật khẩu LẦN 2 — response của CHÍNH request này vẫn 401 (lock được đặt ngầm cho lần sau) | `POST /api/login` | không có header | {"email":"{{lockout_email}}","password":"SAI"} | 401 | 401 — bộ đếm 2→4 (≥3), khóa được đặt NGẦM nhưng response request này chưa phản ánh | FR-02 | AI |  |  |
+| TC-LOGIN-022 | State | bước 4: request thứ 3 — dùng ĐÚNG mật khẩu — AI_MISTAKE: dự đoán 200 vì chỉ mới 2 lần THẬT SỰ sai, không phải 3 | `POST /api/login` | không có header | {"email":"{{lockout_email}}","password":"RightPass1!"} | 200 | 200 — FR-02: chỉ khóa 'từ 3 lần sai'; đây mới là lần thử thứ 3 và là lần ĐÚNG, không phải lần sai | FR-02 — đọc đúng số lần cần (2 lần sai) nhưng suy request-thứ-3-đúng vẫn phải qua được | AI |  |  |
+| TC-LOGIN-023a | State | tài khoản khác — bước 0: đăng ký (bắt buộc phải có bước này trước khi thử sai, nếu không tài khoản không tồn tại và luôn trả 401 bất kể số lần thử) | `POST /api/register` | không có header | {"name":"State Lockout 2","email":"{{lockout_email_2}}","password":"RightPass1!"} | 200 | `{message, id}` | spec §1.1 | AI |  |  |
+| TC-LOGIN-023 | State | tài khoản khác — kiểm trực tiếp: đủ 2 lần sai rồi request thứ 3 (BẤT KỲ) phải bị 403 | `POST /api/login` | không có header | chuỗi 3 request trên `{{lockout_email_2}}`: sai #1 (401) → sai #2 (401) → request #3 bất kỳ (403) | 401 | 401 — bước sai #1 của chuỗi riêng, chuẩn bị cho case sau kiểm 403 | FR-02 | AI |  |  |
+| TC-LOGIN-023b | State | tiếp theo TC-LOGIN-023 — sai lần 2 trên cùng tài khoản `{{lockout_email_2}}` | `POST /api/login` | không có header | {"email":"{{lockout_email_2}}","password":"SAI2-again"} | 401 | 401 — lock đặt ngầm, response vẫn 401 | FR-02 | AI |  |  |
+| TC-LOGIN-023c | State | tiếp theo TC-LOGIN-023b — request thứ 3 (dùng ĐÚNG mật khẩu) PHẢI bị 403 vì lock đã đặt | `POST /api/login` | không có header | {"email":"{{lockout_email_2}}","password":"RightPass1!"} | 403 | 403 `{error:"Tài khoản đã bị khóa. Vui lòng thử lại sau."}` | FR-02: khóa tạm 30 giây sau đủ số lần sai | AI |  |  |
+| TC-LOGIN-024a | State | tài khoản thứ ba — bước 0: đăng ký | `POST /api/register` | không có header | {"name":"State Lockout 3","email":"{{lockout_email_3}}","password":"RightPass1!"} | 200 | `{message, id}` | spec §1.1 | AI |  |  |
+| TC-LOGIN-024 | State | tài khoản thứ ba — 1 lần sai (chưa khóa) rồi đăng nhập ĐÚNG → bộ đếm phải reset về 0 | `POST /api/login` | không có header | sai #1 (401) → đúng (200, reset attempts=0) → verify: sai thêm 1 lần vẫn CHỈ 401 (không cộng dồn từ trước) | 401 | 401 — bước 1/3 của chuỗi reset | FR-02 | AI |  |  |
+| TC-LOGIN-024b | State | tiếp theo TC-LOGIN-024 — đăng nhập ĐÚNG ngay sau 1 lần sai → phải reset bộ đếm | `POST /api/login` | không có header | {"email":"{{lockout_email_3}}","password":"RightPass1!"} | 200 | 200 — đăng nhập đúng thành công, bộ đếm phải reset về 0 | FR-02 (reset khi đăng nhập đúng) | AI |  |  |
+| TC-LOGIN-024c | State | tiếp theo TC-LOGIN-024b — sai 1 lần NỮA sau khi đã reset → phải CHỈ là 401 (không cộng dồn từ lần trước khi reset) | `POST /api/login` | không có header | {"email":"{{lockout_email_3}}","password":"SAI-again"} | 401 | 401 — nếu bộ đếm không reset đúng thì đây sẽ vô tình bị khóa oan | FR-02 | AI |  |  |
+| TC-LOGIN-025 | Security SEC-05 | SQLi tautology trong `email` — `' OR '1'='1` | `POST /api/login` | không có header | {"email":"' OR '1'='1","password":"x"} | 401 | 401, KHÔNG bypass, KHÔNG 500 — parameterized query | SEC-05 | AI |  |  |
+| TC-LOGIN-026 | Security SEC-05 | SQLi comment — `admin@eshop.com'--` | `POST /api/login` | không có header | {"email":"admin@eshop.com'--","password":"x"} | 401 | 401, KHÔNG bypass | SEC-05 | AI |  |  |
+| TC-LOGIN-027 | Security SEC-05 | SQLi UNION SELECT | `POST /api/login` | không có header | {"email":"x' UNION SELECT 1,2,3,4,5,6,7,8,9--","password":"x"} | 401 | 401, KHÔNG 500, KHÔNG lộ dữ liệu bảng khác | SEC-05 | AI |  |  |
+| TC-LOGIN-028 | Security SEC-01 | response đăng nhập thành công KHÔNG được chứa `password` | `POST /api/login` | không có header | {"email":"test@eshop.com","password":"Test1234!"} | 200 | `user` KHÔNG có field `password` | SEC-01: mật khẩu không được lưu/lộ dạng plaintext | AI |  |  |
+| TC-LOGIN-029 | Security SEC-01 | response KHÔNG được chứa các cột nội bộ `login_attempts`, `locked_until`, `reset_token` | `POST /api/login` | không có header | {"email":"test@eshop.com","password":"Test1234!"} | 200 | `user` không có 3 field nội bộ trên | nguyên tắc không rò rỉ dữ liệu nội bộ — hệ quả của SEC-01/SEC-02 | AI |  |  |
+| TC-LOGIN-030 | Security SEC-02 | JWT phải có claim `exp` (thời hạn sử dụng) | `POST /api/login` | không có header | {"email":"test@eshop.com","password":"Test1234!"} | 200 | token decode được, có claim `exp` ở tương lai gần | SEC-02: yêu cầu JWT Token hợp lệ — hợp lệ bao gồm có thời hạn | AI |  |  |
+| TC-LOGIN-031a | Security (chuẩn bị nạn nhân) | bước 0: đăng ký tài khoản 'nạn nhân' cho kịch bản DoS-lockout | `POST /api/register` | không có header | {"name":"Victim","email":"{{lockout_email_4}}","password":"MatKhauThatCuaNanNhan!"} | 200 | `{message, id}` | spec §1.1 | AI |  |  |
+| TC-LOGIN-031 | Security SEC-02 (DoS qua cơ chế khóa) | khóa được tài khoản NGƯỜI KHÁC chỉ bằng cách gửi body THIẾU `password` nhiều lần | `POST /api/login` | không có header | {"email":"{{lockout_email_4}}"} | 401 | 401 lần 1 — bước dựng chuỗi tấn công DoS lockout | hệ quả bất lợi của FR-02 khi không kiểm `password` tồn tại trước khi cộng bộ đếm | AI |  |  |
+| TC-LOGIN-032 | Security SEC-01 | endpoint không có `Authorization` vẫn phải hoạt động bình thường (public endpoint) | `POST /api/login` | token rác | {"email":"test@eshop.com","password":"Test1234!"} | 200 | 200 — endpoint login không cần và không được ảnh hưởng bởi header Authorization gửi kèm | spec §1.2 không đòi Authorization cho login | AI |  |  |
+| TC-LOGIN-033 | Schema | response thành công: đủ field & đúng kiểu | `POST /api/login` | không có header | {"email":"test@eshop.com","password":"Test1234!"} | 200 | `message` string, `token` string, `user` object, `user.id` number, `user.email` string | spec §1.2 | AI |  |  |
+| TC-LOGIN-034 | Schema | response lỗi 401: đúng shape `{error: string}` | `POST /api/login` | không có header | {"email":"test@eshop.com","password":"SAI"} | 401 | chỉ có field `error`, kiểu string, `Content-Type: application/json` | nguyên tắc API trả JSON nhất quán | AI |  |  |
+| TC-LOGIN-035 | Schema | response lỗi khi bị khóa (403): đúng shape, KHÔNG lộ chi tiết engine | `POST /api/login` | không có header | {"email":"{{lockout_email_2}}","password":"x"} | 403 | `{error}`, Content-Type JSON, không chứa `SQLITE_`/stack trace | SEC-05 nguyên tắc không rò rỉ nội bộ | AI |  |  |
+| TC-LOGIN-036 | Schema | body request KHÔNG phải JSON hợp lệ (`Content-Type: application/json` nhưng body là text thường) | `POST /api/login` | không có header | "day khong phai JSON" | 400 | phản hồi lỗi phải là JSON `{error}`, KHÔNG được là trang HTML kèm stack trace tuyệt đối | nguyên tắc API luôn trả JSON, không rò rỉ đường dẫn hệ thống — suy từ SEC-05/nguyên tắc chung | AI |  |  |
+| TC-LOGIN-037 | Schema | response không được lộ field thừa ngoài đặc tả | `POST /api/login` | không có header | {"email":"test@eshop.com","password":"Test1234!"} | 200 | `user` chỉ gồm field đặc tả cho là cần cho client: id, name, email, role, shipping_address, phone — KHÔNG có password/login_attempts/locked_until/reset_token | spec §1.2 + SEC-01 | AI |  |  |
+| TC-LOGIN-038 | Schema | `Content-Type` response luôn `application/json` kể cả nhánh lỗi | `POST /api/login` | không có header | {} | 401 | Content-Type application/json | nguyên tắc API JSON nhất quán | AI |  |  |
