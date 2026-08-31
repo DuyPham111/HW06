@@ -1,9 +1,15 @@
 HW06 - API Testing - Git commit log
 SV: Pham Vu Ngoc Duy - 23127183
 Repo: https://github.com/DuyPham111/HW06
-Xuat luc: 2026-08-31T13:19:50+07:00
-Tong so commit: 19
+Xuat luc: 2026-08-31T13:25:57+07:00
+Tong so commit: 25
 
+7b0afff  2026-08-31 13:25:57 +0700  DuyPham111  docs: tong ket viec con lai - A (bat buoc) + B (khuyen khich) (§14)
+0818ffb  2026-08-31 13:24:43 +0700  DuyPham111  docs: tach 27 bug thanh file issue rieng + 3 file CSV data-driven that (§6, §6.5)
+0fe2afc  2026-08-31 13:23:12 +0700  DuyPham111  docs: dien so bien environment trong postman/README.md
+7f5afa1  2026-08-31 13:22:54 +0700  DuyPham111  docs: doi chieu gia thuyet voi bug that (§5, §6)
+555d4f3  2026-08-31 13:21:44 +0700  DuyPham111  docs: bao cao chinh main-report.md voi noi dung that (§14)
+d955f52  2026-08-31 13:19:57 +0700  DuyPham111  docs: xuat git commit log (§12)
 8e95b80  2026-08-31 13:19:39 +0700  DuyPham111  docs: cap nhat README voi so lieu that (§14, §15)
 947a284  2026-08-31 13:18:34 +0700  DuyPham111  docs: AI audit report (12 log that) + AI critique 294 tu (§9, §10)
 500c574  2026-08-31 13:15:43 +0700  DuyPham111  docs: xuat Excel test case + test summary (§14)
