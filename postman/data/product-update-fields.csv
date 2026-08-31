@@ -1,0 +1,7 @@
+name,price,category_id,expected_status,note
+Ten hop le,100000,1,200,hop le dien hinh
+,100000,1,400,name rong - FR-15 bat buoc (thuc te SUT chap nhan - BUG-23)
+Ten hop le,0,1,400,price = 0 - FR-15 doi > 0 (thuc te SUT chap nhan - BUG-23)
+Ten hop le,-1,1,400,price am (thuc te SUT chap nhan - BUG-23)
+Ten hop le,100000,999,400,category_id khong ton tai (thuc te SUT chap nhan - BUG-23)
+Ten Unicode co dau,100000,1,200,unicode hop le

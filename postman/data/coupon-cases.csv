@@ -1,0 +1,11 @@
+code,total_amount,expected_status,expected_discount,note
+SAVE10,500000,200,50000,percent hop le - FR-09 cong thuc dung phai la total x value / 100
+SAVE10,300000,200,30000,dung bang min_order_amount - FR-09 C3 noi >= (BUG-12 neu SUT tra 400)
+SAVE10,299999,400,0,duoi nguong 1d
+BIGBUY,500001,200,50000,fixed hop le
+BIGBUY,500000,400,0,dung bang nguong cua BIGBUY - cung kiem bien >=
+VIP100,300001,200,100000,fixed - con han muc
+EXPIRED,200000,400,0,coupon het han - FR-09 C2
+KHONGTONTAI999,500000,404,0,ma khong ton tai - FR-09 C1
+save10,500000,404,0,chu thuong - SQL phan biet hoa thuong mac dinh
+,500000,400,0,ma rong

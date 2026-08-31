@@ -39,11 +39,13 @@ EXPIRED,200000,400,0,coupon het han - FR-09 C2
 KHONGTONTAI,500000,404,0,ma khong ton tai - FR-09 C1
 ```
 
-## Cần có
+## Đã có — chỉ còn chạy trong GUI để chụp ảnh
 
-- [ ] `coupon-cases.csv` — API-02
-- [ ] `login-cases.csv` — API-01 (email/password × phân vùng)
-- [ ] `product-update-fields.csv` — API-03 (name/price/category_id × phân vùng)
+- [x] `coupon-cases.csv` — API-02, 10 dòng
+- [x] `login-cases.csv` — API-01, 7 dòng
+- [x] `product-update-fields.csv` — API-03, 6 dòng
 
-Chụp màn hình Runner có file dữ liệu → `bug-report/screenshots/postman-data-driven.png`
-(cần cho [`docs/08-POSTMAN-FEATURES.md`](../../docs/08-POSTMAN-FEATURES.md)).
+**Việc còn lại (chỉ làm được trong Postman GUI):** mở collection tương ứng → **Runner** → chọn 1
+folder bất kỳ → **Select File** → chọn 1 trong 3 CSV trên → **Run** → chụp màn hình Runner đang hiển
+thị file dữ liệu, lưu `bug-report/screenshots/postman-data-driven.png` (cần cho
+[`docs/08-POSTMAN-FEATURES.md`](../../docs/08-POSTMAN-FEATURES.md)).

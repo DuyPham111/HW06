@@ -1,0 +1,8 @@
+email,password,expected_status,note
+test@eshop.com,Test1234!,200,hop le dien hinh
+test@eshop.com,SaiRoi123,401,sai mat khau
+khong-ton-tai-xyz@eshop.com,x,401,email khong ton tai - thong diep phai giong sai mat khau
+TEST@ESHOP.COM,Test1234!,401,khac hoa thuong - SQL phan biet mac dinh
+admin@eshop.com,Admin123!,200,dang nhap admin hop le
+,Test1234!,401,thieu email
+test@eshop.com,,401,thieu password
