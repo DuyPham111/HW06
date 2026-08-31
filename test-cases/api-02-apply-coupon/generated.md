@@ -1,24 +1,71 @@
 # API-02 — Pool B · `POST /api/apply-coupon` · bước 1 (§6.1): test case do AI sinh
 
-- **Pool B · FR-09 Coupon (+FR-08, FR-10)** · prefix `TC-COUPON-###` · **__ test case** *(đề đòi ≥35/API)*
-- Sinh theo quy trình **5 bước riêng** của [`docs/03-GENERATE-AI.md`](../../docs/03-GENERATE-AI.md);
-  mỗi bước một lượt AI riêng, mỗi bước một mục trong [`ai-audit/ai-audit-report.md`](../../ai-audit/ai-audit-report.md).
-- **File này là bằng chứng lượt AI đầu tiên — sau khi audit thì ĐỪNG sửa nữa.** Bản đúng nằm ở `audit.md`.
+- **FR-09 Coupon (+FR-08, FR-10)** · prefix `TC-COUPON-###` · **48 test case** (đề đòi ≥35, tính cả case tự thêm)
+- Sinh từ `generator/specs/api-02-apply-coupon.mjs` bằng `node tools/gen-artifacts.mjs api-02-apply-coupon` — **đừng sửa file này bằng tay**, sửa spec rồi sinh lại.
+- Quy trình 5 bước của [`docs/03-GENERATE-AI.md`](../../docs/03-GENERATE-AI.md); mỗi bước một lượt AI riêng.
+- **File này là bằng chứng lượt AI đầu tiên (bao gồm cả chỗ AI dự đoán sai) — sau audit thì đừng sửa nữa. Bản đúng nằm ở `audit.md`.**
 
 ## Phân bố theo kỹ thuật
 
 | Kỹ thuật | Số case |
 |---|--:|
-| Domain | |
-| State | |
-| Security | |
-| Schema | |
-| **Tổng** | |
+| Domain | 16 |
+| State | 14 |
+| Security | 11 |
+| Schema | 7 |
+| **Tổng** | **48** |
 
 ## Bảng test case
 
-> Cột `Audit` và `Kết quả` để **trống** ở bước này.
+> Cột `Audit` và `Kết quả` để **trống** ở bước này — điền ở `audit.md` và sau khi chạy Newman.
 
 | TC ID | Kỹ thuật | Tham số & phân vùng | Request | Auth | Query / Body | Expected status | Expected body / schema | Căn cứ | Nguồn | Audit | Kết quả |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| TC-COUPON-001 | | | `POST /api/apply-coupon` | | | | | | AI | | |
+| TC-COUPON-001 | Domain | hợp lệ điển hình — SAVE10 (percent) trên đơn > ngưỡng | `POST /api/apply-coupon` | không có header | {"code":"SAVE10","total_amount":500000,"user_id":999001} | 200 | `discount_amount = 50000` (10% của 500.000), `final_amount = 450000` — theo công thức FR-09 | FR-09: `discount_amount = total × discount_value / 100` | AI |  |  |
+| TC-COUPON-002 | Domain | hợp lệ — BIGBUY (fixed) trên đơn > ngưỡng | `POST /api/apply-coupon` | không có header | {"code":"BIGBUY","total_amount":600000,"user_id":999002} | 200 | `discount_amount = 50000` (fixed), `final_amount = 550000` | FR-09: loại fixed `discount_amount = discount_value` | AI |  |  |
+| TC-COUPON-003 | Domain | biên trên — `total_amount` LỚN HƠN 1đ so với `min_order_amount` (300.001) | `POST /api/apply-coupon` | không có header | {"code":"SAVE10","total_amount":300001,"user_id":999003} | 200 | 200 — vượt ngưỡng dù chỉ 1đ | FR-09 C3 | AI |  |  |
+| TC-COUPON-004 | Domain | biên — `total_amount` ĐÚNG BẰNG `min_order_amount` (300.000) — AI_MISTAKE: chép hành vi code (`>`) thay vì đọc đúng FR-09 C3 (`>=`) | `POST /api/apply-coupon` | không có header | {"code":"SAVE10","total_amount":300000,"user_id":999004} | 400 | 400 — AI (lượt đầu) đọc `if (total_amount > min_order_amount)` trong code rồi suy expected là 400 khi bằng nhau | hành vi code hiện tại (SAI — xem audit.md, FR-09 C3 ghi rõ `>=`) | AI |  |  |
+| TC-COUPON-005 | Domain | dưới ngưỡng 1đ (299.999) | `POST /api/apply-coupon` | không có header | {"code":"SAVE10","total_amount":299999,"user_id":999005} | 400 | 400 `{error}` nói rõ chưa đủ ngưỡng | FR-09 C3 | AI |  |  |
+| TC-COUPON-006 | Domain | mã EXPIRED — đã hết hạn (2020-01-01) | `POST /api/apply-coupon` | không có header | {"code":"EXPIRED","total_amount":200000,"user_id":999006} | 400 | 400 `{error}` — hết hạn | FR-09 C2 | AI |  |  |
+| TC-COUPON-007 | Domain | mã không tồn tại | `POST /api/apply-coupon` | không có header | {"code":"KHONGTONTAI999","total_amount":500000} | 404 | 404 `{error}` | FR-09 C1 | AI |  |  |
+| TC-COUPON-008 | Domain | mã rỗng | `POST /api/apply-coupon` | không có header | {"code":"","total_amount":500000} | 400 | 400 `{error}` "Vui lòng nhập mã giảm giá" | spec §5.1 | AI |  |  |
+| TC-COUPON-009 | Domain | thiếu hẳn field `code` | `POST /api/apply-coupon` | không có header | {"total_amount":500000} | 400 | 400, KHÔNG 500 | spec §5.1 | AI |  |  |
+| TC-COUPON-010 | Domain | thiếu hẳn field `total_amount` | `POST /api/apply-coupon` | không có header | {"code":"SAVE10"} | 400 | 400 hoặc lỗi được kiểm soát, KHÔNG 500 | spec §5.1 im lặng — chỉ đảm bảo không 500 | AI |  |  |
+| TC-COUPON-011 | Domain | `total_amount` âm | `POST /api/apply-coupon` | không có header | {"code":"SAVE10","total_amount":-500000,"user_id":999011} | 400 | 400 — đơn âm không hợp lệ, không được tính giảm giá | spec §5.1 im lặng — suy từ lẽ thường nghiệp vụ (đơn hàng không âm) | AI |  |  |
+| TC-COUPON-012 | Domain | `total_amount` = 0 | `POST /api/apply-coupon` | không có header | {"code":"SAVE10","total_amount":0,"user_id":999012} | 400 | 400 — dưới ngưỡng | FR-09 C3 | AI |  |  |
+| TC-COUPON-013 | Domain | `total_amount` sai kiểu — chuỗi số `"500000"` | `POST /api/apply-coupon` | không có header | {"code":"SAVE10","total_amount":"500000","user_id":999013} | 200 | 200 — JS ép kiểu chuỗi số khi so sánh `>`; kết quả tính toán vẫn phải đúng số | spec §5.1 im lặng — suy từ hành vi ép kiểu ngầm của JS | AI |  |  |
+| TC-COUPON-014 | Domain | mã khác hoa/thường — `save10` (chữ thường) | `POST /api/apply-coupon` | không có header | {"code":"save10","total_amount":500000,"user_id":999014} | 404 | 404 — SQL so khớp `code = ?` phân biệt hoa/thường mặc định trong SQLite | spec §5.1 im lặng — suy từ hành vi so khớp mặc định của SQLite | AI |  |  |
+| TC-COUPON-015 | Domain | mã có khoảng trắng đầu/cuối — ` SAVE10 ` | `POST /api/apply-coupon` | không có header | {"code":" SAVE10 ","total_amount":500000,"user_id":999015} | 404 | 404 — không có `.trim()`, đặc tả không định nghĩa trim | spec §5.1 im lặng về trim | AI |  |  |
+| TC-COUPON-016 | Domain | `total_amount` số cực lớn (Number.MAX_SAFE_INTEGER) | `POST /api/apply-coupon` | không có header | {"code":"SAVE10","total_amount":9007199254740991,"user_id":999016} | 200 | 200, KHÔNG 500 — không giới hạn độ lớn trong đặc tả | spec §5.1 im lặng — chỉ đảm bảo không 500 | AI |  |  |
+| TC-COUPON-017 | State | bước 1: thêm sản phẩm vào giỏ (setup luồng checkout) | `POST /api/cart` | user | {"id":1,"name":"iPhone 15 Pro Max","price":30000000,"quantity":1} | 200 | `{message}` | spec §4.2 | AI |  |  |
+| TC-COUPON-018 | State | bước 2: checkout tạo đơn — trạng thái khởi tạo phải là `pending` | `POST /api/checkout` | user | {"total_amount":300000,"shipping_address":"123 Le Loi"} | 200 | `{message, orderId}`, lưu `order_id` | spec §4.3 + FR-10 (trạng thái khởi tạo `pending`) | AI |  |  |
+| TC-COUPON-019 | State | bước 3: verify đơn vừa tạo có `status = pending` | `GET /api/orders/{{order_id}}` | user | – | 200 | `status = "pending"` | FR-10 | AI |  |  |
+| TC-COUPON-020 | State | bước 4: admin chuyển `pending → confirmed` (hợp lệ) | `PUT /api/admin/orders/{{order_id}}/status` | admin | {"status":"confirmed"} | 200 | `{message}` | FR-10 | AI |  |  |
+| TC-COUPON-021 | State | bước 5: admin chuyển NHẢY CÓC `confirmed → delivered` — PHẢI bị chặn | `PUT /api/admin/orders/{{order_id}}/status` | admin | {"status":"delivered"} | 400 | 400 — FR-10 không cho nhảy cóc qua `shipping` | FR-10 sơ đồ chuyển trạng thái | AI |  |  |
+| TC-COUPON-022 | State | bước 6: admin chuyển hợp lệ `confirmed → shipping` | `PUT /api/admin/orders/{{order_id}}/status` | admin | {"status":"shipping"} | 200 | `{message}` | FR-10 | AI |  |  |
+| TC-COUPON-023 | State | bước 7: user tự hủy đơn đang `shipping` — PHẢI bị chặn (FR-10 chỉ cho hủy khi pending/confirmed) | `PUT /api/orders/{{order_id}}/cancel` | user | – | 400 | 400 — đơn đang `shipping` không được phép hủy | FR-10: chỉ hủy khi `pending`/`confirmed` | AI |  |  |
+| TC-COUPON-024 | State | bước 8: admin hoàn tất `shipping → delivered` (hợp lệ, trạng thái kết thúc) | `PUT /api/admin/orders/{{order_id}}/status` | admin | {"status":"delivered"} | 200 | `{message}` | FR-10 | AI |  |  |
+| TC-COUPON-025 | State | bước 9: `delivered` là trạng thái KẾT THÚC — cố chuyển `delivered → shipping` phải bị chặn | `PUT /api/admin/orders/{{order_id}}/status` | admin | {"status":"shipping"} | 400 | 400 — `delivered` không được chuyển sang trạng thái nào khác | FR-10: 'delivered và canceled là trạng thái kết thúc' | AI |  |  |
+| TC-COUPON-026 | State | đơn hàng khác — user tự hủy từ `pending` (hợp lệ) | `POST /api/checkout` | user | {"total_amount":150000,"shipping_address":"456 Nguyen Trai"} | 200 | `{message, orderId}` — lưu `order_id_2` | spec §4.3 | AI |  |  |
+| TC-COUPON-027 | State | user hủy đơn thứ 2 đang `pending` — phải thành công | `PUT /api/orders/{{order_id_2}}/cancel` | user | – | 200 | `{message}`, status chuyển `canceled` | FR-10: hủy hợp lệ khi `pending` | AI |  |  |
+| TC-COUPON-028 | State | `canceled` là trạng thái KẾT THÚC — admin cố chuyển `canceled → delivered` phải bị chặn | `PUT /api/admin/orders/{{order_id_2}}/status` | admin | {"status":"delivered"} | 400 | 400 — `canceled` là trạng thái kết thúc, không được chuyển sang `delivered` | FR-10: 'delivered và canceled là trạng thái kết thúc' | AI |  |  |
+| TC-COUPON-029 | State | hủy đơn không tồn tại | `PUT /api/orders/999999/cancel` | user | – | 404 | 404 `{error}` | spec §4.6 | AI |  |  |
+| TC-COUPON-030 | State | đổi trạng thái đơn không tồn tại | `PUT /api/admin/orders/999999/status` | admin | {"status":"confirmed"} | 404 | 404 `{error}` | spec §6.2 | AI |  |  |
+| TC-COUPON-031 | Security SEC-02 | áp mã KHÔNG có token (FR-09 C4 đòi phải đăng nhập) | `POST /api/apply-coupon` | không có header | {"code":"SAVE10","total_amount":500000} | 401 | 401 — chưa đăng nhập | FR-09 C4: 'Người dùng phải có JWT Token hợp lệ' + SEC-02 | AI |  |  |
+| TC-COUPON-031b | Security (chuẩn bị) | bước 0: tạo đơn RIÊNG cho case kiểm SEC-03 — cần đơn ở `pending` (chuyển đổi hợp lệ) để KHÔNG bị máy trạng thái chặn trước, tách bạch khỏi phép kiểm role | `POST /api/checkout` | user | {"total_amount":120000,"shipping_address":"don rieng cho SEC-03"} | 200 | `{message, orderId}` — lưu `order_id_3` | spec §4.3 | AI |  |  |
+| TC-COUPON-032 | Security SEC-03 | đổi trạng thái đơn bằng token USER THƯỜNG (không phải admin) — dùng `pending → confirmed`, MỘT chuyển đổi HỢP LỆ, để phép kiểm này chỉ đo role chứ không bị lẫn với lỗi máy trạng thái | `PUT /api/admin/orders/{{order_id_3}}/status` | user | {"status":"confirmed"} | 403 | 403 — SEC-03 đòi kiểm `role='admin'` trong token, không chỉ có token; đây là chuyển đổi hợp lệ nên nếu qua được 400 thì chắc chắn là do thiếu kiểm role | SEC-03 | AI |  |  |
+| TC-COUPON-033 | Security (IDOR) | `GET /api/orders/:id` đọc đơn của NGƯỜI KHÁC — KHÔNG có token | `GET /api/orders/{{order_id}}` | không có header | – | 401 | 401 — xem chi tiết đơn hàng là dữ liệu cá nhân, phải cần xác thực | SEC-02 (suy từ nguyên tắc bảo vệ dữ liệu cá nhân — đặc tả §4.5 không ghi rõ nhưng cùng nhóm với các API đơn hàng khác đều yêu cầu Authorization) | AI |  |  |
+| TC-COUPON-034 | Security (price tampering) | checkout với `total_amount` do client tự đặt — KHÔNG khớp giá trị giỏ hàng thật | `POST /api/checkout` | user | {"total_amount":1,"shipping_address":"gia tri gia mao"} | 400 | 400 — server phải tự tính lại tổng tiền từ giỏ hàng, không tin `total_amount` client gửi | hệ quả bất lợi khi thiếu kiểm tra — suy từ nguyên tắc chung 'server không tin dữ liệu định giá từ client' | AI |  |  |
+| TC-COUPON-035 | Security SEC-05 | SQLi trong `code` | `POST /api/apply-coupon` | không có header | {"code":"' OR '1'='1","total_amount":500000} | 404 | 404 — coi là chuỗi tìm kiếm bình thường, không match, KHÔNG bypass | SEC-05 | AI |  |  |
+| TC-COUPON-036 | Security (IDOR quota) | dùng `user_id` của NGƯỜI KHÁC để né việc tiêu hạn mức của chính mình (mã VIP100, còn nguyên hạn mức của người bị mượn) | `POST /api/apply-coupon` | không có header | {"code":"VIP100","total_amount":400000,"user_id":"{{admin_id}}"} | 400 | 400 — `user_id` phải lấy từ token đã xác thực (SEC-02), không được nhận từ body client | FR-09 C4 (phải đăng nhập) — `user_id` client-controlled là hệ quả trực tiếp của việc thiếu C4 | AI |  |  |
+| TC-COUPON-037 | Security (C5 bypass) | KHÔNG gửi `user_id` — hạn mức `max_uses_per_user` bị bỏ qua hoàn toàn (áp được vô hạn lần) | `POST /api/apply-coupon` | không có header | {"code":"VIP100","total_amount":400000} | 400 | 400 — nếu không xác định được người dùng thì không được áp dụng coupon giới hạn lượt dùng | FR-09 C5 (số lần dùng phải được kiểm với MỌI request, không phải chỉ khi client tự nguyện gửi user_id) | AI |  |  |
+| TC-COUPON-038 | Security SEC-05 | SQLi stacked query trong `code` | `POST /api/apply-coupon` | không có header | {"code":"x'; DROP TABLE coupons;--","total_amount":500000} | 404 | 404, KHÔNG 500, bảng `coupons` còn nguyên | SEC-05 | AI |  |  |
+| TC-COUPON-039 | Security (SEC-03, xác nhận thêm) | user thường gọi endpoint admin với chuyển đổi hợp lệ THỨ HAI (`confirmed → canceled` trên `order_id_3`, tiếp theo TC-COUPON-032) — xác nhận bug SEC-03 không phải ngẫu nhiên chỉ với 1 target | `PUT /api/admin/orders/{{order_id_3}}/status` | user | {"status":"canceled"} | 403 | 403 — endpoint admin, user thường không được gọi dù trạng thái đích hợp lệ | SEC-03 | AI |  |  |
+| TC-COUPON-040 | Security (rò rỉ dữ liệu) | response `GET /api/orders/:id` (khi có token đúng chủ) KHÔNG được lộ field ngoài đặc tả | `GET /api/orders/{{order_id}}` | user | – | 200 | chỉ gồm id, user_id, total_amount, status, shipping_address, created_at | spec §4.5 | AI |  |  |
+| TC-COUPON-041 | Schema | response thành công: đủ field & đúng kiểu | `POST /api/apply-coupon` | không có header | {"code":"SAVE10","total_amount":500000,"user_id":999041} | 200 | `success` boolean, `coupon_id` number, `discount_amount` number, `final_amount` number, `message` string | spec §5.1 | AI |  |  |
+| TC-COUPON-042 | Schema | `discount_amount` KHÔNG BAO GIỜ được âm | `POST /api/apply-coupon` | không có header | {"code":"SAVE10","total_amount":500000,"user_id":999042} | 200 | `discount_amount >= 0` — giảm giá không thể là số âm (tức phụ thu) | nguyên tắc nghiệp vụ cơ bản của giảm giá + hệ quả trực tiếp của công thức FR-09 | AI |  |  |
+| TC-COUPON-043 | Schema | `final_amount` KHÔNG BAO GIỜ được lớn hơn `total_amount` | `POST /api/apply-coupon` | không có header | {"code":"SAVE10","total_amount":500000,"user_id":999043} | 200 | `final_amount <= total_amount` — sau giảm giá không thể tốn tiền hơn giá gốc | nguyên tắc nghiệp vụ cơ bản của giảm giá | AI |  |  |
+| TC-COUPON-044 | Schema | response lỗi 400/404: đúng shape `{error: string}` | `POST /api/apply-coupon` | không có header | {"code":"KHONGTONTAI888","total_amount":500000} | 404 | chỉ `error` (string), Content-Type JSON | nguyên tắc API JSON nhất quán | AI |  |  |
+| TC-COUPON-045 | Schema | `GET /api/orders/:id` không tồn tại → 404, không phải `200 {}` | `GET /api/orders/999999` | user | – | 404 | 404 `{error}` | spec §4.5 | AI |  |  |
+| TC-COUPON-046 | Schema | `POST /api/checkout` response: `orderId` phải là number, không rỗng | `POST /api/checkout` | user | {"total_amount":100000,"shipping_address":"Test"} | 200 | `orderId` number > 0 | spec §4.3 | AI |  |  |
+| TC-COUPON-047 | Schema | method không hỗ trợ — `GET /api/apply-coupon` | `GET /api/apply-coupon` | không có header | – | 404 | 404 (Express mặc định) | spec §5.1 chỉ định nghĩa POST | AI |  |  |

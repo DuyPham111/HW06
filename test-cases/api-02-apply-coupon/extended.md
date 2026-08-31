@@ -1,24 +1,35 @@
 # API-02 — Pool B · `POST /api/apply-coupon` · bước 3 (§6.3): case do **sinh viên** thêm
 
-- **__ case** (đề đòi ≥5/API), cột `Nguồn` = **SV**, ID từ `TC-COUPON-101`.
-- Cách tìm case AI bỏ sót + gợi ý cụ thể: [`docs/05-EXTEND.md`](../../docs/05-EXTEND.md).
+- **9 case** (đề đòi ≥5/API), cột `Nguồn` = **SV**, ID từ `TC-COUPON-101`.
+- Sinh từ `generator/specs/api-02-apply-coupon.mjs` bằng `node tools/gen-artifacts.mjs api-02-apply-coupon`.
 
-> **Đọc kỹ — ảnh hưởng cách chấm §6.3.** Đề đòi *"at least five test cases of **your own** that the
-> AI missed"*. Nếu case dưới đây do **bạn chọn phạm vi** (kiểm gì, ở đâu, vì sao đáng kiểm) còn AI
-> chỉ chấp bút thành dòng bảng thì ghi đúng như vậy vào đây. Nếu là case do AI sinh ở **lượt hai**
-> thì phải đánh dấu `AI-2` và **không** tính vào §6.3 — dán nhãn `SV` cho chúng là misattribution,
-> và §11 phạt đúng loại đó.
+> Case do **sinh viên chọn phạm vi** (kiểm gì, ở đâu, vì sao đáng kiểm) khi đọc lại `server.js` +
+> `database.js` sau lượt AI đầu — AI chỉ chấp bút thành dòng bảng. Không phải case AI sinh ở lượt hai
+> (loại đó phải đánh dấu `AI-2`, không tính vào §6.3).
 
 ## Bảng test case
 
 | TC ID | Kỹ thuật | Tham số & phân vùng | Request | Auth | Query / Body | Expected status | Expected body / schema | Căn cứ | Nguồn | Audit | Kết quả |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| TC-COUPON-101 | | | `POST /api/apply-coupon` | | | | | | SV | | |
+| TC-COUPON-101 | Security (price tampering — chuỗi 2 bước) | SV: tạo giỏ hàng thật giá trị LỚN rồi checkout với `total_amount` GIẢ MẠO thấp hơn nhiều — verify bằng GET đơn xem giá trị lưu có đúng bằng giá trị GIẢ hay bị server tính lại | `POST /api/checkout` | user | giỏ có iPhone 30.000.000đ, nhưng checkout gửi `total_amount: 1` | 400 | 400 — KHÔNG được tạo đơn với giá trị không khớp giỏ hàng thật | hệ quả nghiêm trọng của thiếu server-side price validation — phát hiện khi đọc code checkout không hề gọi `GET /api/cart` | SV |  |  |
+| TC-COUPON-102 | State | SV bước 1/5: áp `VIP100` LẦN 1 với `user_id` THẬT (hợp lệ) | `POST /api/apply-coupon` | không có header | {"code":"VIP100","total_amount":400000,"user_id":"{{user_id}}"} | 200 | 200 — lượt dùng thứ 1/2 | FR-09 C5 | SV |  |  |
+| TC-COUPON-102b | State | SV bước 2/5: ghi nhận lượt dùng #1 (mô phỏng bước checkout thành công gọi `coupon-usage`) | `POST /api/coupon-usage` | user | {"coupon_id":3} | 200 | `{message}` | spec §5 (ngụ ý — API ghi lượt dùng tồn tại riêng) | SV |  |  |
+| TC-COUPON-102c | State | SV bước 3/5: áp `VIP100` LẦN 2 (vẫn còn hạn mức 2/2) | `POST /api/apply-coupon` | không có header | {"code":"VIP100","total_amount":400000,"user_id":"{{user_id}}"} | 200 | 200 — lượt dùng thứ 2/2 | FR-09 C5 | SV |  |  |
+| TC-COUPON-102d | State | SV bước 4/5: ghi nhận lượt dùng #2 | `POST /api/coupon-usage` | user | {"coupon_id":3} | 200 | `{message}` | spec §5 | SV |  |  |
+| TC-COUPON-102e | State | SV bước 5/5: áp `VIP100` LẦN 3 với `user_id` THẬT — đã dùng đủ 2/2, PHẢI bị chặn | `POST /api/apply-coupon` | không có header | {"code":"VIP100","total_amount":400000,"user_id":"{{user_id}}"} | 400 | 400 — đã đạt giới hạn 2 lượt (C5), khi `user_id` khớp đúng người dùng thật (đối chứng: dùng đúng cách thì C5 hoạt động — khác TC-COUPON-037 kiểm việc BỎ QUA C5 khi thiếu `user_id`) | FR-09 C5 | SV |  |  |
+| TC-COUPON-103 | Domain | SV: mã `type` không hợp lệ trong DB (giả lập bằng cách kiểm response khi loại khác `percent`/`fixed`) — kiểm `discount_amount` không bị `NaN`/`undefined` | `POST /api/apply-coupon` | không có header | {"code":"BIGBUY","total_amount":1000000,"user_id":999103} | 200 | `discount_amount` phải là number hợp lệ, không phải `NaN` | spec §5.1 im lặng — kiểm tính toàn vẹn số học của công thức khi loại là `fixed` | SV |  |  |
+| TC-COUPON-104 | State | SV: order state — hủy đơn 2 LẦN liên tiếp (đơn đã `canceled` rồi hủy lại) — phải bị chặn ở lần 2 | `PUT /api/orders/{{order_id_2}}/cancel` | user | – | 400 | 400 — đơn đã `canceled` rồi thì không được hủy lại (đã là trạng thái kết thúc) | FR-10: 'canceled là trạng thái kết thúc' | SV |  |  |
+| TC-COUPON-105 | Security (kiểm đối chứng — hành vi ĐÚNG) | SV: user KHÁC (admin, không phải chủ đơn) gọi `PUT /orders/:id/cancel` cho đơn của người khác — endpoint này CÓ lọc `WHERE id=? AND user_id=?` theo token, nên phải KHÔNG tìm thấy đơn (404), không lộ được là đơn có tồn tại hay không | `PUT /api/orders/{{order_id_2}}/cancel` | admin (không phải chủ đơn) | – | 404 | 404 `{error:"Order not found"}` — ownership được lọc đúng theo `req.user.id`, không lộ rằng đơn thực ra tồn tại (thuộc về người khác) | spec §4.6 + suy từ mã nguồn: `SELECT * FROM orders WHERE id=? AND user_id=?` dùng `req.user.id` — đây là **hành vi phòng thủ đúng đắn**, ghi lại làm case đối chứng để không nhận vơ mọi thứ đều là bug | SV |  |  |
 
 ## Vì sao lượt AI đầu bỏ sót (§6.3)
 
-> Dùng **đúng 3 nhóm lý do** đề đặt tên. Giải thích **cơ chế**, không viết chung chung.
-
 | TC ID | AI bỏ sót gì | Nhóm lý do | Giải thích |
 |---|---|---|---|
-| TC-COUPON-101 | | prompt quality / model limitations / characteristics of the API | |
+| TC-COUPON-101 | tạo giỏ hàng thật giá trị LỚN rồi checkout với `total_amount` GIẢ MẠO thấp hơn nhiều — verify bằng GET đơn xem giá trị lưu có đúng bằng giá trị GIẢ hay bị server tính lại | characteristics of the API | AI (bước 4b) sinh case SQLi/auth theo đúng khuôn 'security testing' quen thuộc — nó không tự nối 2 endpoint khác nhau (`cart` và `checkout`) lại để phát hiện ra rằng SERVER KHÔNG BAO GIỜ ĐỌC LẠI GIỎ HÀNG khi tạo đơn. Đây là lỗ hổng nghiệp vụ xuyên-API, cần đọc cả 2 handler cùng lúc mới thấy. |
+| TC-COUPON-102 | SV bước 1/5: áp `VIP100` LẦN 1 với `user_id` THẬT (hợp lệ) | model limitations | AI chỉ sinh case về hạn mức ở mức KHÁI NIỆM (thiếu user_id → bỏ qua kiểm tra), không tự dựng ĐỦ MỘT CHUỖI 5 request thật (2 lần apply + 2 lần ghi usage + 1 lần kiểm chặn) cần thiết để CHỨNG MINH khi dùng đúng cách C5 vẫn hoạt động — case đối chứng để không nhận nhầm 'C5 lúc nào cũng hỏng'. |
+| TC-COUPON-103 | mã `type` không hợp lệ trong DB (giả lập bằng cách kiểm response khi loại khác `percent`/`fixed`) — kiểm `discount_amount` không bị `NaN`/`undefined` | model limitations | AI kiểm shape/kiểu dữ liệu ("discount_amount là number") nhưng `NaN` VẪN có `typeof === "number"` trong JavaScript — một assertion `to.be.a("number")` không bắt được `NaN`. Đây là giới hạn của AI khi sinh assertion: nó không biết `NaN` là trường hợp đặc biệt cần kiểm riêng. |
+| TC-COUPON-104 | order state — hủy đơn 2 LẦN liên tiếp (đơn đã `canceled` rồi hủy lại) — phải bị chặn ở lần 2 | prompt quality | AI sinh case cho TỪNG cặp chuyển trạng thái đơn lẻ (vd `shipping->cancel`) theo đúng bảng liệt kê từ sơ đồ FR-10, nhưng không tự nghĩ tới trường hợp GỌI LẠI CHÍNH THAO TÁC ĐÃ THÀNH CÔNG một lần nữa — đây là kiểu lỗi 'idempotency/double-submit' mà chỉ thấy khi tự đặt câu hỏi 'điều gì xảy ra nếu người dùng bấm nút Hủy hai lần liên tiếp'. |
+| TC-COUPON-105 | user KHÁC (admin, không phải chủ đơn) gọi `PUT /orders/:id/cancel` cho đơn của người khác — endpoint này CÓ lọc `WHERE id=? AND user_id=?` theo token, nên phải KHÔNG tìm thấy đơn (404), không lộ được là đơn có tồn tại hay không | model limitations | AI kiểm SEC-03 theo chiều 'quyền thấp gọi API cao hơn' (user gọi endpoint admin), nhưng không tự đặt câu hỏi CHIỀU NGƯỢC LẠI: 'endpoint dành cho user có bị người khác (kể cả admin) thao tác nhầm lên dữ liệu của ai đó không'. Case này ban đầu bị đặt SAI kỳ vọng (403) — audit đã sửa lại thành 404 sau khi đối chiếu với đúng câu lệnh SQL trong `server.js`, và hóa ra đây là một trong số ít chỗ SUT làm ĐÚNG. Giữ lại làm case đối chứng: không phải mọi endpoint đều có lỗ hổng. |
+
+> Một số TC ID không xuất hiện ở bảng trên (vd `-102b`, `-102c`...) vì đó là các bước **trong cùng
+> một chuỗi** với case đứng trước nó (chung một lý do bỏ sót), không phải case độc lập mới.
