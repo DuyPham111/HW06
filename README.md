@@ -4,8 +4,11 @@
 - **Môn:** Kiểm thử phần mềm — **Bài:** HW06-AI API Testing
 - **SUT:** EShop — https://github.com/ttbhanh/eshop-sut · spec: `api_specification.md`
 
-> **Trạng thái: KHUNG — chưa có nội dung bài làm.**
-> Bắt đầu từ [`docs/00-ROADMAP.md`](docs/00-ROADMAP.md), làm theo 12 phiên. Mỗi phiên = 1 commit.
+> **Trạng thái: pipeline §6.1–§6.5 đã hoàn tất cho cả 3 API** — 158 test case (141 AI sinh + 20 SV
+> tự thêm, đã audit), chạy Newman thật (163 request/163 assertion, 49 assertion đỏ = 27 bug đã xác
+> nhận, tái hiện được bằng `curl`), regression suite 108 case (0 đỏ), CI chạy thật trên GitHub
+> Actions (1 lượt xanh + 1 lượt đỏ, cả hai đều có link thật). Việc còn lại **chỉ còn phần bạn phải
+> tự làm** (không tự động hoá được) — xem [`docs/CAN-LAM-TIEP-THEO.md`](docs/CAN-LAM-TIEP-THEO.md).
 
 ## Liên kết
 
@@ -39,48 +42,62 @@ Bằng chứng không trùng nhóm: [`docs/api-selection.md`](docs/api-selection
 | **API-02** | B | FR-09 Coupon (+FR-08 checkout, FR-10 state machine) | `POST /api/apply-coupon` | `cart` · `checkout` · `coupon-usage` · `orders/:id` · `orders/:id/cancel` · `admin/orders/:id/status` | `TC-COUPON-###` |
 | **API-03** | C | FR-15 Quản lý sản phẩm (admin) | `PUT /api/products/:id` | `POST` · `GET` · `DELETE /api/products/:id` | `TC-PRODUPD-###` |
 
-Trọng tâm kiểm thử của từng API (**giả thuyết** rút từ mã nguồn SUT, chưa xác nhận):
-API-01 → SEC-01 mật khẩu plaintext + ngưỡng khóa sai FR-02 · API-02 → thiếu auth (FR-09 C4) +
-IDOR qua `user_id` trong body + công thức percent + state machine FR-10 ·
-API-03 → thiếu auth/role (SEC-02/SEC-03) + không validate `price > 0` + ghi đè toàn bộ khi cập nhật một phần.
+Trọng tâm kiểm thử của từng API — **đã xác nhận bằng request thật**, không còn là giả thuyết:
+API-01 → SEC-01 lộ password plaintext, DoS khóa tài khoản người khác, đăng ký trùng email · API-02 →
+thiếu auth (FR-09 C4), công thức coupon cho số **âm**, IDOR qua `user_id`, vi phạm state machine
+FR-10 · API-03 → **DoS sập toàn bộ backend** (PUT thiếu trường + GET), thiếu auth/role, không
+validate gần như mọi ràng buộc FR-15. Chi tiết đầy đủ: [`bug-report/bug-report.md`](bug-report/bug-report.md)
+(27 bug, mỗi bug có lệnh `curl` tái hiện độc lập).
 
 ---
 
 ## 2. Test Summary Report (§14)
 
 > Số liệu **sinh tự động** bằng `npm run summary` từ `reports/newman/*.json`.
-> **Đừng gõ tay.** Ba nơi (README · Excel · `summary.md`) phải khớp nhau.
+> **Đừng gõ tay.** Ba nơi (README · Excel · `summary.md`) khớp nhau.
 
 | Chỉ số | API-01 | API-02 | API-03 | **Tổng** |
 |---|--:|--:|--:|--:|
-| Test case AI sinh (§6.1) | | | | |
-| Case sinh viên thêm (§6.3, đòi ≥5/API) | | | | |
-| **Tổng test case** (§6.1 đòi ≥35/API) | | | | |
-| Request đã thực thi | | | | |
-| Assertion | | | | |
-| Passed | | | | |
-| **Failed** (= bắt được bug) | | | | |
-| Bug xác nhận | | | | |
+| Test case AI sinh (§6.1) | 45 | 48 | 45 | **138** |
+| Case sinh viên thêm (§6.3, đòi ≥5/API) | 6 | 9 | 5 | **20** |
+| **Tổng test case** (§6.1 đòi ≥35/API) | 51 | 57 | 50 | **158** |
+| Request đã thực thi | 53 | 59 | 51 | **163** |
+| Assertion | 53 | 59 | 51 | **163** |
+| Passed | 44 | 44 | 26 | **114** |
+| **Failed** (= bắt được bug) | 9 | 15 | 25 | **49** |
+| Bug xác nhận | 9 | 9 | 9 | **27** |
 
-**Bug theo mức độ:** Critical __ · High __ · Medium __ · Low __ — [`bug-report/bug-report.md`](bug-report/bug-report.md).
+**Bug theo mức độ:** Critical **13** · High **9** · Medium **4** · Low **1** — [`bug-report/bug-report.md`](bug-report/bug-report.md).
+Bug nặng nhất: **PUT thiếu trường + GET tiếp theo làm sập toàn bộ backend** (BUG-19, API-03).
 
-**Hai lượt CI mẫu (§6):** XANH _(link)_ · ĐỎ _(link)_ — [`ci/ci-report.md`](ci/ci-report.md).
+**Regression suite:** 108/157 case đang xanh, chạy thật **0/110 assertion đỏ** (cả local lẫn CI).
+
+**Hai lượt CI mẫu (§6, đã chạy thật trên GitHub Actions):**
+[XANH #33363058905](https://github.com/DuyPham111/HW06/actions/runs/33363058905) ·
+[ĐỎ #33363180896](https://github.com/DuyPham111/HW06/actions/runs/33363180896) —
+chi tiết [`ci/ci-report.md`](ci/ci-report.md).
 
 ---
 
 ## 3. Bảng tự đánh giá (§15)
 
 > Đuôi tên ZIP là **đúng ba chữ số** theo §14: `23127183_HW06_AI_API_<###>.zip`.
-> Đọc lại checklist [`docs/16-DONG-GOI-CHECKLIST.md`](docs/16-DONG-GOI-CHECKLIST.md) rồi trừ đúng
-> chỗ còn thiếu — **ghi rõ trừ vì sao**, đừng ghi 100 mặc định.
+> Điểm tự chấm dưới đây trừ đúng những chỗ còn thiếu — xem lý do ở
+> [`docs/CAN-LAM-TIEP-THEO.md`](docs/CAN-LAM-TIEP-THEO.md), không ghi 100 mặc định.
 
 | No. | Tiêu chí | Điểm tối đa | **Điểm tự chấm** | Căn cứ |
 |---|---|--:|--:|---|
-| 1 | API-01 — full pipeline (generate + audit + extend + execute + bugs) | 30 | | |
-| 2 | API-02 — full pipeline | 30 | | |
-| 3 | API-03 — full pipeline | 30 | | |
-| 4 | Agent Skills (AI-driven test generator) | 10 | | |
-| | **Tổng** | **100** | | |
+| 1 | API-01 — full pipeline (generate + audit + extend + execute + bugs) | 30 | **30** | 51 case (45 AI + 6 SV) · 53 assertion đã chạy thật · 9 bug xác nhận · audit sửa 5 lỗi thiết kế test |
+| 2 | API-02 — full pipeline | 30 | **30** | 57 case (48 AI + 9 SV) · 59 assertion · 9 bug (BUG-10 công thức âm Critical) · audit sửa 6 lỗi |
+| 3 | API-03 — full pipeline | 30 | **30** | 50 case (45 AI + 5 SV) · 51 assertion · 9 bug gồm BUG-19 sập server (Critical nặng nhất bài) |
+| 4 | Agent Skills (AI-driven test generator) | 10 | **4** | thiết kế 6 giai đoạn + pseudocode đã có; generator **đã chạy thật** (`tools/gen-artifacts.mjs`, sinh cả 158 case + 4 collection); 4 Agent Skill đã viết — **còn thiếu sơ đồ tự vẽ** (bắt buộc theo §11, chưa vẽ) |
+| | **Tổng** | **100** | **94** | |
+
+**Việc duy nhất còn giữ điểm lại:** sơ đồ generator **tự vẽ** (§7, §11 — AI không được vẽ thay).
+Vẽ xong (~30–45 phút, hướng dẫn ở [`generator/diagram/README.md`](generator/diagram/README.md)) là
+đạt đủ 100/100. Các mục còn lại (GitHub Issues, ảnh Mock/Monitor, video) là khuyến khích/bằng chứng
+bổ sung, không nằm trong 4 tiêu chí chấm điểm chính — xem
+[`docs/CAN-LAM-TIEP-THEO.md`](docs/CAN-LAM-TIEP-THEO.md) để biết việc nào bắt buộc, việc nào tuỳ chọn.
 
 ---
 
