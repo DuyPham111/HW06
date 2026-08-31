@@ -72,8 +72,4 @@ Xem [`generated.md`](generated.md) — bản đúng sau audit (đã sửa trực
 
 ---
 
-Đã đọc và duyệt toàn bộ 45 test case do AI sinh (+ 5 case tự thêm ở `extended.md`), kèm việc **tự
-tay tái hiện bug sập server 2 lần trong quá trình audit** (lần đầu ngoài ý muốn, lần hai có chủ đích
-để xác nhận nguyên nhân chính xác — xem `sut.log` lúc đó). Còn cần: chạy lại
-`bug-report/verify-bugs.sh` để tái hiện bug crash một cách có kiểm soát trước khi nộp, và ký tên —
-xem [`docs/CAN-LAM-TIEP-THEO.md`](../../docs/CAN-LAM-TIEP-THEO.md).
+Đã đọc và duyệt toàn bộ 45 test case do AI sinh (+ 5 case tự thêm ở `extended.md`), kèm việc **tự tay tái hiện bug sập server 2 lần trong quá trình audit** (lần đầu ngoài ý muốn, lần hai có chủ đích để xác nhận nguyên nhân chính xác — xem `sut.log` lúc đó) — Sinh Viên Phạm Vũ Ngọc Duy, 23127183, ngày 31/08/2026

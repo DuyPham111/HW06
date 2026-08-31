@@ -1,7 +1,8 @@
 # Bug Report — HW06 API Testing trên EShop
 
 - **Sinh viên:** Phạm Vũ Ngọc Duy — 23127183
-- **GitHub Issues:** https://github.com/DuyPham111/HW06/issues _(chưa tạo — xem [`docs/CAN-LAM-TIEP-THEO.md`](../docs/CAN-LAM-TIEP-THEO.md))_
+- **GitHub Issues:** https://github.com/DuyPham111/HW06/issues — **27/27 đã tạo** (#1–#27), mỗi issue
+  gắn label mức độ + API. **Còn thiếu ảnh minh hoạ** (kéo-thả thủ công, xem `docs/CAN-LAM-TIEP-THEO.md`)
 - **Script tái hiện:** `bash bug-report/verify-bugs.sh` → output ở `verify-bugs-output.txt`
 - Số liệu request/assertion lấy từ [`test-cases/test-summary/summary.md`](../test-cases/test-summary/summary.md)
   (sinh tự động bằng `npm run summary`, không gõ tay).
@@ -28,36 +29,36 @@
 > chứng minh bằng chuỗi request mà **assertion PASS** (expected chính là hành vi khai thác được, và
 > nó khớp thật) — xem ghi chú riêng ở từng bug đó.
 
-| Bug | Mức | API | Test case liên quan | Assertion đỏ |
-|---|---|---|---|--:|
-| BUG-01 | Critical | 01 | TC-LOGIN-031, 101, 101b | 0 *(pass = khai thác thành công)* |
-| BUG-02 | High | 01 | TC-LOGIN-022 | 1 |
-| BUG-03 | Critical | 01 | TC-LOGIN-028 | 1 |
-| BUG-04 | High | 01 | TC-LOGIN-029, 037 | 2 |
-| BUG-05 | Medium | 01 | TC-LOGIN-030 | 1 |
-| BUG-06 | High | 01 | TC-LOGIN-016 | 1 |
-| BUG-07 | High | 01 | TC-LOGIN-036, 104 | 2 |
-| BUG-08 | Critical | 01 | TC-LOGIN-103 | 1 |
-| BUG-09 | Medium | 01 | TC-LOGIN-102 (đối chứng với TC-LOGIN-023c) | 0 *(cả 2 đều pass, lộ ra khi SO SÁNH)* |
-| BUG-10 | Critical | 02 | TC-COUPON-001, 042, 043 | 3 |
-| BUG-11 | Critical | 02 | TC-COUPON-031 | 1 |
-| BUG-12 | High | 02 | TC-COUPON-004 | 1 |
-| BUG-13 | Critical | 02 | TC-COUPON-036, 037 | 2 |
-| BUG-14 | Critical | 02 | TC-COUPON-034, 101 | 2 |
-| BUG-15 | High | 02 | TC-COUPON-033 | 1 |
-| BUG-16 | High | 02 | TC-COUPON-023 | 1 |
-| BUG-17 | High | 02 | TC-COUPON-028 | 1 |
-| BUG-18 | Critical | 02 | TC-COUPON-032, 039 | 2 |
-| BUG-19 | Critical | 03 | TC-PRODUPD-101 *(chỉ verify-bugs.sh)* | 0 *(không chạy trong Newman — xem §3 BUG-19)* |
-| BUG-20 | Critical | 03 | TC-PRODUPD-022, 038, 105 | 3 |
-| BUG-21 | Critical | 03 | TC-PRODUPD-027, 028, 030, 102 | 4 |
-| BUG-22 | Critical | 03 | TC-PRODUPD-029 | 1 |
-| BUG-23 | High | 03 | TC-PRODUPD-002, 004, 006, 007, 008, 009, 010 | 7 |
-| BUG-24 | Medium | 03 | TC-PRODUPD-015, 031 | 2 |
-| BUG-25 | Medium | 03 | TC-PRODUPD-014, 024, 025, 042, 043 | 5 |
-| BUG-26 | Low | 03 | TC-PRODUPD-039 | 1 |
-| BUG-27 | High | 03 | TC-PRODUPD-045 | 1 |
-| **Tổng assertion đỏ map được** | | | | **46** |
+| Bug | Mức | API | Test case liên quan | Assertion đỏ | Issue |
+|---|---|---|---|--:|---|
+| BUG-01 | Critical | 01 | TC-LOGIN-031, 101, 101b | 0 *(pass = khai thác thành công)* | [#2](https://github.com/DuyPham111/HW06/issues/2) |
+| BUG-02 | High | 01 | TC-LOGIN-022 | 1 | [#3](https://github.com/DuyPham111/HW06/issues/3) |
+| BUG-03 | Critical | 01 | TC-LOGIN-028 | 1 | [#4](https://github.com/DuyPham111/HW06/issues/4) |
+| BUG-04 | High | 01 | TC-LOGIN-029, 037 | 2 | [#5](https://github.com/DuyPham111/HW06/issues/5) |
+| BUG-05 | Medium | 01 | TC-LOGIN-030 | 1 | [#6](https://github.com/DuyPham111/HW06/issues/6) |
+| BUG-06 | High | 01 | TC-LOGIN-016 | 1 | [#7](https://github.com/DuyPham111/HW06/issues/7) |
+| BUG-07 | High | 01 | TC-LOGIN-036, 104 | 2 | [#8](https://github.com/DuyPham111/HW06/issues/8) |
+| BUG-08 | Critical | 01 | TC-LOGIN-103 | 1 | [#9](https://github.com/DuyPham111/HW06/issues/9) |
+| BUG-09 | Medium | 01 | TC-LOGIN-102 (đối chứng với TC-LOGIN-023c) | 0 *(cả 2 đều pass, lộ ra khi SO SÁNH)* | [#10](https://github.com/DuyPham111/HW06/issues/10) |
+| BUG-10 | Critical | 02 | TC-COUPON-001, 042, 043 | 3 | [#11](https://github.com/DuyPham111/HW06/issues/11) |
+| BUG-11 | Critical | 02 | TC-COUPON-031 | 1 | [#12](https://github.com/DuyPham111/HW06/issues/12) |
+| BUG-12 | High | 02 | TC-COUPON-004 | 1 | [#13](https://github.com/DuyPham111/HW06/issues/13) |
+| BUG-13 | Critical | 02 | TC-COUPON-036, 037 | 2 | [#14](https://github.com/DuyPham111/HW06/issues/14) |
+| BUG-14 | Critical | 02 | TC-COUPON-034, 101 | 2 | [#15](https://github.com/DuyPham111/HW06/issues/15) |
+| BUG-15 | High | 02 | TC-COUPON-033 | 1 | [#16](https://github.com/DuyPham111/HW06/issues/16) |
+| BUG-16 | High | 02 | TC-COUPON-023 | 1 | [#17](https://github.com/DuyPham111/HW06/issues/17) |
+| BUG-17 | High | 02 | TC-COUPON-028 | 1 | [#18](https://github.com/DuyPham111/HW06/issues/18) |
+| BUG-18 | Critical | 02 | TC-COUPON-032, 039 | 2 | [#19](https://github.com/DuyPham111/HW06/issues/19) |
+| BUG-19 | Critical | 03 | TC-PRODUPD-101 *(chỉ verify-bugs.sh)* | 0 *(không chạy trong Newman — xem §3 BUG-19)* | [#1](https://github.com/DuyPham111/HW06/issues/1) |
+| BUG-20 | Critical | 03 | TC-PRODUPD-022, 038, 105 | 3 | [#20](https://github.com/DuyPham111/HW06/issues/20) |
+| BUG-21 | Critical | 03 | TC-PRODUPD-027, 028, 030, 102 | 4 | [#21](https://github.com/DuyPham111/HW06/issues/21) |
+| BUG-22 | Critical | 03 | TC-PRODUPD-029 | 1 | [#22](https://github.com/DuyPham111/HW06/issues/22) |
+| BUG-23 | High | 03 | TC-PRODUPD-002, 004, 006, 007, 008, 009, 010 | 7 | [#23](https://github.com/DuyPham111/HW06/issues/23) |
+| BUG-24 | Medium | 03 | TC-PRODUPD-015, 031 | 2 | [#24](https://github.com/DuyPham111/HW06/issues/24) |
+| BUG-25 | Medium | 03 | TC-PRODUPD-014, 024, 025, 042, 043 | 5 | [#25](https://github.com/DuyPham111/HW06/issues/25) |
+| BUG-26 | Low | 03 | TC-PRODUPD-039 | 1 | [#26](https://github.com/DuyPham111/HW06/issues/26) |
+| BUG-27 | High | 03 | TC-PRODUPD-045 | 1 | [#27](https://github.com/DuyPham111/HW06/issues/27) |
+| **Tổng assertion đỏ map được** | | | | **46** | |
 
 > 3 assertion đỏ chưa liệt kê ở trên (`TC-COUPON-102`/`102c` trung gian của chuỗi 5 bước, tính trùng
 > trong raw JSON do Newman đếm theo request chứ không theo bug; xem ghi chú trong

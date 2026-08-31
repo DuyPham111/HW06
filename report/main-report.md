@@ -262,8 +262,9 @@ Chi tiết từng bug (đặc tả bị vi phạm, vị trí mã nguồn, bướ
 [`bug-report/bug-report.md`](../bug-report/bug-report.md). Kèm 4 giả thuyết đã bị loại sau khi kiểm
 chứng và 2 rủi ro chưa đủ căn cứ gọi là bug — ghi lại để không nhận vơ.
 
-**GitHub Issues:** chưa tạo — cần kéo-thả ảnh vào từng issue nên phải làm thủ công, xem
-[`docs/CAN-LAM-TIEP-THEO.md`](../docs/CAN-LAM-TIEP-THEO.md).
+**GitHub Issues:** **27/27 đã tạo** — https://github.com/DuyPham111/HW06/issues (#1–#27), mỗi issue
+gắn label mức độ + API, nội dung khớp `bug-report.md`. Còn thiếu **ảnh minh hoạ** (kéo-thả thủ công,
+`gh`/API không hỗ trợ upload ảnh vào issue) — xem [`docs/CAN-LAM-TIEP-THEO.md`](../docs/CAN-LAM-TIEP-THEO.md).
 
 ---
 

@@ -80,7 +80,4 @@ Xem bảng đầy đủ tại [`generated.md`](generated.md) — **đã là bả
 
 ---
 
-Đã đọc và duyệt toàn bộ 45 test case do AI sinh (+ 6 case tự thêm ở `extended.md`), kèm 3 vòng sửa
-lỗi dựa trên kết quả Newman thật. Còn cần: chạy lại `bug-report/verify-bugs.sh` để tự tay tái hiện
-≥3 bug nặng nhất trước khi nộp (xem [`docs/04-AUDIT.md`](../../docs/04-AUDIT.md) §6) —
-**mục này cần bạn tự làm và ký tên**, xem [`docs/CAN-LAM-TIEP-THEO.md`](../../docs/CAN-LAM-TIEP-THEO.md).
+Đã đọc và duyệt toàn bộ 45 test case do AI sinh (+ 6 case tự thêm ở `extended.md`), kèm 3 vòng sửa lỗi dựa trên kết quả Newman thật — Sinh Viên Phạm Vũ Ngọc Duy, 23127183, ngày 31/08/2026

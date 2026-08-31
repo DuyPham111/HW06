@@ -57,23 +57,24 @@ bash bug-report/verify-bugs.sh 03   # BUG-03: lo password plaintext
 Đọc output, tự thấy dữ liệu/hành vi sai thật. Đây là thứ bạn cần chạy được **tại chỗ** nếu bị gọi
 vấn đáp (30% sinh viên, §13).
 
-### A.4 — Tạo GitHub Issues cho 27 bug (§6.5)
+### A.4 — Thêm ảnh minh hoạ vào 27 GitHub Issue đã tạo (§6.5, §11 đòi *"screenshot attached to each issue"*)
 
-File đã soạn sẵn ở `bug-report/issues/BUG-01.md` → `BUG-27.md`, mỗi file đã có title + label gợi ý.
+✅ **27/27 issue đã tạo** qua `gh` CLI (xác thực bằng chính tài khoản `DuyPham111` qua device-code
+trên trình duyệt của bạn — không ai lộ mật khẩu/token) — https://github.com/DuyPham111/HW06/issues
+(#1–#27, đúng title + đúng label mức độ + API + đúng nội dung khớp `bug-report.md`).
 
-1. Vào https://github.com/DuyPham111/HW06/issues → tạo trước 6 label: `bug`, `critical`, `high`,
-   `medium`, `low`, và `api-01`/`api-02`/`api-03` (label theo API).
-2. Với mỗi file: **New issue** → copy toàn bộ nội dung file (trừ dòng hướng dẫn in nghiêng đầu file)
-   → dán vào → gắn đúng label ghi trong file → **kéo-thả ảnh minh hoạ** (chụp từ báo cáo Newman HTML
-   ở `reports/newman/*.html`, hoặc chạy lại `verify-bugs.sh` rồi chụp terminal) → Submit.
-3. Ưu tiên làm 5 bug Critical nặng nhất trước nếu thiếu thời gian:
-   `BUG-01, BUG-03, BUG-10, BUG-14, BUG-19` (đã đủ minh hoạ đa dạng mức độ + cả 3 API).
-4. Sau khi có link Issues, cập nhật README.md dòng
-   `GitHub Issues: https://github.com/DuyPham111/HW06/issues (chưa tạo...)` → xoá phần "(chưa tạo)".
+**Việc còn lại — kéo-thả ảnh vào từng issue** — GitHub API/CLI **không có cách nào** upload ảnh vào
+issue tự động (chỉ upload được qua kéo-thả trên web), nên đây là phần bắt buộc phải làm tay:
 
-> Tối thiểu để không bị 0 điểm §6.5: đã có `bug-report/bug-report.md` đầy đủ (đạt yêu cầu văn bản).
-> GitHub Issues là yêu cầu **song song bắt buộc** theo câu chữ đề (*"both in the Markdown report and
-> on your GitHub Issues page"*), nên đừng bỏ qua nếu còn thời gian.
+1. Mở từng issue → bấm **Edit** (hoặc thêm 1 comment) → kéo-thả ảnh vào ô soạn:
+   - Ảnh từ báo cáo Newman HTML: mở `reports/newman/*.html`, chụp đúng dòng assertion đỏ tương ứng.
+   - Hoặc chạy lại `bash bug-report/verify-bugs.sh <số>` rồi chụp terminal.
+2. Ưu tiên làm trước 5 bug Critical nặng nhất nếu thiếu thời gian:
+   `#2 (BUG-01), #4 (BUG-03), #11 (BUG-10), #15 (BUG-14), #1 (BUG-19)`.
+
+> Tối thiểu để không bị 0 điểm §6.5: đã có `bug-report/bug-report.md` **và** 27 issue thật trên
+> GitHub (đạt cả 2 vế *"both in the Markdown report and on your GitHub Issues page"*). Phần ảnh là
+> để đạt trọn §11 (*"screenshot attached to each issue"*), nên đừng bỏ qua nếu còn thời gian.
 
 ---
 
@@ -125,9 +126,10 @@ phản hồi, điền thêm bảng đối chiếu (không bắt buộc, chỉ gi
 ## Checklist tổng — theo đúng thứ tự ưu tiên
 
 - [x] **A.1** Vẽ sơ đồ generator + commit → tự chấm **100/100**
-- [ ] **A.2** Đọc + ký tên 3 file `audit.md`
+- [x] **A.2** Đọc + ký tên 3 file `audit.md`
 - [ ] **A.3** Tự tay chạy `verify-bugs.sh` cho ≥3 bug nặng nhất
-- [ ] **A.4** Tạo ≥5 GitHub Issues (ưu tiên Critical), cập nhật link vào README
+- [x] **A.4a** Tạo 27/27 GitHub Issues (đã xong qua `gh` CLI)
+- [ ] **A.4b** Kéo-thả ảnh vào từng issue (ưu tiên 5 Critical nặng nhất nếu thiếu thời gian)
 - [ ] **B.1** Data-driven + Mock Server + Monitor (nếu còn thời gian)
 - [ ] **B.2** Video demo (tuỳ chọn)
 - [ ] **B.3** Xuất PDF 6 file

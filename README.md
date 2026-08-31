@@ -25,7 +25,7 @@
 | Bug report | [`bug-report/bug-report.md`](bug-report/bug-report.md) |
 | AI Audit + Critique | [`ai-audit/`](ai-audit/) |
 | Thiết kế generator (§7) | [`generator/design.md`](generator/design.md) |
-| GitHub Issues | https://github.com/DuyPham111/HW06/issues |
+| GitHub Issues | https://github.com/DuyPham111/HW06/issues — **27/27 đã tạo** (#1–#27), còn thiếu ảnh minh hoạ |
 | GitHub Actions | https://github.com/DuyPham111/HW06/actions |
 | Video demo Agent Skill | _(§7 khuyến khích — điền nếu làm)_ |
 
