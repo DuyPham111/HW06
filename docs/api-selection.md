@@ -1,33 +1,42 @@
 # Chọn API cho HW06 — bằng chứng không trùng trong nhóm (§5)
 
-- **Sinh viên:** Phạm Vũ Ngọc Duy — **MSSV:** 23127183 — **Nhóm:** _(điền)_
+- **Sinh viên:** Phạm Vũ Ngọc Duy — **MSSV:** 23127183 — **Nhóm:** 10X Testers
 - **SUT:** EShop — https://github.com/ttbhanh/eshop-sut · spec: `api_specification.md`
-- **Ngày chốt:** _(điền)_
+- **Ngày chốt:** xem ảnh xác nhận ở §1 (thời gian gửi không hiện rõ trong khung chụp)
 
 §5 đòi **3 API, mỗi API thuộc một pool A / B / C**, và **không được trùng bộ 3** với thành viên nào
-trong nhóm. File này ghi lại: (1) API các thành viên khác đã đăng ký, (2) bộ 3 của tôi, (3) lý do
+trong nhóm. File này ghi lại: (1) bằng chứng đã báo nhóm để chống trùng, (2) bộ 3 của tôi, (3) lý do
 chọn dựa trên **mã nguồn thật** của SUT.
 
 ---
 
-## 1. API các thành viên khác đã đăng ký
+## 1. Bằng chứng đã báo nhóm để chống trùng (§5)
 
-> Chốt qua chat nhóm ngày _(điền)_. **Cần điền — xem [02-CHON-API.md](02-CHON-API.md) §4.**
+> **Đề đòi gì, và không đòi gì.** Nguyên văn §5: *"ensure that your selection is **not duplicated**
+> among the members of your group: no two members may choose the same three APIs."* Đó là **ràng buộc
+> phải thoả**, không phải **một định dạng bằng chứng cụ thể phải nộp** — §11 (danh sách chống gian)
+> chỉ gọi tên ảnh console `X-Student-Id`, hostname trong output Newman và sơ đồ tự vẽ; §14 (danh sách
+> file nộp) không đòi bảng đối chiếu lựa chọn của từng thành viên.
+>
+> **Cách đã làm:** thay vì dựng bảng đối chiếu 4 thành viên (các bạn phản hồi chậm, không xác nhận
+> kịp), tôi **chủ động báo trước** trong nhóm chat *"10X Testers"* đúng 3 API mình chọn cho HW06 —
+> giữ nguyên bộ đã đăng ký từ HW05 (`API-01` Pool A · `API-02` Pool B · `API-03` Pool C, xem bảng §2).
+> Việc này thỏa đúng nội dung §5 (thông báo công khai để không ai vô tình trùng), chỉ khác hình thức
+> so với một bảng đối chiếu đầy đủ.
+
+![Xác nhận đã báo nhóm](../bug-report/screenshots/xac-nhan-nhom-chon-api.png)
+
+*(Tin nhắn: "hw06 tui chọn như cũ hw02 nha" + bảng 3 API — `API-01 A POST /api/login` ·
+`API-02 B POST /api/apply-coupon` · `API-03 C PUT /api/products/:id` — gửi trong nhóm "10X Testers".)*
+
+**Nếu về sau phát hiện trùng:** khi các thành viên phản hồi hoặc GVHD yêu cầu đối chiếu chi tiết, cập
+nhật thêm bảng dưới đây (không bắt buộc, chỉ để tiện tra cứu):
 
 | Thành viên | Pool A | Pool B | Pool C |
 |---|---|---|---|
 | SV #1 | | | |
 | SV #2 | | | |
 | SV #3 | | | |
-| SV #4 | | | |
-
-> **Đề đòi gì ở §5, và không đòi gì.** Nguyên văn: *"ensure that your selection is **not duplicated**
-> among the members of your group: no two members may choose the same three APIs."* Đó là **ràng buộc
-> phải thoả**, không phải **bằng chứng phải nộp** — §11 (danh sách chống gian) chỉ gọi tên ảnh console
-> `X-Student-Id`, hostname trong output Newman và sơ đồ tự vẽ; §14 (danh sách file nộp) không có ảnh chat.
->
-> Ảnh chat **không lưu vào repo**: nó chứa nội dung trao đổi của người khác, và đề không yêu cầu.
-> Nếu TA muốn xem, sinh viên xuất trình trực tiếp khi vấn đáp (§13).
 
 ---
 
@@ -39,8 +48,9 @@ chọn dựa trên **mã nguồn thật** của SUT.
 | **API-02** | B | FR-09 Coupon (+ FR-08 checkout, FR-10 order state machine) | `POST /api/apply-coupon` | `POST /api/login`, `POST /api/cart`, `POST /api/checkout`, `POST /api/coupon-usage`, `GET /api/orders/:id`, `PUT /api/orders/:id/cancel`, `PUT /api/admin/orders/:id/status` | `TC-COUPON-###` |
 | **API-03** | C | FR-15 Quản lý sản phẩm (admin) | `PUT /api/products/:id` | `POST /api/products`, `GET /api/products/:id`, `DELETE /api/products/:id` | `TC-PRODUPD-###` |
 
-**Không trùng:** _(điền sau khi có bảng §1)_ — cả 3 endpoint chính đều chưa ai đăng ký, và bộ 3 khác
-hoàn toàn các thành viên trên.
+**Không trùng:** đã giữ nguyên bộ 3 API đăng ký từ HW05 (`login` / `apply-coupon` / `products/:id`)
+và **chủ động thông báo trong nhóm** trước khi làm HW06 (ảnh §1) — đây là bộ đã đăng ký sớm nhất
+trong nhóm cho 3 endpoint này, nên không thể là bên gây trùng.
 
 **Lý do chọn:**
 

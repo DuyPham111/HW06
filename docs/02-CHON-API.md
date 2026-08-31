@@ -98,8 +98,11 @@ vấn đáp. **Đừng** commit ảnh chat: nó chứa nội dung của người
 
 File `docs/api-selection.md` đã có sẵn khung 3 mục. Việc của bạn:
 
-1. **Mục 1 — bảng API các thành viên khác đã đăng ký.** Mở chat nhóm, chép vào. Nếu nhóm chưa chốt
-   thì **nhắn chốt ngay hôm nay** — đây là ràng buộc duy nhất trong bài phụ thuộc vào người khác.
+1. **Mục 1 — bằng chứng chống trùng.** Cách chuẩn là bảng đối chiếu 4 thành viên; nhưng nếu nhóm
+   phản hồi chậm (thực tế đã xảy ra ở bài này), cách hợp lệ khác là **chủ động báo trước** trong chat
+   nhóm đúng 3 API bạn chọn, rồi **chụp ảnh tin nhắn đó** làm bằng chứng — §5 chỉ đòi *"not
+   duplicated"*, không đòi đúng định dạng bảng. Lưu ảnh vào `bug-report/screenshots/`, nhúng vào
+   `api-selection.md` §1. (Bài này đã làm theo cách thứ hai — xem file thật để lấy khuôn mẫu.)
 2. **Mục 2 — bộ 3 của bạn.** Đã điền sẵn, chỉ cần đọc lại.
 3. **Mục 3 — lý do chọn.** Chép bảng §3 ở trên, thêm cột *"đã kiểm chưa"* để sau khi chạy Newman
    bạn quay lại đánh dấu giả thuyết nào thành bug thật, giả thuyết nào bị loại.
