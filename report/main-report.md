@@ -4,17 +4,26 @@
 - **Môn:** Kiểm thử phần mềm — **Bài:** HW06-AI API Testing
 - **SUT:** EShop — https://github.com/ttbhanh/eshop-sut · spec: `api_specification.md`
 - **Repo:** https://github.com/DuyPham111/HW06
-- **Ngày:** __/__/2026
 
-> **Số liệu trong báo cáo này copy từ [`test-cases/test-summary/summary.md`](../test-cases/test-summary/summary.md)**,
-> sinh tự động bằng `npm run summary` từ raw JSON của Newman. Không gõ tay số nào.
+> Số liệu trong báo cáo này copy từ [`test-cases/test-summary/summary.md`](../test-cases/test-summary/summary.md),
+> sinh tự động bằng `npm run summary` từ raw JSON của Newman.
 
 ---
 
 ## Tóm tắt một trang
 
-_(Viết cuối cùng, khoảng 200 từ: 3 API đã làm gì, bao nhiêu case, bao nhiêu bug, bug nặng nhất là gì,
-điều học được lớn nhất.)_
+3 API (Pool A `POST /api/login`, Pool B `POST /api/apply-coupon`, Pool C `PUT /api/products/:id`)
+đã đi hết pipeline §6.1–§6.5: sinh **158 test case** (138 AI qua 5 bước riêng + 20 sinh viên tự
+thêm), audit qua 5 phép soát kết hợp chạy Newman thật, dựng 3 collection Postman + 1 regression
+suite (108 case). Chạy Newman thật cho **163 request/163 assertion, 49 đỏ**, quy đổi thành **27 bug
+đã tái hiện độc lập bằng `curl`** (13 Critical). Bug nặng nhất — **PUT thiếu trường trên sản phẩm ID
+chẵn rồi GET lại làm sập toàn bộ backend** (BUG-19) — được phát hiện ngoài ý muốn trong lúc audit,
+không phải AI tự nghĩ ra. CI chạy thật trên GitHub Actions với 2 lượt mẫu có link thật: 1 lượt xanh
+hoàn toàn (regression 110/110) và 1 lượt đỏ (cổng bắt đúng hồi quy khi hạ baseline có chủ đích).
+Điều học được lớn nhất: AI đọc đúng logic tĩnh của code nhưng không mô phỏng được **thứ tự thực thi
+qua nhiều request** và **giá trị số cụ thể** — hai lỗi thiết kế test nghiêm trọng nhất của bài (mô
+hình khóa tài khoản sai, công thức coupon cho số âm) chỉ lộ ra khi chạy thật bằng `curl`, không phải
+khi đọc bằng mắt.
 
 ---
 
@@ -45,28 +54,26 @@ _(Viết cuối cùng, khoảng 200 từ: 3 API đã làm gì, bao nhiêu case, 
 | API-02 | B | FR-09 (+FR-08, FR-10) | `POST /api/apply-coupon` | `cart`, `checkout`, `coupon-usage`, `orders/:id`, `orders/:id/cancel`, `admin/orders/:id/status` | `TC-COUPON-###` |
 | API-03 | C | FR-15 | `PUT /api/products/:id` | `POST`/`GET`/`DELETE /api/products/:id` | `TC-PRODUPD-###` |
 
-_(Chép 4 lý do chọn từ `api-selection.md` §2.)_
+Kế thừa đúng 3 FR đã chọn ở HW02/HW04/HW05 — giữ nguyên hướng khách hàng (storefront), không đổi
+sang admin back-office, để tận dụng hiểu biết đã có về nghiệp vụ và dùng bug đã biết từ HW02 làm
+chất liệu §6.3.
 
 ---
 
 ## 2. Quy trình dùng AI từng bước (§2, §6.1)
 
-§2 cấm đích danh prompt gộp. Với **mỗi** API, test case được sinh qua **5 bước = 5 lượt hỏi AI riêng**:
+§2 cấm đích danh prompt gộp. Với **mỗi** API, test case được sinh qua **5 bước = 5 lượt riêng**
+(dạy AI về API → chốt bảng phân vùng → sinh Domain → sinh State/Security riêng → sinh Schema), thực
+hiện trực tiếp trong `generator/specs/<api>.mjs` và ghi log đầy đủ ở
+[`ai-audit/ai-audit-report.md`](../ai-audit/ai-audit-report.md) (12 mục LOG).
 
-| Bước | Việc | Lượt log |
-|---|---|---|
-| 1 | Dạy AI về API — bắt trả lời 6 câu về tham số, chỗ spec im lặng, hành vi thật | LOG-___ |
-| 2 | Chốt bảng phân vùng domain cho từng tham số | LOG-___ |
-| 3 | Sinh case nhóm **Domain** | LOG-___ |
-| 4a | Sinh case nhóm **State transition** | LOG-___ |
-| 4b | Sinh case nhóm **Security** | LOG-___ |
-| 5 | Sinh case nhóm **Schema validation** | LOG-___ |
+**Điểm khác biệt so với làm tay:** trước khi sinh case, mỗi API đều được **dò hành vi thật bằng
+`curl`** (LOG-002/004/006) — đây là bước không nằm trong 5 bước lý thuyết nhưng bắt buộc trên thực
+tế, vì nó phát hiện được những sai lệch mà chỉ đọc code không thấy (vd: mô hình khóa tài khoản thật
+sự khác với suy luận từ đọc code, xem §11).
 
-Toàn bộ prompt nguyên văn và output ở [`ai-audit/ai-audit-report.md`](../ai-audit/ai-audit-report.md).
-
-**Nguyên tắc xuyên suốt:** expected bám **đặc tả** (`api_specification.md` + FR/SEC trong README của
-SUT), **không** bám hành vi hiện tại của code. SUT có bug cố ý, nên assertion đỏ là **phát hiện**,
-không phải lỗi test.
+**Nguyên tắc xuyên suốt:** expected bám **đặc tả** (`api_specification.md` + FR/SEC), không bám hành
+vi hiện tại của code. SUT có bug cố ý, nên assertion đỏ là **phát hiện**, không phải lỗi test.
 
 ---
 
@@ -74,58 +81,142 @@ không phải lỗi test.
 
 ### 3.0 Đặc tả và tham số
 
-| Tham số | Vị trí | Kiểu | Bắt buộc | Ràng buộc theo đặc tả |
-|---|---|---|---|---|
-| `email` | body | string | có | _(điền)_ |
-| `password` | body | string | có | _(điền)_ |
-| *(ẩn)* trạng thái tài khoản | DB | — | — | FR-02: bộ đếm +1, khóa từ lần 3, khóa 30s |
+| Tham số | Vị trí | Kiểu | Bắt buộc |
+|---|---|---|---|
+| `email` | body | string | có |
+| `password` | body | string | có |
+| *(ẩn)* trạng thái khóa | DB (`login_attempts`, `locked_until`) | — | FR-02: +1/lần sai, khóa từ lần 3, 30s |
 
-**Chỗ đặc tả im lặng:** _(điền)_
+**Chỗ đặc tả im lặng:** định dạng email phía API (chỉ UI validate), trim khoảng trắng, giới hạn độ
+dài, hành vi khi body không phải JSON hợp lệ.
 
 ### 3.1–3.4 Phân bố test case
 
 | Kỹ thuật | Số case |
 |---|--:|
-| Domain | |
-| State | |
-| Security | |
-| Schema | |
-| **Tổng** | |
+| Domain | 18 |
+| State | 12 |
+| Security | 8 |
+| Schema | 7 |
+| **Tổng** | **45** (+6 SV) |
 
 ### 3.5 Audit (§6.2)
 
-_(Tóm tắt: bao nhiêu VALID / INVALID / INCOMPLETE, sửa case nào và vì sao. Chi tiết:
-[`test-cases/api-01-login/audit.md`](../test-cases/api-01-login/audit.md).)_
+40 VALID · 3 INVALID (đã sửa) · 2 chuỗi INCOMPLETE (thiếu bước `POST /api/register` trong chuỗi
+khóa tài khoản). Chi tiết đầy đủ + lý do từng lỗi:
+[`test-cases/api-01-login/audit.md`](../test-cases/api-01-login/audit.md).
 
-### 3.6 Case tự thêm (§6.3) — __ case
+### 3.6 Case tự thêm (§6.3) — 6 case
 
-_(Bảng rút gọn + nhóm lý do AI bỏ sót. Chi tiết:
-[`extended.md`](../test-cases/api-01-login/extended.md).)_
+DoS lockout hoàn chỉnh (2 request không cần biết mật khẩu), account enumeration qua so sánh 2
+response, đăng ký trùng email, rò rỉ stack trace khi body lỗi, verify token dùng được xuyên-API.
+Chi tiết: [`extended.md`](../test-cases/api-01-login/extended.md).
 
 ### 3.7 Kết quả và bug
 
 | Chỉ số | Giá trị |
 |---|--:|
-| Request đã chạy | |
-| Assertion | |
-| Pass | |
-| **Fail** | |
-| Bug xác nhận | |
+| Request đã chạy | 53 |
+| Assertion | 53 |
+| Pass | 44 |
+| **Fail** | 9 |
+| Bug xác nhận | 9 (BUG-01 → BUG-09) |
 
-_(Liệt kê bug, mỗi bug 2–3 dòng, link tới `bug-report.md` và Issue.)_
+Bug nặng nhất: **BUG-01** (Critical) — khóa được tài khoản người khác chỉ bằng email, không cần
+mật khẩu. Xem [`bug-report/bug-report.md`](../bug-report/bug-report.md) §3.
 
 ---
 
 ## 4. API-02 — Pool B · `POST /api/apply-coupon`
 
-_(Cùng cấu trúc §3. Riêng mục 4.0 phải có bảng 5 điều kiện FR-09 C1–C5 và sơ đồ state machine FR-10
-mà nhóm State phủ.)_
+### 4.0 Đặc tả và tham số
+
+5 điều kiện FR-09 (C1 mã tồn tại · C2 còn hạn · C3 `total_amount >= min_order_amount` · C4 đã đăng
+nhập · C5 chưa hết lượt) + máy trạng thái FR-10 (`pending → confirmed → shipping → delivered`,
+`delivered`/`canceled` là trạng thái kết thúc).
+
+### 4.1–4.4 Phân bố
+
+| Kỹ thuật | Số case |
+|---|--:|
+| Domain | 16 |
+| State | 14 |
+| Security | 10 |
+| Schema | 8 |
+| **Tổng** | **48** (+9 SV) |
+
+### 4.5 Audit
+
+42 VALID · 1 INVALID (case AI_MISTAKE chép hành vi `>` của code thay vì `>=` của FR-09 C3) · 5
+INCOMPLETE (2 case bị che khuất bởi trạng thái đơn từ bước trước, 1 chuỗi VIP100 thiếu 4/5 bước thật,
+1 case reclassify từ "bug" thành "hành vi đúng" sau khi đối chiếu code). Chi tiết:
+[`audit.md`](../test-cases/api-02-apply-coupon/audit.md).
+
+### 4.6 Case tự thêm — 9 case
+
+Chuỗi price-tampering đầy đủ, chuỗi VIP100 5 bước thật (2 lần dùng + 2 lần ghi usage + 1 lần bị
+chặn), kiểm `NaN` trong công thức, hủy đơn 2 lần liên tiếp, case đối chứng hành vi đúng (ownership
+scoping). Chi tiết: [`extended.md`](../test-cases/api-02-apply-coupon/extended.md).
+
+### 4.7 Kết quả và bug
+
+| Chỉ số | Giá trị |
+|---|--:|
+| Request đã chạy | 59 |
+| Assertion | 59 |
+| Pass | 44 |
+| **Fail** | 15 |
+| Bug xác nhận | 9 (BUG-10 → BUG-18) |
+
+Bug nặng nhất: **BUG-10** (Critical) — công thức phần trăm cho `discount_amount` **âm**, khách trả
+nhiều hơn giá gốc.
 
 ---
 
 ## 5. API-03 — Pool C · `PUT /api/products/:id`
 
-_(Cùng cấu trúc §3.)_
+### 5.0 Đặc tả và tham số
+
+`name` (bắt buộc, ≤255 ký tự) · `price` (bắt buộc, > 0) · `category_id` (bắt buộc, tồn tại) ·
+`description`, `imageUrl` (không giới hạn theo FR-15).
+
+### 5.1–5.4 Phân bố
+
+| Kỹ thuật | Số case |
+|---|--:|
+| Domain | 16 |
+| State | 10 |
+| Security | 10 |
+| Schema | 9 |
+| **Tổng** | **45** (+5 SV) |
+
+### 5.5 Audit
+
+39 VALID · 6 INCOMPLETE — trong đó **2 lần chính quá trình audit vô tình tái hiện bug crash server**
+(sản phẩm fixture tự tạo rơi vào ID chẵn; case DELETE dùng chung ID với case khác), đã sửa cả hai và
+ghi lại đầy đủ nguyên nhân. Chi tiết:
+[`audit.md`](../test-cases/api-03-product-update/audit.md).
+
+### 5.6 Case tự thêm — 5 case
+
+Payload crash server (không đưa vào collection chính, chỉ trong `verify-bugs.sh`), DELETE không cần
+token, đối chứng import-products (có auth) vs tạo sản phẩm đơn lẻ (không có auth), description rất
+dài, PUT body hoàn toàn rỗng (mức độ nặng nhất của lỗi mất dữ liệu). Chi tiết:
+[`extended.md`](../test-cases/api-03-product-update/extended.md).
+
+### 5.7 Kết quả và bug
+
+| Chỉ số | Giá trị |
+|---|--:|
+| Request đã chạy | 51 |
+| Assertion | 51 |
+| Pass | 26 |
+| **Fail** | 25 |
+| Bug xác nhận | 9 (BUG-19 → BUG-27) |
+
+Bug nặng nhất trong **cả bài**: **BUG-19** (Critical) — `PUT` thiếu trường → `NULL` → `GET` trên sản
+phẩm ID chẵn gọi `null.toString()` → **sập toàn bộ tiến trình Node.js**, kèm stack trace thật đã lưu
+ở `bug-report/sut-crash-log.txt`.
 
 ---
 
@@ -135,90 +226,110 @@ _(Cùng cấu trúc §3.)_
 
 | | |
 |---|---|
-| SUT | `http://localhost:3000` (Node.js + Express + SQLite) |
-| Postman | _(phiên bản)_ |
-| Newman | _(phiên bản)_ + `newman-reporter-htmlextra` |
-| Máy chạy | _(OS, CPU, RAM)_ |
+| SUT | `http://localhost:3000` (Node.js/Express + SQLite), chạy cục bộ |
+| Newman | 6.2.2 + `newman-reporter-htmlextra` |
+| Máy chạy | Windows 11, chạy qua Git Bash |
 
 ### 6.2 Header `X-Student-Id` (§6.4, §11)
 
-Đặt bằng **pre-request script cấp collection** ([`postman/prerequest-collection.js`](../postman/prerequest-collection.js))
-để không sót request nào. Bằng chứng:
-
-![Postman Console](../bug-report/screenshots/postman-console-gui.png)
+Đặt bằng **pre-request script cấp collection** ([`postman/prerequest-collection.js`](../postman/prerequest-collection.js)).
+Bằng chứng: `bug-report/screenshots/postman-console-gui.png` — log Console + header + response 200.
 
 ### 6.3 Kết quả
 
-_(Copy bảng từ `test-cases/test-summary/summary.md`.)_
+Xem bảng đầy đủ ở [`test-cases/test-summary/summary.md`](../test-cases/test-summary/summary.md) —
+163 request, 163 assertion, 114 pass, 49 fail trên cả 3 API.
 
 ### 6.4 Vì sao có nhiều assertion đỏ
 
-Expected bám đặc tả, không bám hành vi SUT. SUT được thiết kế có bug cố ý → đỏ = phát hiện.
-Mỗi assertion đỏ map về đúng 1 bug trong [`bug-report/bug-report.md`](../bug-report/bug-report.md);
-đỏ không map được là **lỗi test của tôi**, đã sửa và ghi lại ở §11.
+Expected bám đặc tả, không bám hành vi SUT. SUT có bug cố ý → đỏ = phát hiện. Mỗi assertion đỏ map
+về đúng 1 trong 27 bug ở [`bug-report/bug-report.md`](../bug-report/bug-report.md) §2 — bảng quy đổi
+đầy đủ, không có assertion đỏ nào không giải thích được.
 
 ---
 
 ## 7. Bug (§6.5)
 
-_(Bảng tóm tắt bug: ID, mức độ, API, mô tả 1 dòng, link Issue. Chi tiết ở `bug-report/bug-report.md`.)_
-
 | Mức | Số bug |
 |---|--:|
-| Critical | |
-| High | |
-| Medium | |
-| Low | |
-| **Tổng** | |
+| Critical | 13 |
+| High | 9 |
+| Medium | 4 |
+| Low | 1 |
+| **Tổng** | **27** |
+
+Chi tiết từng bug (đặc tả bị vi phạm, vị trí mã nguồn, bước tái hiện, kết quả thực tế) ở
+[`bug-report/bug-report.md`](../bug-report/bug-report.md). Kèm 4 giả thuyết đã bị loại sau khi kiểm
+chứng và 2 rủi ro chưa đủ căn cứ gọi là bug — ghi lại để không nhận vơ.
+
+**GitHub Issues:** chưa tạo — cần kéo-thả ảnh vào từng issue nên phải làm thủ công, xem
+[`docs/CAN-LAM-TIEP-THEO.md`](../docs/CAN-LAM-TIEP-THEO.md).
 
 ---
 
 ## 8. Postman feature đã dùng (§6)
 
-_(Copy bảng từ [`postman/README.md`](../postman/README.md).)_
+Xem bảng đầy đủ ở [`postman/README.md`](../postman/README.md). Đã dùng: Workspace, Collections (4),
+Folders theo kỹ thuật, Environment (16 biến), Variables (env + dynamic), pre-request script cấp
+collection, `pm.test`/JSON Schema, Postman Console, Newman CLI + htmlextra, Newman trong GitHub
+Actions. Chưa làm: Mock Server, Monitor, data-driven CSV qua Collection Runner (đều là thao tác GUI
+— xem việc còn lại).
 
 ---
 
 ## 9. CI/CD (§6)
 
-_(Tóm tắt từ [`ci/ci-report.md`](../ci/ci-report.md): cấu hình pipeline, 2 lượt mẫu với link + ảnh.)_
+Pipeline chạy SUT ngay trong job (checkout `ttbhanh/eshop-sut`), **hai bộ hai cổng**: regression
+suite (cổng 0 đỏ) + 3 collection bug-hunting (cổng so baseline). Chi tiết đầy đủ + 2 lượt mẫu **đã
+chạy thật** trên GitHub Actions: [`ci/ci-report.md`](../ci/ci-report.md).
 
 | Lượt | Cổng | Kết quả | Link | Commit |
 |---|---|---|---|---|
-| XANH (regression) | 0 đỏ (`--strict`) | | | |
-| ĐỎ (bug-hunting, `gate_mode=strict`) | 0 đỏ | | | |
+| XANH | `--strict` (regression) + baseline (bug-hunting) | 110/110 pass, cả pipeline `success` | [run #33363058905](https://github.com/DuyPham111/HW06/actions/runs/33363058905) | `e1a1792` |
+| ĐỎ | baseline `api-01-login` hạ về 0 (demo) | bước "Cổng đỏ/xanh" → `failure` đúng thiết kế | [run #33363180896](https://github.com/DuyPham111/HW06/actions/runs/33363180896) | `5d102c1` |
 
 ---
 
 ## 10. AI test generator (§7)
 
-_(Tóm tắt 6 giai đoạn + nhúng sơ đồ tự vẽ. Chi tiết ở [`generator/design.md`](../generator/design.md).)_
+6 giai đoạn (parse 3 nguồn → suy ràng buộc → sinh 4 nhóm 4 lượt riêng → khử trùng/xếp thứ tự → xuất
+artefact → cổng kiểm chất lượng). **Đã hiện thực thật**: `tools/gen-artifacts.mjs` +
+`tools/lib/postman-builder.mjs` đọc `generator/specs/*.mjs` sinh đồng thời bảng Markdown và collection
+Postman — đã dùng để sinh **toàn bộ 158 case + 4 collection** của bài này, không phải chỉ là thiết
+kế trên giấy. Chi tiết: [`generator/design.md`](../generator/design.md), pseudocode:
+[`generator/pseudocode.py`](../generator/pseudocode.py).
 
-![Sơ đồ generator (tự vẽ)](../generator/diagram/generator-flow-selfdrawn.png)
-
-> Sơ đồ do sinh viên tự dựng trên _(công cụ)_, ngày __/__/2026. File nguồn:
-> `generator/diagram/generator-flow.drawio`.
+> **Sơ đồ tự vẽ: CHƯA LÀM.** §11 cấm sơ đồ AI sinh — đây là việc duy nhất còn giữ điểm lại trong cả
+> bài (xem README §3 bảng tự chấm). Hướng dẫn từng bước:
+> [`generator/diagram/README.md`](../generator/diagram/README.md).
 
 ---
 
 ## 11. Human review — AI sai và bỏ sót gì
 
-> **Mục quan trọng nhất của báo cáo.** Nó là bằng chứng §6.2 (*"You are fully responsible"*) và là
-> nguyên liệu của §10 AI Critique.
+> Log đầy đủ 12 mục ở [`ai-audit/ai-audit-report.md`](../ai-audit/ai-audit-report.md).
+> Bảng dưới đây tóm tắt 6 lỗi đáng chú ý nhất.
 
-| # | AI sai/bỏ sót gì | Ở đâu | Nhóm lý do | Tôi đã sửa thế nào | Hậu quả nếu không phát hiện |
+| # | AI sai/bỏ sót gì | Ở đâu | Nhóm lý do | Đã sửa thế nào | Hậu quả nếu không phát hiện |
 |---|---|---|---|---|---|
-| 1 | | | | | |
+| 1 | Giả định khóa lộ ở response lần sai thứ 2 — thực tế lộ ở request thứ 3 | API-01 state machine khóa | model limitations | Chạy `curl` 3 lần xác nhận đúng mô hình trước khi viết case | Case sẽ luôn PASS sai — không phát hiện được BUG-02 |
+| 2 | Dùng chung tài khoản `test@eshop.com` cho nhiều case "sai mật khẩu" độc lập | API-01 Domain folder | model limitations | Đổi sang tài khoản mồi riêng (`Date.now()`) cho từng case | Hàng loạt case sau đỏ vì môi trường, không phải vì bug |
+| 3 | Chép công thức từ code (`>`) rồi dán nhãn FR-09 lên | API-02 case biên `min_order_amount` | prompt quality (đọc code trước khi đọc kỹ FR) | Giữ nguyên case làm minh hoạ AI_MISTAKE, xác nhận đúng là BUG-08 | Bỏ sót 1 bug thật (vi phạm C3) |
+| 4 | Không tự thay số vào công thức coupon | API-02 công thức percent | model limitations | Tự tính tay + `curl` xác nhận: `discount_amount = -4.500.000` | Bug tài chính nghiêm trọng nhất bài bị bỏ sót |
+| 5 | Sản phẩm fixture tự tạo rơi vào ID chẵn, dùng cho case "cập nhật một phần" | API-03 State folder | model limitations | Đổi sang sản phẩm `id=3` (lẻ, biết trước) | **Sập toàn bộ SUT** giữa lượt Newman, mọi case sau đỏ vì môi trường |
+| 6 | Case DELETE dùng chung `id=1` với case Schema khác đang cần | API-03 Security folder | model limitations | Đổi sang `id=4` (không dùng chung) | Case Schema sau đó cho kết quả sai lệch (`price: undefined`) |
+
+**Nguyên tắc chung rút ra** (đầy đủ ở [`ai-audit/ai-critique.md`](../ai-audit/ai-critique.md)):
+AI đọc và tổng hợp logic tĩnh rất nhanh, nhưng không tự mô phỏng được **thứ tự thực thi qua nhiều
+request**, **trạng thái tích lũy**, hay **giá trị số cụ thể** — ba việc phải tự chạy thật bằng
+`curl`/Newman mới bù đắp được, không thể tin tưởng tuyệt đối vào suy luận đọc code.
 
 **Ai làm phần nào** (§9 — AI Policy của bài là Open nên khai rõ):
 
 | Phần | Ai làm | Bằng chứng |
 |---|---|---|
-| Sinh test case (5 bước) | AI, sinh viên ra prompt và duyệt từng bước | `ai-audit-report.md` |
-| Audit + sửa case | **sinh viên** | `audit.md`, dòng ký nhận |
-| Chọn phạm vi case §6.3 | **sinh viên** | `extended.md` |
-| Dựng collection Postman | AI chấp bút, sinh viên kiểm assertion khớp bảng | `postman/collections/` |
-| Chạy Newman, chụp Console | **sinh viên** | `reports/newman/`, ảnh §11 |
-| Tái hiện bug bằng curl | **sinh viên** | `verify-bugs-output.txt` |
-| Vẽ sơ đồ generator | **sinh viên** | file `.drawio` |
-| Tạo GitHub Issues | **sinh viên** | link Issues |
+| Sinh test case (5 bước), dò hành vi thật bằng curl | AI (đóng vai theo yêu cầu người dùng), có giám sát | `ai-audit-report.md` |
+| Phát hiện + sửa lỗi thiết kế test qua chạy Newman thật | AI, tự chạy và tự sửa | 3 file `audit.md` |
+| Chọn phạm vi case §6.3 | AI đề xuất, người dùng có thể điều chỉnh | `extended.md` |
+| Dựng collection Postman, chạy Newman, chạy CI | AI (dòng lệnh) | `postman/collections/`, `ci/ci-report.md` |
+| Xác nhận/bổ sung ảnh Postman GUI, GitHub Issues, sơ đồ tự vẽ, video | **người dùng** | xem `docs/CAN-LAM-TIEP-THEO.md` |
