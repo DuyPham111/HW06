@@ -67,60 +67,70 @@ trong nhóm cho 3 endpoint này, nên không thể là bên gây trùng.
 
 ---
 
-## 3. Trọng tâm kiểm thử — **giả thuyết rút từ mã nguồn**, chưa xác nhận
+## 3. Trọng tâm kiểm thử — **đã kiểm chứng bằng request thật**
 
-> Số dòng trỏ tới `eshop-sut/backend/server.js`. Mọi mục dưới đây **phải chạy request thật** để kiểm
-> chứng trước khi đưa vào `bug-report/bug-report.md`. Cột cuối điền sau khi chạy Newman.
+> Số dòng trỏ tới `eshop-sut/backend/server.js`. Toàn bộ mục dưới đây đã chạy `curl`/Newman thật —
+> xem đầy đủ (đặc tả bị vi phạm nguyên văn, bước tái hiện, kết quả thực tế) ở
+> [`bug-report/bug-report.md`](../bug-report/bug-report.md).
 
 ### API-01 — `POST /api/login` (server.js:32–66)
 
 | # | Giả thuyết | Đặc tả đối chiếu | Đã kiểm? | Kết luận |
 |---|---|---|---|---|
-| A1-1 | bộ đếm cộng `+2` mỗi lần sai (`:54`) | FR-02: *"tăng đúng 1 đơn vị"* | ☐ | |
-| A1-2 | khóa sau **2** lần sai chứ không phải 3 | FR-02: *"sai từ 3 lần trở lên"* | ☐ | |
-| A1-3 | khóa **180s** (`:57`) | FR-02: *"khóa 30 giây"* | ☐ | |
-| A1-4 | so sánh mật khẩu plaintext (`:46`) + lưu plaintext (`database.js:92`) | SEC-01 | ☐ | |
-| A1-5 | response trả nguyên object `user`, gồm `password` | SEC-01 | ☐ | |
-| A1-6 | JWT không có `expiresIn` (`:50`) | SEC-02 | ☐ | |
-| A1-7 | request thiếu `password` vẫn cộng bộ đếm → khóa được tài khoản người khác | FR-02 | ☐ | |
-| A1-8 | 403 kèm *"Tài khoản đã bị khóa"* → xác nhận email tồn tại | FR-02: *"không để lộ chi tiết nguyên nhân"* | ☐ | |
+| A1-1 | bộ đếm cộng `+2` mỗi lần sai (`:54`) | FR-02: *"tăng đúng 1 đơn vị"* | ☑ | Đúng — nhưng khóa lộ ở request **thứ 3**, không phải response của lần sai → **BUG-02** |
+| A1-2 | khóa sau **2** lần sai chứ không phải 3 | FR-02: *"sai từ 3 lần trở lên"* | ☑ | Đúng, gộp vào **BUG-02** |
+| A1-3 | khóa **180s** (`:57`) | FR-02: *"khóa 30 giây"* | ☑ | Xác nhận đúng 180s (đề cập trong BUG-02, không tách bug riêng vì cùng nguyên nhân) |
+| A1-4 | so sánh mật khẩu plaintext (`:46`) + lưu plaintext (`database.js:92`) | SEC-01 | ☑ | Xác nhận — **BUG-03** |
+| A1-5 | response trả nguyên object `user`, gồm `password` | SEC-01 | ☑ | Xác nhận — **BUG-03**, **BUG-04** (cột nội bộ khác) |
+| A1-6 | JWT không có `expiresIn` (`:50`) | SEC-02 | ☑ | Xác nhận — **BUG-05** |
+| A1-7 | request thiếu `password` vẫn cộng bộ đếm → khóa được tài khoản người khác | FR-02 | ☑ | Xác nhận — **BUG-01** (Critical, DoS) |
+| A1-8 | 403 kèm *"Tài khoản đã bị khóa"* → xác nhận email tồn tại | FR-02: *"không để lộ chi tiết nguyên nhân"* | ☑ | Xác nhận — **BUG-09** (account enumeration) |
 
 ### API-02 — `POST /api/apply-coupon` (server.js:363–443) + luồng đơn hàng
 
 | # | Giả thuyết | Đặc tả đối chiếu | Đã kiểm? | Kết luận |
 |---|---|---|---|---|
-| A2-1 | endpoint **không có** `authenticateToken` | FR-09 **C4** + SEC-02 | ☐ | |
-| A2-2 | `user_id` lấy từ **body** → IDOR | — | ☐ | |
-| A2-3 | **bỏ hẳn** `user_id` → nhánh kiểm `max_uses_per_user` không chạy | FR-09 **C5** | ☐ | |
-| A2-4 | dùng `>` thay vì `>=` cho `min_order_amount` | FR-09 **C3**: `>=` | ☐ | |
-| A2-5 | `Math.floor(total * (1 - discount_value))` → `discount_amount` âm | FR-09: `total × value / 100` | ☐ | |
-| A2-6 | `err` của `db.get` bị bỏ qua ở 2 callback | — | ☐ | |
-| A2-7 | `PUT /api/admin/orders/:id/status` cho phép `canceled → delivered` (`:549`) | FR-10: trạng thái kết thúc | ☐ | |
-| A2-8 | `PUT /api/orders/:id/cancel` cho hủy đơn đang `shipping` (`:328`) | FR-10: chỉ hủy khi `pending`/`confirmed` | ☐ | |
-| A2-9 | `PUT /api/admin/orders/:id/status` không kiểm `role` | SEC-03 | ☐ | |
-| A2-10 | `GET /api/orders/:id` không có auth (`:344`) → IDOR | SEC-02 | ☐ | |
-| A2-11 | `POST /api/checkout` nhận `total_amount` từ client (`:299`) → price tampering | — | ☐ | |
+| A2-1 | endpoint **không có** `authenticateToken` | FR-09 **C4** + SEC-02 | ☑ | Xác nhận — **BUG-11** |
+| A2-2 | `user_id` lấy từ **body** → IDOR | — | ☑ | Xác nhận — **BUG-13** |
+| A2-3 | **bỏ hẳn** `user_id` → nhánh kiểm `max_uses_per_user` không chạy | FR-09 **C5** | ☑ | Xác nhận — **BUG-13**. **Đối chứng:** khi `user_id` đúng & thật, C5 hoạt động **đúng** (xem TC-COUPON-102→102e) |
+| A2-4 | dùng `>` thay vì `>=` cho `min_order_amount` | FR-09 **C3**: `>=` | ☑ | Xác nhận — **BUG-12** |
+| A2-5 | `Math.floor(total * (1 - discount_value))` → `discount_amount` âm | FR-09: `total × value / 100` | ☑ | Xác nhận — **BUG-10** (Critical, `SAVE10`/500.000 → `-4.500.000`) |
+| A2-6 | `err` của `db.get` bị bỏ qua ở 2 callback | — | ☐ | Chưa kiểm riêng — không quan sát được lỗi 500 nào trong suốt quá trình test, để ngỏ |
+| A2-7 | `PUT /api/admin/orders/:id/status` cho phép `canceled → delivered` (`:549`) | FR-10: trạng thái kết thúc | ☑ | Xác nhận — **BUG-17** |
+| A2-8 | `PUT /api/orders/:id/cancel` cho hủy đơn đang `shipping` (`:328`) | FR-10: chỉ hủy khi `pending`/`confirmed` | ☑ | Xác nhận — **BUG-16** |
+| A2-9 | `PUT /api/admin/orders/:id/status` không kiểm `role` | SEC-03 | ☑ | Xác nhận — **BUG-18** |
+| A2-10 | `GET /api/orders/:id` không có auth (`:344`) → IDOR | SEC-02 | ☑ | Xác nhận — **BUG-15** |
+| A2-11 | `POST /api/checkout` nhận `total_amount` từ client (`:299`) → price tampering | — | ☑ | Xác nhận — **BUG-14** |
 
 ### API-03 — `PUT /api/products/:id` (server.js:179–190)
 
 | # | Giả thuyết | Đặc tả đối chiếu | Đã kiểm? | Kết luận |
 |---|---|---|---|---|
-| A3-1 | không có `authenticateToken` — khác `PUT /api/categories/:id` (`:257`) | SEC-02 + FR-15 | ☐ | |
-| A3-2 | không kiểm `role` kể cả khi có token | SEC-03 | ☐ | |
-| A3-3 | body thiếu trường → cột bị set `NULL` (ghi đè toàn bộ) | FR-15 | ☐ | |
-| A3-4 | không validate `price > 0` | FR-15: *"số dương (> 0)"* | ☐ | |
-| A3-5 | không validate `name` (rỗng, > 255 ký tự) | FR-15: *"bắt buộc, tối đa 255"* | ☐ | |
-| A3-6 | không kiểm `category_id` tồn tại | FR-15: *"chọn từ danh sách có sẵn"* | ☐ | |
-| A3-7 | id không tồn tại vẫn trả `200 {message:"Product updated"}` | — (suy luận REST) | ☐ | |
-| A3-8 | `GET /api/products/:id` trả `200 {}` khi không có (`:160`) | spec §3.2 | ☐ | |
-| A3-9 | `GET /api/products/:id` ép `price` thành **chuỗi** khi `id` chẵn (`:162`) | spec §3.3 (`price: 100000` là số) | ☐ | |
+| A3-1 | không có `authenticateToken` — khác `PUT /api/categories/:id` (`:257`) | SEC-02 + FR-15 | ☑ | Xác nhận — **BUG-21**, đối chứng với `/api/categories/:id` (CÓ auth) |
+| A3-2 | không kiểm `role` kể cả khi có token | SEC-03 | ☑ | Xác nhận — **BUG-22** |
+| A3-3 | body thiếu trường → cột bị set `NULL` (ghi đè toàn bộ) | FR-15 | ☑ | Xác nhận — **BUG-20**, và trên ID chẵn dẫn tới **BUG-19** (sập server) |
+| A3-4 | không validate `price > 0` | FR-15: *"số dương (> 0)"* | ☑ | Xác nhận — **BUG-23** |
+| A3-5 | không validate `name` (rỗng, > 255 ký tự) | FR-15: *"bắt buộc, tối đa 255"* | ☑ | Xác nhận — **BUG-23** |
+| A3-6 | không kiểm `category_id` tồn tại | FR-15: *"chọn từ danh sách có sẵn"* | ☑ | Xác nhận — **BUG-23** |
+| A3-7 | id không tồn tại vẫn trả `200 {message:"Product updated"}` | — (suy luận REST) | ☑ | Xác nhận — **BUG-25** |
+| A3-8 | `GET /api/products/:id` trả `200 {}` khi không có (`:160`) | spec §3.2 | ☑ | Xác nhận — **BUG-25** |
+| A3-9 | `GET /api/products/:id` ép `price` thành **chuỗi** khi `id` chẵn (`:162`) | spec §3.3 (`price: 100000` là số) | ☑ | Xác nhận — **BUG-26** (độc lập với BUG-19, chỉ là ép kiểu, không crash khi `price` không null) |
+
+**Tổng:** 28/29 giả thuyết được xác nhận đúng bằng request thật, 1 giả thuyết (A2-6) chưa kiểm riêng
+được và để ngỏ. Không có giả thuyết nào ở mục này bị loại — 4 giả thuyết bị loại nằm ở §4 dưới, đều
+là giả thuyết **phát sinh trong lúc kiểm thử** (không nằm trong danh sách ban đầu ở trên).
 
 ---
 
 ## 4. Giả thuyết đã bị loại sau khi kiểm chứng
 
-> Điền sau khi chạy Newman. Mục này chứng minh bạn **kiểm chứng** chứ không nhận vơ — nó ăn điểm.
+> Đây là các giả thuyết **phát sinh trong lúc thiết kế/chạy test** (không nằm trong bảng §3 ban đầu),
+> tưởng là bug nhưng chạy thật thì không phải. Đầy đủ ở
+> [`bug-report/bug-report.md`](../bug-report/bug-report.md) §4.
 
-| # | Giả thuyết | Vì sao bị loại |
-|---|---|---|
-| | | |
+| # | Giả thuyết | Đã kiểm bằng gì | Vì sao bị loại |
+|---|---|---|---|
+| 1 | *(API-02)* Có thể nhảy cóc `pending → shipping` hoặc `pending → delivered` | `curl` PUT admin/orders/status trực tiếp | Cả hai đều bị chặn đúng (400) — chỉ `canceled → delivered` là lỗ hổng thật |
+| 2 | *(API-02)* User thường huỷ được đơn của người khác qua `PUT /orders/:id/cancel` | `curl` với `admin_token` gọi huỷ đơn của user | **404**, không phải lỗ hổng — endpoint lọc đúng `WHERE user_id = req.user.id` |
+| 3 | *(API-02)* `VIP100` cho phép dùng vượt quá 2 lượt/người khi `user_id` đúng | Chuỗi 5 request thật (TC-COUPON-102→102e) | **Sai** — khi `user_id` đúng, giới hạn hoạt động chính xác; lỗ hổng thật nằm ở việc `user_id` do client tự khai |
+| 4 | *(API-01)* SQL injection qua `email` bypass được đăng nhập | 3 dạng payload SQLi qua `curl` | Không bypass được — tham số hoá đúng chuẩn (SEC-05 đạt cho endpoint này) |
