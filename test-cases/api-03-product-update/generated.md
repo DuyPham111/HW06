@@ -1,24 +1,68 @@
 # API-03 — Pool C · `PUT /api/products/:id` · bước 1 (§6.1): test case do AI sinh
 
-- **Pool C · FR-15 Quản lý sản phẩm (admin)** · prefix `TC-PRODUPD-###` · **__ test case** *(đề đòi ≥35/API)*
-- Sinh theo quy trình **5 bước riêng** của [`docs/03-GENERATE-AI.md`](../../docs/03-GENERATE-AI.md);
-  mỗi bước một lượt AI riêng, mỗi bước một mục trong [`ai-audit/ai-audit-report.md`](../../ai-audit/ai-audit-report.md).
-- **File này là bằng chứng lượt AI đầu tiên — sau khi audit thì ĐỪNG sửa nữa.** Bản đúng nằm ở `audit.md`.
+- **FR-15 Quản lý sản phẩm** · prefix `TC-PRODUPD-###` · **45 test case** (đề đòi ≥35, tính cả case tự thêm)
+- Sinh từ `generator/specs/api-03-product-update.mjs` bằng `node tools/gen-artifacts.mjs api-03-product-update` — **đừng sửa file này bằng tay**, sửa spec rồi sinh lại.
+- Quy trình 5 bước của [`docs/03-GENERATE-AI.md`](../../docs/03-GENERATE-AI.md); mỗi bước một lượt AI riêng.
+- **File này là bằng chứng lượt AI đầu tiên (bao gồm cả chỗ AI dự đoán sai) — sau audit thì đừng sửa nữa. Bản đúng nằm ở `audit.md`.**
 
 ## Phân bố theo kỹ thuật
 
 | Kỹ thuật | Số case |
 |---|--:|
-| Domain | |
-| State | |
-| Security | |
-| Schema | |
-| **Tổng** | |
+| Domain | 16 |
+| State | 10 |
+| Security | 10 |
+| Schema | 9 |
+| **Tổng** | **45** |
 
 ## Bảng test case
 
-> Cột `Audit` và `Kết quả` để **trống** ở bước này.
+> Cột `Audit` và `Kết quả` để **trống** ở bước này — điền ở `audit.md` và sau khi chạy Newman.
 
 | TC ID | Kỹ thuật | Tham số & phân vùng | Request | Auth | Query / Body | Expected status | Expected body / schema | Căn cứ | Nguồn | Audit | Kết quả |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| TC-PRODUPD-001 | | | `PUT /api/products/:id` | | | | | | AI | | |
+| TC-PRODUPD-001 | Domain | hợp lệ điển hình — cập nhật đầy đủ trường | `PUT /api/products/1` | admin | {"name":"iPhone 15 Pro Max (Updated)","price":29000000,"description":"mo ta moi","imageUrl":"https://x/img.png","category_id":1} | 200 | `{message}`, và `GET /api/products/1` phải phản ánh đúng name/price mới | spec §3.3 | AI |  |  |
+| TC-PRODUPD-002 | Domain | `name` rỗng | `PUT /api/products/1` | admin | {"name":"","price":100000,"description":"x","imageUrl":"","category_id":1} | 400 | 400 — FR-15: `name` bắt buộc | FR-15: 'Tên sản phẩm: bắt buộc' | AI |  |  |
+| TC-PRODUPD-003 | Domain | `name` biên trên — đúng 255 ký tự (hợp lệ) | `PUT /api/products/1` | admin | {"name":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","price":100000,"description":"x","imageUrl":"","category_id":1} | 200 | 200 — đúng biên trên hợp lệ | FR-15: 'tối đa 255 ký tự' | AI |  |  |
+| TC-PRODUPD-004 | Domain | `name` biên trên + 1 — 256 ký tự (KHÔNG hợp lệ) | `PUT /api/products/1` | admin | {"name":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","price":100000,"description":"x","imageUrl":"","category_id":1} | 400 | 400 — vượt 255 ký tự | FR-15: 'tối đa 255 ký tự' | AI |  |  |
+| TC-PRODUPD-005 | Domain | `price` biên dưới — đúng `1` (hợp lệ, FR-15 đòi > 0) | `PUT /api/products/1` | admin | {"name":"Bien Duoi Price","price":1,"description":"x","imageUrl":"","category_id":1} | 200 | 200 — biên dưới hợp lệ | FR-15: 'phải là số dương (> 0)' | AI |  |  |
+| TC-PRODUPD-006 | Domain | `price` biên dưới − 1 — `0` (KHÔNG hợp lệ) | `PUT /api/products/1` | admin | {"name":"Zero Price","price":0,"description":"x","imageUrl":"","category_id":1} | 400 | 400 — FR-15 đòi > 0 | FR-15 | AI |  |  |
+| TC-PRODUPD-007 | Domain | `price` âm | `PUT /api/products/1` | admin | {"name":"Neg Price","price":-50000,"description":"x","imageUrl":"","category_id":1} | 400 | 400 | FR-15 | AI |  |  |
+| TC-PRODUPD-008 | Domain | `price` sai kiểu — chuỗi chữ "abc" | `PUT /api/products/1` | admin | {"name":"Bad Type Price","price":"abc","description":"x","imageUrl":"","category_id":1} | 400 | 400, KHÔNG 500 | FR-15 im lặng về kiểu sai — chỉ đảm bảo không 500 và không lưu giá trị rác | AI |  |  |
+| TC-PRODUPD-009 | Domain | `category_id` không tồn tại (999) | `PUT /api/products/1` | admin | {"name":"Bad Category","price":100000,"description":"x","imageUrl":"","category_id":999} | 400 | 400 — FR-15: 'phải chọn từ danh sách có sẵn' | FR-15 | AI |  |  |
+| TC-PRODUPD-010 | Domain | `category_id` thiếu hẳn | `PUT /api/products/1` | admin | {"name":"No Category","price":100000,"description":"x","imageUrl":""} | 400 | 400 — bắt buộc theo FR-15 | FR-15: 'bắt buộc' | AI |  |  |
+| TC-PRODUPD-011 | Domain | `imageUrl` không phải URL hợp lệ (chuỗi bất kỳ) | `PUT /api/products/1` | admin | {"name":"Bad Image","price":100000,"description":"x","imageUrl":"khong-phai-url","category_id":1} | 200 | 200 — đặc tả không đòi validate format URL | spec §3.3 im lặng về format `imageUrl` | AI |  |  |
+| TC-PRODUPD-012 | Domain | `name` chứa Unicode có dấu | `PUT /api/products/1` | admin | {"name":"Bàn Phím Cơ Có Dấu Tiếng Việt","price":100000,"description":"x","imageUrl":"","category_id":1} | 200 | 200 — Unicode hợp lệ | spec §3.3 | AI |  |  |
+| TC-PRODUPD-013 | Domain | `price` số cực lớn | `PUT /api/products/1` | admin | {"name":"Huge Price","price":999999999999,"description":"x","imageUrl":"","category_id":1} | 200 | 200, KHÔNG 500 — không giới hạn độ lớn trong đặc tả | spec §3.3 im lặng — chỉ đảm bảo không 500 | AI |  |  |
+| TC-PRODUPD-014 | Domain | `:id` không tồn tại (999999) | `PUT /api/products/999999` | admin | {"name":"Ghost","price":1000,"description":"x","imageUrl":"","category_id":1} | 404 | 404 — suy từ §3.2 (thao tác trên MỘT tài nguyên, không có thì không có gì để sửa) | spec §3.2/§3.3 im lặng — suy luận REST tiêu chuẩn, ghi rõ đây là suy luận không phải câu chữ đặc tả | AI |  |  |
+| TC-PRODUPD-015 | Domain | `:id` sai kiểu — chữ ("abc") | `PUT /api/products/abc` | admin | {"name":"x","price":1000,"description":"x","imageUrl":"","category_id":1} | 400 | 400 — `:id` phải là số nguyên | spec §3.2: `:id` là khóa tự tăng, ngụ ý kiểu số | AI |  |  |
+| TC-PRODUPD-016 | Domain | method không hỗ trợ — `PATCH /api/products/:id` | `PATCH /api/products/1` | admin | – | 404 | 404 (Express mặc định) | spec §3.3 chỉ định nghĩa PUT | AI |  |  |
+| TC-PRODUPD-017 | State | bước 1: tạo sản phẩm mới (fixture, ID LẺ do là dòng tự tăng tiếp theo — SUT vừa seed 5 sản phẩm nên id mới = 6... để CHẮC id lẻ, ta dùng field name để tra chứ không giả định số) | `POST /api/products` | admin | {"name":"HW06-Fixture-State","price":200000,"description":"fixture","imageUrl":"","category_id":1} | 200 | `{message, id}` — lưu `state_product_id` | spec §3.3 | AI |  |  |
+| TC-PRODUPD-018 | State | bước 2: verify GET vừa tạo | `GET /api/products/{{state_product_id}}` | không có header | – | 200 | `name = "HW06-Fixture-State"` | spec §3.2 | AI |  |  |
+| TC-PRODUPD-019 | State | bước 3: cập nhật ĐẦY ĐỦ trường | `PUT /api/products/{{state_product_id}}` | admin | {"name":"HW06-Fixture-Updated","price":300000,"description":"da doi","imageUrl":"http://x","category_id":2} | 200 | `{message}` | spec §3.3 | AI |  |  |
+| TC-PRODUPD-020 | State | bước 4: verify GET đã đổi đúng | `GET /api/products/{{state_product_id}}` | không có header | – | 200 | `name = "HW06-Fixture-Updated"`, `category_id = 2` | spec §3.2 | AI |  |  |
+| TC-PRODUPD-021 | State | bước 5: cập nhật MỘT PHẦN — chỉ gửi `{name}` — dùng sản phẩm `id=3` (LẺ, biết trước — KHÔNG dùng fixture vừa tạo vì id kế tiếp của DB seed là 6, CHẴN, sẽ kích đúng bug crash server.js:162 nếu GET lại) — kiểm các trường khác có bị mất (NULL) không | `PUT /api/products/3` | admin | {"name":"HW06-PartialUpdate-Test"} | 200 | 200 — về status, nhưng xem case sau để kiểm hệ quả dữ liệu | FR-15: 'chỉ sản phẩm đó bị thay đổi' — ngụ ý các trường KHÔNG gửi phải GIỮ NGUYÊN, không phải bị xoá | AI |  |  |
+| TC-PRODUPD-022 | State | bước 6: verify hệ quả trên `id=3` — `price`/`category_id` có còn không hay đã thành NULL | `GET /api/products/3` | không có header | – | 200 | `price` PHẢI vẫn còn giá trị cũ (4000000 — giá seed của Keychron Q1), KHÔNG được là `null` — FR-15 ngụ ý cập nhật một phần không được xoá dữ liệu khác | FR-15: 'chỉ sản phẩm đó bị thay đổi' (áp cho CẤP ĐỘ TRƯỜNG, không chỉ cấp độ sản phẩm) | AI |  |  |
+| TC-PRODUPD-023 | State | bước 7: xoá sản phẩm fixture | `DELETE /api/products/{{state_product_id}}` | admin | – | 200 | `{message}` | spec §3.3 | AI |  |  |
+| TC-PRODUPD-024 | State | bước 8: verify GET sau xoá phải 404, KHÔNG phải `200 {}` | `GET /api/products/{{state_product_id}}` | không có header | – | 404 | 404 `{error}` | spec §3.2: xem chi tiết MỘT sản phẩm — không có sản phẩm thì không có gì để trả 200 | AI |  |  |
+| TC-PRODUPD-025 | State | bước 9: PUT lên sản phẩm ĐÃ XOÁ | `PUT /api/products/{{state_product_id}}` | admin | {"name":"Sua san pham ma khong ton tai","price":1,"description":"x","imageUrl":"","category_id":1} | 404 | 404 — không có tài nguyên để sửa | spec §3.2/§3.3 suy luận REST tiêu chuẩn | AI |  |  |
+| TC-PRODUPD-026 | State | bước 10: sửa sản phẩm khác (id=2) rồi kiểm sản phẩm id=3 KHÔNG đổi | `PUT /api/products/2` | admin | {"name":"San pham 2 - da sua","price":111111,"description":"x","imageUrl":"","category_id":1} | 200 | `{message}` | FR-15 | AI |  |  |
+| TC-PRODUPD-027 | Security SEC-02 | PUT KHÔNG có header `Authorization` — verify bằng GET dữ liệu có thật sự đổi không | `PUT /api/products/2` | không có header | {"name":"BI SUA KHONG CAN TOKEN","price":1,"description":"x","imageUrl":"","category_id":1} | 401 | 401 — FR-15: 'Admin có thể Sửa'; SEC-02 đòi JWT hợp lệ | SEC-02 + FR-15 | AI |  |  |
+| TC-PRODUPD-028 | Security (verify hệ quả của 027) | verify: sau case 027, dữ liệu sản phẩm 2 CÓ THỰC SỰ bị đổi không (không chỉ kiểm status code) | `GET /api/products/2` | không có header | – | 200 | `name` PHẢI VẪN LÀ tên đã đặt ở case 026 ("San pham 2 - da sua"), KHÔNG được là "BI SUA KHONG CAN TOKEN" | SEC-02 — kiểm hệ quả thật, không chỉ status code | AI |  |  |
+| TC-PRODUPD-029 | Security SEC-03 | PUT với token USER THƯỜNG (không phải admin) | `PUT /api/products/2` | user | {"name":"BI SUA BOI USER THUONG","price":1,"description":"x","imageUrl":"","category_id":1} | 403 | 403 — SEC-03: phải kiểm `role='admin'` | SEC-03 | AI |  |  |
+| TC-PRODUPD-030 | Security (token không hợp lệ) | PUT với token RÁC (chuỗi ngẫu nhiên, không phải JWT hợp lệ) | `PUT /api/products/2` | token rác | {"name":"x","price":1,"description":"x","imageUrl":"","category_id":1} | 403 | 403 — JWT không verify được | SEC-02 | AI |  |  |
+| TC-PRODUPD-031 | Security SEC-05 | SQLi trong `:id` | `PUT /api/products/1 OR 1=1` | admin | {"name":"x","price":1,"description":"x","imageUrl":"","category_id":1} | 400 | 400 — `:id` không phải số hợp lệ, KHÔNG được match/sửa nhầm nhiều dòng | SEC-05 + spec §3.2 (`:id` là số) | AI |  |  |
+| TC-PRODUPD-032 | Security SEC-05 | SQLi trong `name` | `PUT /api/products/2` | admin | {"name":"x'; DROP TABLE products;--","price":100000,"description":"x","imageUrl":"","category_id":1} | 200 | 200 (lưu như CHUỖI bình thường — parameterized query), bảng `products` KHÔNG bị xoá | SEC-05 | AI |  |  |
+| TC-PRODUPD-033 | Security SEC-04 | payload XSS trong `name` | `PUT /api/products/2` | admin | {"name":"<script>alert(1)</script>","price":100000,"description":"x","imageUrl":"","category_id":1} | 200 | 200, Content-Type JSON — payload là DỮ LIỆU, việc escape khi hiển thị thuộc trách nhiệm frontend (SEC-04), API chỉ cần trả đúng dữ liệu dạng JSON | SEC-04 | AI |  |  |
+| TC-PRODUPD-034 | Security SEC-06 (mass assignment) | gửi field lạ `id` khác trong body — `id` thật của tài nguyên KHÔNG được đổi theo body | `PUT /api/products/2` | admin | {"id":999888,"name":"Mass Assignment Test","price":100000,"description":"x","imageUrl":"","category_id":1} | 200 | 200, và `GET /api/products/2` vẫn phải có `id = 2` (path param quyết định, không phải body) | SEC-06 (nguyên lý chung: field định danh không được ghi đè từ body) | AI |  |  |
+| TC-PRODUPD-035 | Security (so sánh route anh em) | so sánh: `PUT /api/categories/1` (route ANH EM, cùng thao tác admin) — route này CÓ yêu cầu Authorization, khác hẳn `/api/products/:id` | `PUT /api/categories/1` | không có header | {"name":"x"} | 401 | 401 — route `/api/categories/:id` CÓ `authenticateToken`, cho thấy việc thiếu auth ở `/api/products/:id` là KHÔNG NHẤT QUÁN trong chính source code, không phải một lựa chọn thiết kế có chủ đích | SEC-02 — đối chứng giữa 2 route cùng nhóm quyền admin | AI |  |  |
+| TC-PRODUPD-036 | Security (rò rỉ dữ liệu) | response PUT thành công KHÔNG được lộ field ngoài đặc tả | `PUT /api/products/2` | admin | {"name":"Schema Check","price":100000,"description":"x","imageUrl":"","category_id":1} | 200 | chỉ `{message}` | spec §3.3 | AI |  |  |
+| TC-PRODUPD-037 | Schema | PUT thành công: `{message}` kiểu string | `PUT /api/products/2` | admin | {"name":"Schema OK","price":100000,"description":"x","imageUrl":"","category_id":1} | 200 | `message` là string | spec §3.3 | AI |  |  |
+| TC-PRODUPD-038 | Schema | GET id LẺ (1): `price` phải là kiểu **number** | `GET /api/products/1` | không có header | – | 200 | `price` là number | spec §3.2 + §3.3 (body mẫu `price: 100000` là số) | AI |  |  |
+| TC-PRODUPD-039 | Schema | GET id CHẴN (2): `price` PHẢI VẪN là kiểu **number** (không phụ thuộc tính chẵn/lẻ của id) | `GET /api/products/2` | không có header | – | 200 | `price` là number — KHÔNG được là string chỉ vì `id` chẵn | spec §3.2 + §3.3 — kiểu dữ liệu không được phụ thuộc vào tính chẵn/lẻ của khoá, đây là hành vi không nằm trong đặc tả | AI |  |  |
+| TC-PRODUPD-040 | Schema | response lỗi 400: đúng shape `{error: string}`, Content-Type JSON | `PUT /api/products/1` | admin | {"name":"","price":100000,"description":"x","imageUrl":"","category_id":1} | 400 | `{error}`, Content-Type application/json | nguyên tắc API JSON nhất quán | AI |  |  |
+| TC-PRODUPD-041 | Schema | `GET /api/products` (danh sách): mọi phần tử đều có đủ field và không field thừa | `GET /api/products` | không có header | – | 200 | mảng object, mỗi phần tử có id/name/price/description/imageUrl/category_id | spec §3.1 + §3.3 | AI |  |  |
+| TC-PRODUPD-042 | Schema | GET id không tồn tại: PHẢI 404 `{error}`, KHÔNG phải `200 {}` | `GET /api/products/999999` | không có header | – | 404 | 404 `{error}` | spec §3.2 | AI |  |  |
+| TC-PRODUPD-043 | Schema | PUT id không tồn tại: response phải là `{error}`, KHÔNG phải `{message:"Product updated"}` | `PUT /api/products/999998` | admin | {"name":"x","price":100,"description":"x","imageUrl":"","category_id":1} | 404 | 404 `{error}` — không được báo thành công giả | suy luận REST — spec §3.2/§3.3 im lặng | AI |  |  |
+| TC-PRODUPD-044 | Schema | `GET /api/categories`: đúng shape | `GET /api/categories` | không có header | – | 200 | mảng `{id, name}` | spec §3.4 | AI |  |  |
+| TC-PRODUPD-045 | Schema | body request PUT không phải JSON hợp lệ | `PUT /api/products/1` | admin | "khong phai JSON" | 400 | lỗi phải là JSON `{error}`, KHÔNG được là trang HTML kèm stack trace | nguyên tắc chung: không rò rỉ nội bộ server | AI |  |  |
