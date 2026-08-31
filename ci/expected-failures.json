@@ -2,7 +2,7 @@
   "_doc": "Baseline so assertion do da duoc SINH VIEN KY NHAN cho tung collection. Cap nhat file nay CHI khi da giai thich duoc vi sao so do thay doi (bug moi / SUT da sua / test doi). tools/ci-gate.mjs so voi bang nay.",
   "_cach_lay_so": "chay npm run test:all -> npm run summary -> copy cot Fail vao day",
   "_ky_nhan": "23127183 - lay tu lan chay dia phuong 20260831 - xem test-cases/test-summary/summary.md",
-  "api-01-login": 9,
+  "api-01-login": 0,
   "api-02-apply-coupon": 15,
   "api-03-product-update": 25
 }
