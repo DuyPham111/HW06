@@ -1,9 +1,13 @@
 HW06 - API Testing - Git commit log
 SV: Pham Vu Ngoc Duy - 23127183
 Repo: https://github.com/DuyPham111/HW06
-Xuat luc: 2026-08-31T18:54:01+07:00
-Tong so commit: 30
+Xuat luc: 2026-09-01T21:24:50+07:00
+Tong so commit: 34
 
+744babe  2026-09-01 21:24:37 +0700  DuyPham111  docs: hoan tat B.1 - anh + so lieu that Data-driven, Mock Server, Monitor (§6)
+dc04ac1  2026-09-01 19:21:23 +0700  DuyPham111  docs: data-driven bang Newman CLI thay Postman Runner (bi khoa tra phi) (§6, §8)
+2af19a0  2026-09-01 18:46:56 +0700  DuyPham111  docs: huong dan chi tiet A.4b (moi issue lay anh o dau) va B.1 (Postman GUI tung click)
+4ce2d7f  2026-08-31 18:54:02 +0700  DuyPham111  docs: cap nhat git commit log (§12)
 6c75fcc  2026-08-31 18:54:01 +0700  DuyPham111  docs: sinh vien ky ten xac nhan 3 file audit.md (§6.2)
 0315dfe  2026-08-31 16:56:31 +0700  DuyPham111  chore: gitignore file khoa tam cua Excel (~$*.xlsx)
 e9b507a  2026-08-31 16:56:20 +0700  DuyPham111  docs: cap nhat git commit log (§12) - da co so do tu ve
