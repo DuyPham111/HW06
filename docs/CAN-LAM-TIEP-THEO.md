@@ -59,18 +59,84 @@ vấn đáp (30% sinh viên, §13).
 
 ### A.4 — Thêm ảnh minh hoạ vào 27 GitHub Issue đã tạo (§6.5, §11 đòi *"screenshot attached to each issue"*)
 
-✅ **27/27 issue đã tạo** qua `gh` CLI (xác thực bằng chính tài khoản `DuyPham111` qua device-code
-trên trình duyệt của bạn — không ai lộ mật khẩu/token) — https://github.com/DuyPham111/HW06/issues
-(#1–#27, đúng title + đúng label mức độ + API + đúng nội dung khớp `bug-report.md`).
+✅ **27/27 issue đã tạo** qua `gh` CLI — https://github.com/DuyPham111/HW06/issues (#1–#27, đúng
+title + label + nội dung khớp `bug-report.md`).
 
-**Việc còn lại — kéo-thả ảnh vào từng issue** — GitHub API/CLI **không có cách nào** upload ảnh vào
-issue tự động (chỉ upload được qua kéo-thả trên web), nên đây là phần bắt buộc phải làm tay:
+**Việc còn lại — kéo-thả ảnh vào từng issue.** GitHub không có cách nào upload ảnh vào issue qua
+API/CLI (chỉ kéo-thả được trên web), nên đây là phần bắt buộc phải làm tay. Chỉ có **4 file HTML**
+trong `reports/newman/` (1 file/API + regression) vì mỗi file chứa **tất cả** request của API đó,
+kể cả các request bị lỗi (bug) — không phải 1 file/bug. Cách lấy đúng ảnh cho đúng issue:
 
-1. Mở từng issue → bấm **Edit** (hoặc thêm 1 comment) → kéo-thả ảnh vào ô soạn:
-   - Ảnh từ báo cáo Newman HTML: mở `reports/newman/*.html`, chụp đúng dòng assertion đỏ tương ứng.
-   - Hoặc chạy lại `bash bug-report/verify-bugs.sh <số>` rồi chụp terminal.
-2. Ưu tiên làm trước 5 bug Critical nặng nhất nếu thiếu thời gian:
-   `#2 (BUG-01), #4 (BUG-03), #11 (BUG-10), #15 (BUG-14), #1 (BUG-19)`.
+#### Bước chung — mở 1 file báo cáo và tìm đúng lỗi (làm 1 lần, lặp lại cho từng bug)
+
+1. Mở **File Explorer**, vào `D:\Nam3\HK3\Kiểm thử phần mềm\HW06\HW06-API-Testing\reports\newman\`.
+2. **Double-click** đúng file HTML theo API của bug (xem cột "File" ở bảng dưới) — file tự mở bằng
+   trình duyệt mặc định (Chrome/Edge), không cần cài gì thêm.
+3. Trên đầu trang, bấm tab màu đỏ **"Failed Tests"** (cạnh "Summary" và "Total Requests").
+4. Bấm nút **"Expand All Failed Tests"** — toàn bộ lỗi hiện ra thành từng thẻ đỏ, mỗi thẻ có dòng
+   tiêu đề **"Failed Test: TC-XXX-### ..."** và khung **"ASSERTION ERROR MESSAGE"** bên dưới.
+5. Bấm `Ctrl+F` (tìm trên trang), gõ đúng **TC ID** ghi ở cột "Tìm gì" trong bảng dưới → trình duyệt
+   nhảy tới đúng thẻ.
+6. **Chụp màn hình đúng thẻ đó** (tiêu đề `Failed Test: ...` + khung `ASSERTION ERROR MESSAGE`) —
+   dùng `Win+Shift+S` (Snipping Tool), kéo khung quanh đúng thẻ.
+7. Quay lại tab GitHub Issue tương ứng (link ở cột "Issue") → bấm **Edit** (biểu tượng bút chì góc
+   trên phải nội dung issue, hoặc kéo xuống ô "Add a comment") → **kéo-thả** ảnh vừa chụp vào ô soạn
+   → **Save**/**Comment**.
+
+#### Bảng tra cứu — 27 dòng, làm lần lượt từ trên xuống
+
+| Issue | Bug | File cần mở | Tìm gì (Ctrl+F) |
+|---|---|---|---|
+| [#2](https://github.com/DuyPham111/HW06/issues/2) | BUG-01 | *(không có trong Failed Tests — xem "3 bug đặc biệt" bên dưới)* | — |
+| [#3](https://github.com/DuyPham111/HW06/issues/3) | BUG-02 | `23127183_api-01-login_*.html` | `TC-LOGIN-022` |
+| [#4](https://github.com/DuyPham111/HW06/issues/4) | BUG-03 | `23127183_api-01-login_*.html` | `TC-LOGIN-028` |
+| [#5](https://github.com/DuyPham111/HW06/issues/5) | BUG-04 | `23127183_api-01-login_*.html` | `TC-LOGIN-029` |
+| [#6](https://github.com/DuyPham111/HW06/issues/6) | BUG-05 | `23127183_api-01-login_*.html` | `TC-LOGIN-030` |
+| [#7](https://github.com/DuyPham111/HW06/issues/7) | BUG-06 | `23127183_api-01-login_*.html` | `TC-LOGIN-016` |
+| [#8](https://github.com/DuyPham111/HW06/issues/8) | BUG-07 | `23127183_api-01-login_*.html` | `TC-LOGIN-036` |
+| [#9](https://github.com/DuyPham111/HW06/issues/9) | BUG-08 | `23127183_api-01-login_*.html` | `TC-LOGIN-103` |
+| [#10](https://github.com/DuyPham111/HW06/issues/10) | BUG-09 | *(không có trong Failed Tests — xem "3 bug đặc biệt" bên dưới)* | — |
+| [#11](https://github.com/DuyPham111/HW06/issues/11) | BUG-10 | `23127183_api-02-apply-coupon_*.html` | `TC-COUPON-001` |
+| [#12](https://github.com/DuyPham111/HW06/issues/12) | BUG-11 | `23127183_api-02-apply-coupon_*.html` | `TC-COUPON-031` |
+| [#13](https://github.com/DuyPham111/HW06/issues/13) | BUG-12 | `23127183_api-02-apply-coupon_*.html` | `TC-COUPON-004` |
+| [#14](https://github.com/DuyPham111/HW06/issues/14) | BUG-13 | `23127183_api-02-apply-coupon_*.html` | `TC-COUPON-036` |
+| [#15](https://github.com/DuyPham111/HW06/issues/15) | BUG-14 | `23127183_api-02-apply-coupon_*.html` | `TC-COUPON-034` |
+| [#16](https://github.com/DuyPham111/HW06/issues/16) | BUG-15 | `23127183_api-02-apply-coupon_*.html` | `TC-COUPON-033` |
+| [#17](https://github.com/DuyPham111/HW06/issues/17) | BUG-16 | `23127183_api-02-apply-coupon_*.html` | `TC-COUPON-023` |
+| [#18](https://github.com/DuyPham111/HW06/issues/18) | BUG-17 | `23127183_api-02-apply-coupon_*.html` | `TC-COUPON-028` |
+| [#19](https://github.com/DuyPham111/HW06/issues/19) | BUG-18 | `23127183_api-02-apply-coupon_*.html` | `TC-COUPON-032` |
+| [#1](https://github.com/DuyPham111/HW06/issues/1) | BUG-19 | *(không có trong Failed Tests — xem "3 bug đặc biệt" bên dưới)* | — |
+| [#20](https://github.com/DuyPham111/HW06/issues/20) | BUG-20 | `23127183_api-03-product-update_*.html` | `TC-PRODUPD-022` |
+| [#21](https://github.com/DuyPham111/HW06/issues/21) | BUG-21 | `23127183_api-03-product-update_*.html` | `TC-PRODUPD-027` |
+| [#22](https://github.com/DuyPham111/HW06/issues/22) | BUG-22 | `23127183_api-03-product-update_*.html` | `TC-PRODUPD-029` |
+| [#23](https://github.com/DuyPham111/HW06/issues/23) | BUG-23 | `23127183_api-03-product-update_*.html` | `TC-PRODUPD-002` |
+| [#24](https://github.com/DuyPham111/HW06/issues/24) | BUG-24 | `23127183_api-03-product-update_*.html` | `TC-PRODUPD-015` |
+| [#25](https://github.com/DuyPham111/HW06/issues/25) | BUG-25 | `23127183_api-03-product-update_*.html` | `TC-PRODUPD-014` |
+| [#26](https://github.com/DuyPham111/HW06/issues/26) | BUG-26 | `23127183_api-03-product-update_*.html` | `TC-PRODUPD-039` |
+| [#27](https://github.com/DuyPham111/HW06/issues/27) | BUG-27 | `23127183_api-03-product-update_*.html` | `TC-PRODUPD-045` |
+
+> `*` trong tên file là phần ngày giờ (`_20260831-124339` v.v.) — chỉ có đúng 1 file mỗi API nên gõ
+> vài ký tự đầu trong File Explorer là lọc ra ngay.
+
+#### 3 bug đặc biệt — KHÔNG có trong "Failed Tests" (dùng ảnh terminal thay vì ảnh HTML)
+
+Ba bug này được chứng minh bằng **request PASS** (đúng như thiết kế — assertion khớp với hành vi
+khai thác được) hoặc **không hề chạy trong Newman**, nên không xuất hiện ở tab "Failed Tests". Dùng
+lại kết quả bạn đã chạy ở mục A.3:
+
+| Issue | Bug | Lấy ảnh từ đâu |
+|---|---|---|
+| [#2](https://github.com/DuyPham111/HW06/issues/2) | BUG-01 | Chạy `bash bug-report/verify-bugs.sh 01` → chụp toàn bộ terminal, thấy rõ 3 request và dòng cuối trả về `403 "Tài khoản đã bị khóa"` dù mật khẩu đúng |
+| [#10](https://github.com/DuyPham111/HW06/issues/10) | BUG-09 | Chạy `bash bug-report/verify-bugs.sh 02` (chuỗi khóa) — chụp 2 dòng cuối cho thấy request thứ 3 trả `403`, so với email không tồn tại luôn trả `401` (đối chiếu bằng lời trong caption ảnh nếu cần) |
+| [#1](https://github.com/DuyPham111/HW06/issues/1) | BUG-19 | Chạy `bash bug-report/verify-bugs.sh 19` (⚠️ **làm sập SUT thật** — restart lại sau khi chụp: `cd eshop-sut/backend && node server.js`) → chụp toàn bộ terminal thấy dòng `KHONG KET NOI DUOC - SUT DA SAP`, hoặc chụp cửa sổ terminal đang chạy `node server.js` lúc nó in stack trace crash |
+
+Nếu chưa chạy các lệnh trên, mở terminal tại `HW06/HW06-API-Testing`, chạy lệnh tương ứng, rồi chụp
+`Win+Shift+S` như bình thường.
+
+#### Nếu thiếu thời gian — làm tối thiểu 5 bug này trước
+
+`#2 (BUG-01)` · `#4 (BUG-03)` · `#11 (BUG-10)` · `#15 (BUG-14)` · `#1 (BUG-19)` — đủ đại diện cả 3
+API và đủ 2 kiểu bằng chứng (ảnh HTML report + ảnh terminal).
 
 > Tối thiểu để không bị 0 điểm §6.5: đã có `bug-report/bug-report.md` **và** 27 issue thật trên
 > GitHub (đạt cả 2 vế *"both in the Markdown report and on your GitHub Issues page"*). Phần ảnh là
@@ -82,15 +148,112 @@ issue tự động (chỉ upload được qua kéo-thả trên web), nên đây 
 
 ### B.1 — Postman GUI: chạy data-driven, tạo Mock Server + Monitor (§6, liệt kê Postman feature)
 
-3 file CSV đã có sẵn trong `postman/data/`. Việc còn lại chỉ là **thao tác trong Postman GUI**
-(không tự động hoá được):
+> Làm trong app **Postman Desktop** (không phải trình duyệt). Nếu chưa cài: tải tại
+> https://www.postman.com/downloads/. Nếu đã cài nhưng chưa mở lại từ lúc dựng workspace ban đầu,
+> mở app lên — workspace `HW06-API-Testing-23127183` bạn tạo trước đó vẫn còn ở sidebar bên trái.
 
-1. **Data-driven:** Collection Runner → chọn 1 collection → **Select File** → chọn 1 CSV →
-   **Run** → chụp ảnh, lưu `bug-report/screenshots/postman-data-driven.png`.
-2. **Mock Server + Monitor:** làm theo hướng dẫn chi tiết ở
-   [`docs/08-POSTMAN-FEATURES.md`](08-POSTMAN-FEATURES.md) §3 (~15 phút cho cả hai) — dùng đúng ví dụ
-   bug công thức coupon (BUG-10) để mock server có ý nghĩa thật (chứng minh assertion đúng chiều).
-3. Điền lại bảng trong [`postman/README.md`](../postman/README.md) §4 với link mock/monitor thật.
+#### Bước 0 — Bật SUT (bắt buộc, nếu chưa chạy)
+
+Mở PowerShell/terminal, chạy:
+
+```bash
+cd "D:/Nam3/HK3/Kiểm thử phần mềm/HW06/eshop-sut/backend"
+node server.js
+```
+
+Thấy dòng `Server is running on http://localhost:3000` là được — **để cửa sổ này chạy nền**, đừng
+tắt trong lúc làm phần dưới.
+
+#### Bước 1 — Import environment (nếu Postman đang để "No environment")
+
+1. Trong Postman, sidebar trái → click **Environments**.
+2. Nếu **không thấy** `HW06-local-23127183` trong danh sách: bấm nút **Import** (góc trên trái) →
+   **Choose Files** → chọn file:
+   `D:\Nam3\HK3\Kiểm thử phần mềm\HW06\HW06-API-Testing\postman\environments\HW06-local.postman_environment.json`
+   → **Import**.
+3. Ở **góc trên phải** màn hình Postman, có 1 dropdown (mặc định ghi "No Environment") → bấm vào →
+   chọn **HW06-local-23127183**. **Bước này hay bị quên** — quên là mọi request lỗi ngay.
+
+#### Bước 2 — Import 4 collection (nếu chưa import)
+
+1. Sidebar trái → click **Collections**.
+2. Nếu **không thấy** các collection tên `23127183_api-01-login`, `23127183_api-02-apply-coupon`,
+   `23127183_api-03-product-update`, `23127183_regression`: bấm **Import** → **Choose Files** →
+   chọn **cả 4 file cùng lúc** (giữ `Ctrl` để chọn nhiều) trong thư mục:
+   `D:\Nam3\HK3\Kiểm thử phần mềm\HW06\HW06-API-Testing\postman\collections\`
+   → **Import**.
+3. Giờ sidebar **Collections** phải hiện đủ 4 collection, mỗi cái mở ra thấy các folder con
+   `00-setup`, `01-domain`, `02-state`, `03-security`, `04-schema`.
+
+#### Bước 3 — Chạy data-driven (Collection Runner)
+
+1. Rê chuột vào tên collection `23127183_api-02-apply-coupon` ở sidebar → click **dấu `...`** hiện
+   ra bên phải tên → chọn **Run collection** (hoặc bấm nút **Run** nếu Postman hiện sẵn khi bạn click
+   vào tên collection).
+2. Một tab **Runner** mở ra. Ở khung bên phải/dưới có mục **Data** (hoặc **Select File** tuỳ bản
+   Postman) → bấm **Select File** → chọn:
+   `D:\Nam3\HK3\Kiểm thử phần mềm\HW06\HW06-API-Testing\postman\data\coupon-cases.csv`
+3. Postman hiện bảng xem trước 10 dòng dữ liệu (cột `code`, `total_amount`, `expected_status`, ...).
+   Kiểm ô **Environment** phía trên cùng của Runner đang để đúng `HW06-local-23127183`.
+4. Bấm nút **Run 23127183_api-02-apply-coupon** (màu xanh/cam, góc dưới bên phải).
+5. Đợi chạy xong (vài giây) — Postman hiện bảng kết quả: mỗi dòng CSV chạy 1 lần qua **toàn bộ**
+   collection, nên bạn sẽ thấy request lặp lại nhiều lần (bình thường, vì Runner áp data cho mọi
+   request có biến `{{code}}`/`{{total_amount}}`, không chỉ riêng 1 request).
+6. **Chụp màn hình lúc này** (thấy rõ: tên collection, file CSV đã chọn, số vòng lặp = 10, kết quả
+   chạy) → lưu `bug-report/screenshots/postman-data-driven.png`.
+
+> Không bắt buộc chờ 100% pass — mục đích chỉ là chứng minh **tính năng data-driven đã dùng thật**,
+> không phải chạy sạch.
+
+#### Bước 4 — Tạo Mock Server (minh hoạ bằng đúng bug công thức coupon, BUG-10)
+
+1. Mở collection `23127183_api-02-apply-coupon` → mở folder `01-domain` → click vào request
+   `TC-COUPON-001` (case SAVE10/500.000 — đang đỏ vì SUT tính sai).
+2. Bên phải khung **Send**, tìm tab **Examples** (nằm cạnh nút Send/Save) → bấm **Add Example**.
+3. Đặt tên ví dụ: `FR-09 dung dac ta`. Ở phần **Response**:
+   - **Status**: `200 OK`
+   - **Body** (raw, JSON):
+     ```json
+     { "success": true, "coupon_id": 1, "discount_amount": 50000, "final_amount": 450000, "message": "Áp dụng thành công! Giảm 10%" }
+     ```
+   → **Save**.
+4. Quay lại sidebar, rê chuột vào tên collection `23127183_api-02-apply-coupon` → `...` → **Mock
+   collection**.
+5. Đặt tên mock: `HW06-mock-FR09-23127183` → **Environment**: chọn "Create a new one automatically"
+   hoặc để mặc định → bấm **Create Mock Server**.
+6. Postman hiện 1 URL dạng `https://xxxxxxxx.mock.pstmn.io` — **copy URL này**, dán vào
+   `postman/README.md` mục Mock Server (thay chỗ `_(điền)_`).
+7. Vào **Environments** → tạo environment mới tên `HW06-mock-23127183` (bấm `+` cạnh "Environments")
+   → thêm 1 biến `base_url` = URL mock vừa copy, và 1 biến `student_id` = `23127183`.
+8. Quay lại request `TC-COUPON-001`, đổi environment (dropdown góc trên phải) sang
+   `HW06-mock-23127183` → bấm **Send** → thấy response trả đúng `discount_amount: 50000` (vì đây là
+   ví dụ bạn tự đặt, đúng công thức thật) → assertion (`pm.test`) của case này giờ sẽ **xanh**.
+9. **Chụp màn hình** response xanh này → lưu `bug-report/screenshots/postman-mock-server.png`.
+10. **Đổi environment về lại `HW06-local-23127183`** trước khi làm tiếp (quan trọng — quên bước này
+    thì các request sau gọi nhầm vào mock thay vì SUT thật).
+
+#### Bước 5 — Tạo Monitor (giám sát mock server, vì mock chạy trên cloud của Postman)
+
+1. Sidebar → rê chuột vào collection `23127183_api-02-apply-coupon` → `...` → **Monitor collection**.
+2. Tên: `HW06-monitor-FR09-23127183`. **Environment**: chọn `HW06-mock-23127183` (không chọn
+   `HW06-local` — vì Postman Cloud không với tới `localhost` của bạn).
+3. **Tần suất**: chọn **Weekly** (không cần chạy dày, tránh tốn quota).
+4. Bấm **Create Monitor**.
+5. Sau khi tạo xong, bấm nút **Run** (chạy thử ngay 1 lần) để có kết quả.
+6. **Chụp màn hình** trang kết quả monitor (thấy tên monitor + 1 lượt chạy xanh) → lưu
+   `bug-report/screenshots/postman-monitor.png`.
+
+#### Bước 6 — Cập nhật lại tài liệu
+
+Mở [`postman/README.md`](../postman/README.md) §4, điền URL mock thật + kết quả monitor thật vào
+2 ô đang để `_(điền)_`. Rồi commit:
+
+```bash
+cd "D:/Nam3/HK3/Kiểm thử phần mềm/HW06/HW06-API-Testing"
+git add bug-report/screenshots/postman-data-driven.png bug-report/screenshots/postman-mock-server.png bug-report/screenshots/postman-monitor.png postman/README.md
+git commit -m "docs: anh Postman data-driven + Mock Server + Monitor (§6)"
+git push
+```
 
 ### B.2 — Video demo Agent Skill (§7, khuyến khích — không bắt buộc)
 
@@ -127,7 +290,7 @@ phản hồi, điền thêm bảng đối chiếu (không bắt buộc, chỉ gi
 
 - [x] **A.1** Vẽ sơ đồ generator + commit → tự chấm **100/100**
 - [x] **A.2** Đọc + ký tên 3 file `audit.md`
-- [ ] **A.3** Tự tay chạy `verify-bugs.sh` cho ≥3 bug nặng nhất
+- [x] **A.3** Tự tay chạy `verify-bugs.sh` cho ≥3 bug nặng nhất
 - [x] **A.4a** Tạo 27/27 GitHub Issues (đã xong qua `gh` CLI)
 - [ ] **A.4b** Kéo-thả ảnh vào từng issue (ưu tiên 5 Critical nặng nhất nếu thiếu thời gian)
 - [ ] **B.1** Data-driven + Mock Server + Monitor (nếu còn thời gian)
