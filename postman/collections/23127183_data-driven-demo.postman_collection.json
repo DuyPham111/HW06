@@ -1,0 +1,38 @@
+{
+  "info": {
+    "name": "23127183_data-driven-demo",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_postman_id": "23127183-data-driven-demo",
+    "description": "Collection RIENG chi de minh hoa tinh nang data-driven (Postman Runner bi khoa tra phi o feature nay tren ban mien phi hien tai; Newman CLI -d van chay duoc, mien phi, cung dung nguyen ly)."
+  },
+  "event": [
+    { "listen": "prerequest", "script": { "type": "text/javascript", "exec": [
+      "const studentId = pm.environment.get(\"student_id\") || \"23127183\";",
+      "pm.request.headers.upsert({ key: \"X-Student-Id\", value: studentId });",
+      "console.log(\"[HW06] X-Student-Id =\", studentId, \"|\", pm.request.method, pm.request.url.getPath(), \"|\", new Date().toISOString());"
+    ]}}
+  ],
+  "item": [
+    {
+      "name": "data-driven: {{note}}",
+      "event": [
+        { "listen": "test", "script": { "type": "text/javascript", "exec": [
+          "pm.test(`data-driven: ${pm.iterationData.get(\"note\")}`, () => {",
+          "  pm.response.to.have.status(Number(pm.iterationData.get(\"expected_status\")));",
+          "});"
+        ]}}
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "{{base_url}}/api/apply-coupon", "host": ["{{base_url}}"], "path": ["api", "apply-coupon"] },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"code\": \"{{code}}\",\n  \"total_amount\": {{total_amount}}\n}",
+          "options": { "raw": { "language": "json" } }
+        }
+      },
+      "response": []
+    }
+  ]
+}

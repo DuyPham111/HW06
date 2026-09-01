@@ -37,7 +37,7 @@ Mỗi collection có 6 folder: `00-setup` · `01-domain` · `02-state` · `03-se
 | 7 | **Pre-request script cấp collection** | gắn `X-Student-Id` cho **mọi** request + log Console (§6.4, §11) | `prerequest-collection.js` |
 | 8 | Post-response script / `pm.test` | toàn bộ assertion | mọi request |
 | 9 | JSON Schema validation | folder `04-schema` — §6.1 đòi *"response shape exactly matches the spec"* | §3 dưới |
-| 10 | Collection Runner + data file CSV | data-driven, §6 gọi tên đích danh | `data/*.csv` · ![](../bug-report/screenshots/postman-data-driven.png) |
+| 10 | Data-driven (CSV) | §6 gọi tên đích danh. Runner GUI của Postman hiện khoá tính năng "Datasets and data files" vào gói trả phí — dùng **Newman CLI `-d`** thay thế (cùng cơ chế, miễn phí, §8 liệt kê Newman ngang Postman) | `data/coupon-cases.csv` (10 dòng) · collection riêng `23127183_data-driven-demo.postman_collection.json` · báo cáo thật `reports/newman/23127183_data-driven-demo.html` (10 iteration, bắt được BUG-12) · ảnh: ![](../bug-report/screenshots/postman-data-driven.png) |
 | 11 | Postman Console | bằng chứng §11 | ![](../bug-report/screenshots/postman-console-gui.png) |
 | 12 | Newman CLI + `htmlextra` | chạy ngoài GUI, xuất HTML + raw JSON | `../reports/newman/` |
 | 13 | Newman trong CI (GitHub Actions) | §6 CI/CD | `../.github/workflows/api-tests.yml` |

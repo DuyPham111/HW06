@@ -185,25 +185,42 @@ tắt trong lúc làm phần dưới.
 3. Giờ sidebar **Collections** phải hiện đủ 4 collection, mỗi cái mở ra thấy các folder con
    `00-setup`, `01-domain`, `02-state`, `03-security`, `04-schema`.
 
-#### Bước 3 — Chạy data-driven (Collection Runner)
+#### Bước 3 — Chạy data-driven
 
-1. Rê chuột vào tên collection `23127183_api-02-apply-coupon` ở sidebar → click **dấu `...`** hiện
-   ra bên phải tên → chọn **Run collection** (hoặc bấm nút **Run** nếu Postman hiện sẵn khi bạn click
-   vào tên collection).
-2. Một tab **Runner** mở ra. Ở khung bên phải/dưới có mục **Data** (hoặc **Select File** tuỳ bản
-   Postman) → bấm **Select File** → chọn:
-   `D:\Nam3\HK3\Kiểm thử phần mềm\HW06\HW06-API-Testing\postman\data\coupon-cases.csv`
-3. Postman hiện bảng xem trước 10 dòng dữ liệu (cột `code`, `total_amount`, `expected_status`, ...).
-   Kiểm ô **Environment** phía trên cùng của Runner đang để đúng `HW06-local-23127183`.
-4. Bấm nút **Run 23127183_api-02-apply-coupon** (màu xanh/cam, góc dưới bên phải).
-5. Đợi chạy xong (vài giây) — Postman hiện bảng kết quả: mỗi dòng CSV chạy 1 lần qua **toàn bộ**
-   collection, nên bạn sẽ thấy request lặp lại nhiều lần (bình thường, vì Runner áp data cho mọi
-   request có biến `{{code}}`/`{{total_amount}}`, không chỉ riêng 1 request).
-6. **Chụp màn hình lúc này** (thấy rõ: tên collection, file CSV đã chọn, số vòng lặp = 10, kết quả
-   chạy) → lưu `bug-report/screenshots/postman-data-driven.png`.
+> **Đã đổi cách làm:** Postman gần đây **khóa tính năng "Datasets and data files" của Runner vào gói
+> trả phí** (bảng "Upgrade to use datasets and data files" hiện ra khi bấm chọn file CSV) — **đừng
+> nâng cấp trả phí**, không cần thiết cho bài này. Dùng **Newman CLI** thay thế: cùng cơ chế
+> data-driven, miễn phí hoàn toàn, và §8 của đề liệt kê Newman ngang hàng với Postman GUI.
 
-> Không bắt buộc chờ 100% pass — mục đích chỉ là chứng minh **tính năng data-driven đã dùng thật**,
-> không phải chạy sạch.
+✅ **Đã chạy thật sẵn cho anh** — kết quả: 10 vòng lặp theo đúng 10 dòng
+`postman/data/coupon-cases.csv`, 10 assertion, **1 đỏ** (bắt đúng **BUG-12**: `total_amount` bằng
+đúng `min_order_amount` bị từ chối sai theo FR-09 C3). Báo cáo đã lưu ở
+`reports/newman/23127183_data-driven-demo.html`.
+
+**Việc bạn cần làm — chỉ chụp ảnh:**
+
+1. Mở file `D:\Nam3\HK3\Kiểm thử phần mềm\HW06\HW06-API-Testing\reports\newman\23127183_data-driven-demo.html`
+   bằng trình duyệt (double-click trong File Explorer).
+2. Trang này hiện **10 iteration** (Iteration 1/10 → 10/10), mỗi iteration là 1 dòng CSV chạy qua
+   request `POST /api/apply-coupon`. Cuộn xem tổng quan, hoặc bấm tab **"Failed Tests"** để thấy
+   ngay assertion đỏ của BUG-12.
+3. **Chụp màn hình** phần đầu trang (thấy rõ dòng `TOTAL ITERATIONS: 10`) → lưu
+   `bug-report/screenshots/postman-data-driven.png`.
+
+**Nếu muốn tự chạy lại** (không bắt buộc, file đã có sẵn rồi):
+
+```bash
+cd "D:/Nam3/HK3/Kiểm thử phần mềm/HW06/HW06-API-Testing"
+npx newman run postman/collections/23127183_data-driven-demo.postman_collection.json \
+  -e postman/environments/HW06-local.postman_environment.json \
+  -d postman/data/coupon-cases.csv \
+  --reporters cli,htmlextra \
+  --reporter-htmlextra-export reports/newman/23127183_data-driven-demo.html
+```
+
+> `postman/collections/23127183_data-driven-demo.postman_collection.json` là 1 collection nhỏ
+> (1 request) dựng riêng để minh hoạ tính năng này — tách khỏi 4 collection chính (không đụng tới bộ
+> test đã chạy chính thức).
 
 #### Bước 4 — Tạo Mock Server (minh hoạ bằng đúng bug công thức coupon, BUG-10)
 
