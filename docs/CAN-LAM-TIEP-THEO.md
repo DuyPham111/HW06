@@ -310,7 +310,7 @@ phản hồi, điền thêm bảng đối chiếu (không bắt buộc, chỉ gi
 - [x] **A.3** Tự tay chạy `verify-bugs.sh` cho ≥3 bug nặng nhất
 - [x] **A.4a** Tạo 27/27 GitHub Issues (đã xong qua `gh` CLI)
 - [ ] **A.4b** Kéo-thả ảnh vào từng issue (ưu tiên 5 Critical nặng nhất nếu thiếu thời gian)
-- [ ] **B.1** Data-driven + Mock Server + Monitor (nếu còn thời gian)
+- [x] **B.1** Data-driven + Mock Server + Monitor — cả 3 đã xong, có ảnh + số liệu thật trong `postman/README.md` §2, §4
 - [ ] **B.2** Video demo (tuỳ chọn)
 - [ ] **B.3** Xuất PDF 6 file
 - [ ] **B.4** Bảng đối chiếu nhóm (tuỳ chọn)
