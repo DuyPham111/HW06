@@ -41,6 +41,7 @@ on:
     branches: [main]
     paths:
       - 'postman/**'
+      - 'tools/run-newman.mjs'
       - 'tools/run-newman.sh'
       - 'tools/ci-gate.mjs'
       - 'ci/expected-failures.json'
