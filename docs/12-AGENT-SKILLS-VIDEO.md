@@ -49,12 +49,19 @@ description: Design API test cases from an API specification, one technique step
 
 > **Thời lượng: không bắt buộc tối thiểu.** §7 chỉ ghi *"a demonstration video showing it generate
 > tests for one API"*, không kèm số phút nào (khác HW05 từng bắt buộc ≥6 phút cho một video khác).
-> Kịch bản dưới đây rút gọn còn **~7:30 phút**, vẫn đủ 3 yếu tố bắt buộc lọt khung hình (§3.3).
+> Kịch bản dưới đây dài **~8 phút**.
 
-Kịch bản dùng **đúng số liệu thật** đã có trong repo (158 test case, 27 bug, BUG-02 khóa tài khoản
-sai ngưỡng, BUG-03 lộ password, 2 lượt CI thật...) — không cần bịa gì thêm, chỉ cần **đọc theo và
-thao tác đúng trình tự**. Có thể đọc lại lời thoại 1–2 lần cho quen trước khi quay, nhưng **đừng học
-thuộc lòng như trả bài** — nói tự nhiên theo ý, lời thoại chỉ là sườn.
+> ⚠️ **Điều dễ làm hỏng video nhất.** §7 đòi video cho thấy skill **sinh test case** cho một API.
+> Một video chỉ chạy đúng một prompt rồi dành phần lớn thời lượng đi kể lại kết quả có sẵn — bảng
+> case, báo cáo Newman, CI, Issues — là **không đạt yêu cầu đó**, dù mọi con số đều thật. Đặc biệt
+> nếu prompt duy nhất đó là **bước 1** của skill, vì bước 1 theo thiết kế **chưa sinh case nào**.
+> Kịch bản này vì vậy đặt **3 lượt gọi AI thật** làm trục chính, trong đó lượt thứ 3 sinh test case
+> trực tiếp trên màn hình.
+
+Kịch bản dùng **đúng số liệu thật** đã có trong repo (45 case AI sinh cho API-01 chia 4 nhóm, 158
+case cho cả 3 API, `53/53/9` khi chạy Newman, 27 bug) — không cần bịa gì thêm. Có thể đọc lại lời
+thoại 1–2 lần cho quen trước khi quay, nhưng **đừng học thuộc lòng như trả bài** — nói tự nhiên theo
+ý, lời thoại chỉ là sườn.
 
 ### 3.1 Chuẩn bị trước khi bấm Record (làm 1 lần)
 
@@ -95,200 +102,243 @@ Phải in ra JSON danh sách 5 sản phẩm. Nếu ra rỗng hoặc báo lỗi k
 > Đừng thêm `-o /dev/null` vào lệnh trên: trên PowerShell, `curl.exe` không hiểu `/dev/null` và trả
 > về exit code 23 kèm chữ đỏ, nhìn như lỗi trong khi SUT vẫn bình thường.
 
-### 3.2 Kịch bản rút gọn ~7:30 — thao tác + lời thoại từng đoạn
+### 3.2 Kịch bản ~8:00 — thao tác + lời thoại từng đoạn
 
 > Ký hiệu: **[HÀNH ĐỘNG]** = việc tay phải làm trên màn hình. **[NÓI]** = lời thoại đọc/kể, không
-> cần đúng từng chữ, cứ theo đúng ý là được. So với bản đầy đủ, bản này **gộp phần giới thiệu skill
-> vào ngay trước lúc demo**, và **rút ngắn phần kết quả/CI/Issues** thành các đoạn quan sát nhanh —
-> phần lõi (demo chạy thật + AI trả lời sai + `curl` xác minh) **giữ nguyên gần như đầy đủ**, vì đó
-> là phần có giá trị nhất và không nên cắt.
+> cần đúng từng chữ, cứ theo đúng ý là được.
+
+**Trục của video này là §7: *"a demonstration video showing it generate tests for one API"*.** Nên
+**hơn một nửa thời lượng phải là skill đang sinh test case thật**, chứ không phải đi kể lại kết quả
+đã có sẵn trong repo. Phần CI, Issues, bug report thuộc §6/§8 — đã có bằng chứng riêng trong bài,
+video chỉ cần nhắc một câu ở cuối.
+
+Có **3 lượt gọi AI thật** trong video, theo đúng thứ tự dưới đây. Hai lượt đầu là một **phép so sánh
+có chủ đích** (không phải may rủi): hỏi cùng một câu, lần đầu chỉ đưa đặc tả, lần sau đưa thêm mã
+nguồn — để thấy đúng cái mà sơ đồ tự vẽ khẳng định: **phải đọc 3 nguồn chứ không phải 1**.
 
 ---
 
-**0:00 – 0:35 — Giới thiệu**
+**0:00 – 0:30 — Giới thiệu**
 
-**[HÀNH ĐỘNG]** Mở `README.md` trong VS Code, cuộn nhanh qua tiêu đề và bảng Test Summary.
+**[HÀNH ĐỘNG]** Mở `README.md` trong VS Code, cuộn nhanh qua tiêu đề.
 
 **[NÓI]**
-> "Chào thầy cô và các bạn. Em là Phạm Vũ Ngọc Duy, mã số sinh viên 23127183, môn Kiểm thử phần
-> mềm. Đây là video demo Agent Skill cho bài HW06, API Testing trên hệ thống EShop — em chọn 3 API
-> đăng nhập, áp mã giảm giá, và cập nhật sản phẩm, mỗi API một pool theo đúng đề bài. Sau khi làm
-> xong em có 158 test case, chạy Newman thật, phát hiện 27 bug thật. Video này em demo cách em dùng
-> Agent Skill để sinh test case theo đúng quy trình 5 bước, không phải một prompt gộp."
+> "Chào thầy cô và các bạn. Em là Phạm Vũ Ngọc Duy, mã số sinh viên 23127183, môn Kiểm thử phần mềm.
+> Video này demo Agent Skill của em sinh test case cho một API của hệ thống EShop — cụ thể là API
+> đăng nhập `POST /api/login`. Em sẽ chạy skill trực tiếp, không phải chiếu lại kết quả có sẵn."
 
 ---
 
-**0:35 – 1:40 — Vấn đề + sơ đồ tự vẽ**
+**0:30 – 1:15 — Sơ đồ tự vẽ: thiết kế của generator**
 
 **[HÀNH ĐỘNG]** Mở `generator/design.md`, cho thấy ảnh `generator-flow-selfdrawn.png`.
 
 **[NÓI]**
-> "Đề bài cấm dùng một prompt kiểu 'sinh hết test case rồi chạy luôn' — phải hướng dẫn AI đi từng
-> bước. Đây là sơ đồ em tự thiết kế và tự vẽ tay trên draw.io, không dùng AI vẽ vì đề cấm rõ điều
-> đó. Sáu giai đoạn: đọc 3 nguồn dữ liệu — đặc tả, yêu cầu chức năng, và mã nguồn thật — suy ra ràng
-> buộc, sinh case theo 4 nhóm mỗi nhóm một lượt AI riêng, rồi xuất file và kiểm chất lượng.
+> "Đây là sơ đồ generator em tự thiết kế và tự vẽ trên draw.io — đề cấm sơ đồ do AI sinh nên em vẽ tay.
+> Điểm quan trọng nhất của thiết kế nằm ở giai đoạn đầu: generator **bắt buộc đọc 3 nguồn** — đặc tả
+> API, tài liệu yêu cầu chức năng FR và bảo mật SEC, và **mã nguồn thật của hệ thống**. Và ở giai
+> đoạn 3, nó sinh test case theo 4 nhóm — domain, state, security, schema — **mỗi nhóm một lượt hỏi
+> AI riêng**, vì đề bài cấm gộp tất cả vào một prompt.
 >
-> Em đã đóng gói đúng quy trình này thành Agent Skill tên `api-test-design`. Bây giờ em chạy thử
-> lại bước 1 của skill, trên chính API đăng nhập, để thấy AI phản hồi thật theo thời gian thực."
+> Hai điều đó nghe có vẻ là chi tiết kỹ thuật nhỏ, nhưng lát nữa em sẽ chứng minh nếu bỏ một trong
+> hai thì bộ test sai ngay."
 
 ---
 
-**1:40 – 4:40 — Demo chạy thật (đoạn quan trọng nhất — giữ nguyên, đừng cắt)**
+**1:15 – 1:55 — Skill là hiện thực của sơ đồ**
 
-**[HÀNH ĐỘNG]** Chuyển qua terminal đã mở sẵn Claude Code (gõ `claude` trong `HW06-API-Testing` nếu
-chưa mở). Gõ prompt sau — **dùng đúng đường dẫn `../eshop-sut/`** vì SUT nằm ngoài thư mục bài làm:
-
-```text
-Dùng skill api-test-design. Đọc mục 1.2 trong ../eshop-sut/api_specification.md, FR-02 và bảng
-SEC trong ../eshop-sut/README.md, và ../eshop-sut/backend/server.js dòng 32-66. Bước này CHƯA
-sinh test case — chỉ trả lời: cơ chế khóa tài khoản theo FR-02 là gì (bao nhiêu lần sai thì khóa,
-khóa bao lâu), và cơ chế thật trong code là gì? Hai bên có khớp không?
-```
-
-> ⚠️ **Chạy thử prompt này 1 lần trước khi quay** (bước 8 bảng chuẩn bị). Lần đầu đọc file ngoài
-> thư mục làm việc, Claude Code sẽ hỏi xin quyền truy cập `../eshop-sut` — bấm đồng ý **lúc chạy
-> nháp**, để lúc quay thật nó chạy thẳng, không có hộp thoại chen ngang.
-
-**[NÓI]** (đọc trong lúc AI xử lý)
-> "Đây đúng là bước 1 của skill — chưa sinh test case, chỉ bắt AI đọc và đối chiếu."
-
-**[HÀNH ĐỘNG]** Đợi AI trả lời xong, đọc to kết quả.
+**[HÀNH ĐỘNG]** Mở `.claude/skills/api-test-design/SKILL.md`, dừng ở **bảng 5 bước**, rồi cuộn xuống
+**"Ba luật không được vi phạm"**.
 
 **[NÓI]**
-> "Và đây chính là chỗ AI trả lời sai mà em đã ghi lại trong file audit. AI đọc đúng con số '3 lần'
-> trong văn bản đặc tả, nhưng khi em tự chạy `curl` thật để kiểm chứng thì phát hiện tài khoản thực
-> ra bị khóa sau đúng 2 lần sai, vì code cộng dồn bộ đếm 2 đơn vị mỗi lần sai chứ không phải 1. Đây
-> chính xác là lý do đề bắt buộc phải tự chạy thật kiểm chứng, không tin tuyệt đối vào AI đọc code."
+> "Em đóng gói sơ đồ đó thành Agent Skill tên `api-test-design`. Skill ép quy trình đi đúng 5 bước:
+> bước 1 chỉ đọc và trả lời, **chưa được sinh case**; bước 2 chốt bảng phân vùng; bước 3, 4a, 4b, 5
+> mới lần lượt sinh Domain, State, Security, Schema — mỗi bước một lượt riêng.
+>
+> Và đây là ba luật skill bắt AI tuân theo. Luật quan trọng nhất là luật số 2: **expected phải bám
+> đặc tả, không được bám mã nguồn**. Vì hệ thống này có bug cố ý — nếu chép hành vi hiện tại làm kỳ
+> vọng thì bộ test sẽ luôn xanh trên một hệ thống đang sai."
 
-**[HÀNH ĐỘNG]** Chuyển terminal khác, chạy:
+---
+
+**1:55 – 2:35 — Lượt AI thứ 1: chỉ đưa đặc tả**
+
+**[HÀNH ĐỘNG]** Sang terminal đang mở Claude Code (mở bằng `claude` trong `HW06-API-Testing`). Gõ:
+
+```text
+Dùng skill api-test-design, bước 1. CHỈ đọc FR-02 trong ../eshop-sut/README.md và mục 1.2 trong
+../eshop-sut/api_specification.md. Chưa sinh test case. Trả lời đúng 2 câu: sai mật khẩu bao
+nhiêu lần thì tài khoản bị khóa, và khóa trong bao lâu?
+```
+
+**[NÓI]** (trong lúc AI trả lời)
+> "Lượt đầu em cố tình **chỉ đưa đặc tả**, giấu mã nguồn đi."
+
+**[HÀNH ĐỘNG]** Đọc to câu trả lời.
+
+**[NÓI]**
+> "AI trả lời: sai **3 lần** thì khóa, khóa **30 giây**. Và AI trả lời hoàn toàn đúng — vì FR-02
+> viết đúng như vậy. Nếu em dừng ở đây thì toàn bộ test case về khóa tài khoản sẽ dựng trên hai con
+> số này."
+
+---
+
+**2:35 – 3:25 — Lượt AI thứ 2: đưa thêm mã nguồn thật**
+
+**[HÀNH ĐỘNG]** Gõ tiếp trong cùng phiên:
+
+```text
+Giờ đọc thêm ../eshop-sut/backend/server.js dòng 32-66. Hành vi THẬT trong code có khớp với
+FR-02 không? Nếu lệch thì lệch ở đâu, và test case phải bám bên nào?
+```
+
+**[NÓI]** (trong lúc AI xử lý)
+> "Bây giờ em đưa nốt nguồn thứ ba — chính là mã nguồn — đúng như sơ đồ yêu cầu."
+
+**[HÀNH ĐỘNG]** Đọc to kết quả. AI phải chỉ ra **2 chỗ lệch**.
+
+**[NÓI]**
+> "Và đây là lý do sơ đồ của em bắt đọc cả ba nguồn. AI chỉ ra hai chỗ lệch. Thứ nhất, đặc tả nói mỗi
+> lần sai tăng bộ đếm **1 đơn vị**, nhưng code cộng **2** — nên tài khoản bị khóa ngay từ lần sai
+> **thứ 2**, không phải thứ 3. Thứ hai, đặc tả nói khóa **30 giây**, còn code khóa **180 nghìn
+> mili giây**, tức **3 phút** — gấp 6 lần.
+>
+> Và đúng theo luật số 2 của skill: **expected vẫn bám đặc tả**. Chính vì bám đặc tả nên chỗ lệch thứ
+> nhất hiện ra thành test đỏ, và test đỏ đó là bug thật — chứ không phải em sửa kỳ vọng cho khớp code."
+
+---
+
+**3:25 – 4:00 — Kiểm chứng bằng `curl`, không tin AI**
+
+**[HÀNH ĐỘNG]** Sang terminal thứ 2, chạy:
 
 ```bash
 bash bug-report/verify-bugs.sh 02
 ```
 
 **[NÓI]**
-> "Đây là script tái hiện lại đúng phát hiện đó bằng `curl` thật, độc lập với Postman. Sai lần 1 trả
-> 401, sai lần 2 vẫn 401 nhưng tài khoản đã bị khóa ngầm, và request thứ 3 — dù gõ đúng mật khẩu —
-> vẫn bị chặn mã 403. Đây là bug thật, em đặt tên BUG-02."
+> "Nhưng AI nói vẫn chỉ là AI nói. Em kiểm chứng bằng `curl` thật, độc lập với Postman. Script đăng
+> ký một tài khoản mới, rồi sai mật khẩu 2 lần. Sai lần 1 trả 401, sai lần 2 vẫn 401 — nhưng tài
+> khoản đã bị khóa ngầm. Và request thứ 3, **dù gõ đúng mật khẩu**, vẫn bị chặn với mã 403. Đúng như
+> AI vừa suy ra từ code. Đây là bug BUG-02 trong báo cáo của em."
 
 ---
 
-**4:40 – 5:20 — Kết quả nhanh: bảng test case và file audit**
+**4:00 – 5:50 — Lượt AI thứ 3: skill SINH TEST CASE thật (đoạn chính của video)**
 
-**[HÀNH ĐỘNG]** Mở nhanh `test-cases/api-01-login/generated.md` (bảng phân bố 4 nhóm), rồi
-`audit.md` (đoạn ghi chú `TC-LOGIN-021`/`022`).
+**[HÀNH ĐỘNG]** Quay lại terminal Claude Code, gõ prompt bước 3 (copy từ
+[`docs/03-GENERATE-AI.md`](03-GENERATE-AI.md) §3):
+
+```text
+Tiếp bước 3 của skill: sinh test case nhóm Domain cho POST /api/login — CHỈ nhóm Domain, chưa
+state, chưa security, chưa schema. Mỗi phân vùng ít nhất 1 case. ID từ TC-LOGIN-001. Cột Kỹ
+thuật = Domain, Nguồn = AI, Audit và Kết quả để trống. Expected body phải kiểm được bằng
+pm.test. Xuất đúng 12 cột theo khuôn trong skill.
+```
+
+**[NÓI]** (nói trong lúc AI đang sinh — đây là đoạn chờ lâu nhất, khoảng 1–2 phút)
+> "Đây là bước 3, và là phần chính của video: skill đang sinh test case thật cho API đăng nhập. Các
+> thầy cô để ý ba điều.
+>
+> Thứ nhất, nó **chỉ sinh nhóm Domain** — không đụng tới state, security hay schema. Bốn nhóm là bốn
+> lượt riêng, đúng như sơ đồ và đúng như đề bài yêu cầu.
+>
+> Thứ hai, mỗi dòng ra đúng **12 cột**, trong đó có cột **Căn cứ** — mỗi test case bắt buộc trỏ về một
+> mục cụ thể trong đặc tả, hoặc ghi rõ là *đặc tả im lặng*. Đây là cách skill chặn AI bịa kỳ vọng.
+>
+> Thứ ba, cột **Nguồn** ghi `AI`. Case nào do em tự nghĩ ra sau này sẽ ghi `SV` — đề bài phạt việc
+> nhận nhầm công."
+
+**[HÀNH ĐỘNG]** Khi bảng hiện xong, cuộn qua vài dòng, **dừng lại ở một dòng có cột `Căn cứ` ghi
+*"đặc tả im lặng"*** và một dòng case mật khẩu sai.
 
 **[NÓI]**
-> "Sau 5 bước, kết quả là 45 test case AI sinh, chia 4 nhóm domain, state, security, schema, mỗi
-> dòng đều có cột 'Căn cứ' trỏ về đặc tả để tránh AI bịa kỳ vọng. Đây là file audit — nơi em chịu
-> trách nhiệm cuối cùng, ghi rõ case nào AI sai và sửa thế nào — em còn tự thêm 6 case AI bỏ sót,
-> ví dụ kẻ tấn công khóa được tài khoản người khác chỉ bằng email, không cần mật khẩu, đó là BUG-01."
+> "Bảng vừa sinh xong. Ví dụ dòng này: case sai mật khẩu, expected là 401 **và** body không được nói
+> rõ là sai email hay sai mật khẩu — căn cứ là FR-02, *không để lộ chi tiết nguyên nhân*. Còn dòng
+> này, đặc tả không nói gì về trường hợp thiếu hẳn field, nên cột Căn cứ ghi thẳng là *đặc tả im
+> lặng*, và kỳ vọng chỉ dám khẳng định phần chắc chắn: không được trả lỗi 500."
 
 ---
 
-**5:20 – 6:20 — Chạy Newman thật**
+**5:50 – 6:30 — Đối chiếu với bộ đã nộp**
 
-**[HÀNH ĐỘNG]** Terminal: gõ `npm run test:api1`. Chạy hết **~5 giây**, không phải chờ lâu.
+**[HÀNH ĐỘNG]** Mở `test-cases/api-01-login/generated.md`, cho thấy **bảng phân bố 4 nhóm**
+(Domain 18 · State 12 · Security 9 · Schema 6).
+
+**[NÓI]**
+> "Bốn bước còn lại — state, security, schema — em chạy y hệt cách vừa rồi, mỗi nhóm một lượt riêng,
+> và đây là kết quả đầy đủ cho API đăng nhập: **45 test case do AI sinh**, chia đúng 4 nhóm.
+>
+> Một điểm em muốn nói thật: bảng vừa sinh trực tiếp trên video **không trùng từng dòng** với bảng
+> trong bài nộp. Đó là bản chất của generator dùng AI — nó không tất định. Và **chính vì thế** đề bài
+> mới bắt phải có bước audit của con người ở §6.2: em đã tự đọc lại từng case, dán nhãn hợp lệ hay
+> không, sửa case sai, và tự thêm **6 case mà AI bỏ sót** cho riêng API này."
+
+---
+
+**6:30 – 7:10 — Case sinh ra có chạy được thật không**
+
+**[HÀNH ĐỘNG]** Terminal: `npm run test:api1` (chạy ~5 giây).
 
 ```bash
 npm run test:api1
 ```
 
-Để lộ trên khung hình: bảng tổng kết Newman (cột `executed` / `failed`) và danh sách assertion đỏ.
-
-> **Số liệu đúng phải ra:** `53 request · 53 assertion · 9 đỏ`. Nếu ra số khác → SUT chưa được
-> restart, dừng quay, restart SUT rồi quay lại đoạn này.
+> **Số liệu đúng phải ra:** `53 request · 53 assertion · 9 đỏ`. Nếu ra số khác → SUT chưa restart.
 
 **[NÓI]**
-> "Em chạy thật bộ test bằng Newman — hostname luôn là `localhost:3000`, đúng SUT em đang chạy, không
-> giả lập. Kết quả 53 request, 53 assertion, 9 assertion đỏ, mỗi cái map về đúng một bug thật."
-
-**[HÀNH ĐỘNG]** Mở báo cáo HTML. **Không cần mò trong thư mục** — dòng gần cuối của terminal in sẵn
-đường dẫn đầy đủ, dạng:
-
-```text
-Bao cao HTML: ...\reports\newman\23127183_api-01-login_<YYYYmmdd-HHMMSS>.html
-```
-
-Ctrl+click vào đường dẫn đó (hoặc copy dán vào trình duyệt). Nếu terminal không cho click:
-
-```bash
-start "$(ls -t reports/newman/23127183_api-01-login_*.html | head -1)"
-```
-
-PowerShell thì dùng:
-
-```powershell
-Invoke-Item (Get-ChildItem reports\newman\23127183_api-01-login_*.html | Sort-Object LastWriteTime -Descending)[0].FullName
-```
-
-**Điều hướng trong trang báo cáo — đúng 2 bước** (đã kiểm chứng trên file thật):
-
-| Bước | Thao tác | Thấy gì |
-|---|---|---|
-| 1 | Bấm **tab đỏ `Failed Tests`** (có badge **`9`**) trên thanh tab ngang ở đầu trang | 9 dòng đỏ hiện ra cùng lúc — bằng chứng trực quan cho con số 9 vừa đọc |
-| 2 | Quay lại **tab đầu tiên** (danh sách request), `Ctrl+F` gõ `TC-LOGIN-028` → bấm dòng **`Iteration: 1 - TC-LOGIN-028`** để bung ra → cuộn tới khối **`Response Body`** | JSON response, trong đó có `"password":"Test1234!"` |
-
-> ⚠️ Đừng tìm response body trong tab `Failed Tests` — tab đó **chỉ hiện thông báo assertion**
-> (`... to not have property 'password'`), **không** có response body. Muốn quay được dòng mật khẩu
-> nguyên văn thì bắt buộc phải sang danh sách request ở bước 2.
-
-**[NÓI]**
-> "Bấm vào request đỏ này, thấy field `password` xuất hiện nguyên văn trong response — bug BUG-03,
-> hệ thống lộ mật khẩu dạng thô."
-
-> 💡 **Mẹo:** ngay dưới `Response Body` của cùng request này còn có khối **`Console Logs`** in sẵn
-> `[HW06] X-Student-Id = 23127183 | POST /api/login | <timestamp>`. Nếu lúc quay Postman Console
-> có trục trặc, chỉ cần cuộn thêm vài dòng ở đây là đã có đủ bằng chứng §11 — không phải quay lại.
+> "Cuối cùng, test case sinh ra phải chạy được thật chứ không nằm trên giấy. Em chạy bằng Newman —
+> hostname `localhost:3000`, đúng hệ thống đang chạy trên máy em. 53 request, 53 assertion, 9 đỏ.
+> Và 9 assertion đỏ này không phải lỗi bộ test — chúng chính là 9 bug thật, vì kỳ vọng bám đặc tả
+> còn hệ thống thì làm sai đặc tả."
 
 ---
 
-**6:20 – 6:50 — Bằng chứng chống gian lận (§11)**
+**7:10 – 7:40 — Bằng chứng chống gian lận (§11)**
 
-**[HÀNH ĐỘNG]** Chuyển sang Postman đã mở sẵn, bấm **Send** 1 request, mở Postman Console.
+**[HÀNH ĐỘNG]** Sang Postman đã mở sẵn, bấm **Send** một request, mở Postman Console.
 
 **[NÓI]**
-> "Mọi request phải mang header `X-Student-Id` để chống gian lận — em đặt trong pre-request script
-> cấp collection. Đây là Postman Console in ra đúng mã số sinh viên của em."
+> "Đề yêu cầu mọi request phải mang header `X-Student-Id`. Em đặt trong pre-request script ở cấp
+> collection để không sót request nào — đây là Postman Console đang in ra đúng mã số sinh viên của em,
+> 23127183."
 
 ---
 
-**6:50 – 7:20 — CI/CD và GitHub Issues (quan sát nhanh)**
-
-**[HÀNH ĐỘNG]** Chuyển nhanh 2 tab: GitHub Actions (1 lượt xanh, 1 đỏ), GitHub Issues (27 issue).
+**7:40 – 8:00 — Kết luận**
 
 **[NÓI]**
-> "Bộ test cũng chạy CI/CD thật trên GitHub Actions — một lượt xanh hoàn toàn, một lượt đỏ tạo có
-> chủ đích để chứng minh cổng kiểm tra bắt được hồi quy. Và đây là 27 bug đã tạo thành Issue thật."
+> "Tổng kết: em đã xây 4 Agent Skill — sinh case, audit, dựng collection và chạy Newman, và ghi log
+> AI Audit — để tái dùng cho API khác. Áp dụng cho cả 3 API, em có 158 test case và tìm ra 27 bug
+> thật, tất cả đã tạo thành Issue trên GitHub và có pipeline CI chạy tự động. Em cảm ơn thầy cô và
+> các bạn đã theo dõi."
 
----
-
-**7:20 – 7:35 — Kết luận**
-
-**[NÓI]**
-> "Tổng kết: em xây dựng 4 Agent Skill để tái sử dụng cho các API hoặc bài tập tương tự sau này.
-> Toàn bộ quy trình chạy thật, không dựng kịch bản. Em cảm ơn thầy cô và các bạn đã theo dõi."
-
----
-
-### 3.3 Ba điều bắt buộc phải lọt vào khung hình
+### 3.3 Bốn điều bắt buộc phải lọt vào khung hình
 
 (để video có giá trị làm bằng chứng, không chỉ là thuyết trình miệng)
 
-1. **Postman Console** in `[HW06] X-Student-Id = 23127183` — đoạn 6:20–6:50.
-2. **Terminal Newman** với hostname `http://localhost:3000` — đoạn 5:20–6:20.
-3. **Sơ đồ tự vẽ** — đoạn 0:35–1:40, nói rõ vẽ bằng draw.io, ngày 31/08/2026.
+1. **Skill đang sinh test case thật** — đoạn 4:00–5:50. **Đây là điều §7 đòi đích danh**
+   (*"showing it generate tests for one API"*); thiếu nó thì ba điều còn lại không cứu được video.
+2. **Sơ đồ tự vẽ** — đoạn 0:30–1:15, nói rõ vẽ bằng draw.io, ngày 31/08/2026.
+3. **Terminal Newman** với hostname `http://localhost:3000` — đoạn 6:30–7:10.
+4. **Postman Console** in `[HW06] X-Student-Id = 23127183` — đoạn 7:10–7:40.
 
 ### 3.4 Quay và đăng
 
 - Quay bằng **OBS Studio** hoặc **Xbox Game Bar** (`Win+G` → biểu tượng camera). Độ phân giải 1080p,
   **bắt buộc thu giọng nói tiếng Việt** (không chỉ phụ đề).
-- **Đừng quay lại nhiều lần cho hoàn hảo.** Đoạn demo chạy thật, AI trả lời sai, rồi bạn phát hiện và
-  sửa lại bằng `curl` thật (1:40–4:40) **chính là phần đáng giá nhất** của video — nói vấp một chút
-  không sao, miễn nội dung đúng và chân thực.
-- Nếu lỡ prompt AI trả lời khác với kịch bản (AI không cố định câu chữ), **cứ nói theo đúng những gì
-  AI thực sự trả lời**, rồi dẫn dắt về đúng kết luận đã biết (khóa sau 2 lần, không phải 3) — đừng
-  cắt dựng lại để ép AI nói đúng kịch bản, vì đó là hành vi dàn dựng, mất giá trị làm bằng chứng.
+- **Đừng quay lại nhiều lần cho hoàn hảo.** Đoạn skill sinh case thật (4:00–5:50) và đoạn so sánh
+  2 lượt AI (1:55–3:25) **chính là phần đáng giá nhất** — nói vấp một chút không sao, miễn nội dung
+  đúng và chân thực.
+- **AI không tất định — và điều đó không sao.** Bảng case sinh trên video sẽ khác bài nộp, số lượng
+  case cũng có thể lệch. Kịch bản đã có sẵn câu nói thẳng điều này ở đoạn 5:50–6:30; **cứ nói đúng
+  những gì AI thực sự trả lời**, đừng cắt dựng để ép AI khớp kịch bản — dàn dựng thì mất sạch giá trị
+  làm bằng chứng.
+- **Nếu lượt AI thứ 2 không chỉ ra đủ 2 chỗ lệch:** hỏi thêm một câu *"còn thời gian khóa thì sao?"*.
+  Hai chỗ lệch đều nằm sẵn trong code nên hỏi tới là ra, không cần mớm đáp án.
+- **Nếu lượt 1 mà AI đã tự nói "code cộng 2":** nghĩa là nó lỡ đọc file khác ngoài yêu cầu. Nói thẳng
+  trên video là AI đọc quá phạm vi được giao, rồi chuyển sang lượt 2 bình thường — vẫn giữ được ý
+  chính là *phải đối chiếu đặc tả với mã nguồn*.
 - Xuất video, upload lên **YouTube → Unlisted** (không phải **Private** — Private thì TA link vào sẽ
   không xem được).
 - Copy link, dán vào 2 chỗ: mục *Liên kết* trong `README.md`, và tạo file
