@@ -24,7 +24,7 @@
 
 ## 2. Bảng quy đổi assertion đỏ → bug
 
-> 163 request · 163 assertion · **49 đỏ** (API-01: 9 · API-02: 15 · API-03: 25).
+> 163 request · 163 assertion · **47 đỏ** (API-01: 9 · API-02: 13 · API-03: 25).
 > **Không phải mọi bug đều lộ qua assertion đỏ** — BUG-01 (DoS lockout) và BUG-19 (crash server) được
 > chứng minh bằng chuỗi request mà **assertion PASS** (expected chính là hành vi khai thác được, và
 > nó khớp thật) — xem ghi chú riêng ở từng bug đó.
@@ -58,11 +58,12 @@
 | BUG-25 | Medium | 03 | TC-PRODUPD-014, 024, 025, 042, 043 | 5 | [#25](https://github.com/DuyPham111/HW06/issues/25) |
 | BUG-26 | Low | 03 | TC-PRODUPD-039 | 1 | [#26](https://github.com/DuyPham111/HW06/issues/26) |
 | BUG-27 | High | 03 | TC-PRODUPD-045 | 1 | [#27](https://github.com/DuyPham111/HW06/issues/27) |
-| **Tổng assertion đỏ map được** | | | | **46** | |
+| **Tổng assertion đỏ map được** | | | | **47** | |
 
-> 3 assertion đỏ chưa liệt kê ở trên (`TC-COUPON-102`/`102c` trung gian của chuỗi 5 bước, tính trùng
-> trong raw JSON do Newman đếm theo request chứ không theo bug; xem ghi chú trong
-> `test-cases/api-02-apply-coupon/audit.md`) — không phải bug riêng, đã giải thích ở đó.
+> Khớp đúng 100% với tổng 47 đỏ ở `test-cases/test-summary/summary.md` — không còn assertion nào
+> chưa giải thích được. *(Lượt chạy đầu 31/08/2026 từng có thêm 2 đỏ ở `TC-COUPON-102`/`102c` do dư
+> trạng thái môi trường, không phải bug — đã sửa bằng cách restart SUT sạch rồi chạy lại, xem
+> `test-cases/api-02-apply-coupon/audit.md`.)*
 
 ---
 

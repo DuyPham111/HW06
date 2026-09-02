@@ -47,7 +47,7 @@
       "name": "00-setup",
       "item": [
         {
-          "name": "00-setup-admin undefined",
+          "name": "00-setup-admin",
           "event": [
             {
               "listen": "test",
@@ -93,7 +93,7 @@
           "response": []
         },
         {
-          "name": "00-setup-user undefined",
+          "name": "00-setup-user",
           "event": [
             {
               "listen": "test",
@@ -144,7 +144,7 @@
       "name": "01-domain",
       "item": [
         {
-          "name": "TC-LOGIN-001 undefined",
+          "name": "TC-LOGIN-001",
           "event": [
             {
               "listen": "test",
@@ -192,7 +192,7 @@
           "response": []
         },
         {
-          "name": "TC-LOGIN-002 undefined",
+          "name": "TC-LOGIN-002",
           "event": [
             {
               "listen": "test",
@@ -238,7 +238,7 @@
           "response": []
         },
         {
-          "name": "TC-LOGIN-003 undefined",
+          "name": "TC-LOGIN-003",
           "event": [
             {
               "listen": "test",
@@ -284,7 +284,7 @@
           "response": []
         },
         {
-          "name": "TC-LOGIN-004 undefined",
+          "name": "TC-LOGIN-004",
           "event": [
             {
               "listen": "prerequest",
@@ -338,7 +338,7 @@
           "response": []
         },
         {
-          "name": "TC-LOGIN-005 undefined",
+          "name": "TC-LOGIN-005",
           "event": [
             {
               "listen": "test",
@@ -383,7 +383,7 @@
           "response": []
         },
         {
-          "name": "TC-LOGIN-006 undefined",
+          "name": "TC-LOGIN-006",
           "event": [
             {
               "listen": "test",
@@ -428,7 +428,7 @@
           "response": []
         },
         {
-          "name": "TC-LOGIN-007 undefined",
+          "name": "TC-LOGIN-007",
           "event": [
             {
               "listen": "test",
@@ -471,7 +471,7 @@
           "response": []
         },
         {
-          "name": "TC-LOGIN-008 undefined",
+          "name": "TC-LOGIN-008",
           "event": [
             {
               "listen": "test",
@@ -514,7 +514,7 @@
           "response": []
         },
         {
-          "name": "TC-LOGIN-009 undefined",
+          "name": "TC-LOGIN-009",
           "event": [
             {
               "listen": "test",
@@ -557,7 +557,7 @@
           "response": []
         },
         {
-          "name": "TC-LOGIN-010 undefined",
+          "name": "TC-LOGIN-010",
           "event": [
             {
               "listen": "test",
@@ -600,7 +600,7 @@
           "response": []
         },
         {
-          "name": "TC-LOGIN-011 undefined",
+          "name": "TC-LOGIN-011",
           "event": [
             {
               "listen": "test",
@@ -643,7 +643,7 @@
           "response": []
         },
         {
-          "name": "TC-LOGIN-012 undefined",
+          "name": "TC-LOGIN-012",
           "event": [
             {
               "listen": "test",
@@ -688,7 +688,7 @@
           "response": []
         },
         {
-          "name": "TC-LOGIN-013 undefined",
+          "name": "TC-LOGIN-013",
           "event": [
             {
               "listen": "test",
@@ -734,7 +734,7 @@
           "response": []
         },
         {
-          "name": "TC-LOGIN-014 undefined",
+          "name": "TC-LOGIN-014",
           "event": [
             {
               "listen": "prerequest",
@@ -786,7 +786,7 @@
           "response": []
         },
         {
-          "name": "TC-LOGIN-015 undefined",
+          "name": "TC-LOGIN-015",
           "event": [
             {
               "listen": "test",
@@ -832,7 +832,7 @@
           "response": []
         },
         {
-          "name": "TC-LOGIN-016 undefined",
+          "name": "TC-LOGIN-016",
           "event": [
             {
               "listen": "test",
@@ -877,7 +877,7 @@
           "response": []
         },
         {
-          "name": "TC-LOGIN-017 undefined",
+          "name": "TC-LOGIN-017",
           "event": [
             {
               "listen": "test",
@@ -920,7 +920,7 @@
           "response": []
         },
         {
-          "name": "TC-LOGIN-018 undefined",
+          "name": "TC-LOGIN-018",
           "event": [
             {
               "listen": "test",
@@ -949,7 +949,7 @@
           "response": []
         },
         {
-          "name": "TC-LOGIN-103 undefined",
+          "name": "TC-LOGIN-103",
           "event": [
             {
               "listen": "prerequest",
@@ -1008,7 +1008,7 @@
       "name": "02-state",
       "item": [
         {
-          "name": "TC-LOGIN-019 undefined",
+          "name": "TC-LOGIN-019",
           "event": [
             {
               "listen": "prerequest",
@@ -1062,7 +1062,7 @@
           "response": []
         },
         {
-          "name": "TC-LOGIN-020 undefined",
+          "name": "TC-LOGIN-020",
           "event": [
             {
               "listen": "test",
@@ -1105,7 +1105,7 @@
           "response": []
         },
         {
-          "name": "TC-LOGIN-021 undefined",
+          "name": "TC-LOGIN-021",
           "event": [
             {
               "listen": "test",
@@ -1148,7 +1148,7 @@
           "response": []
         },
         {
-          "name": "TC-LOGIN-022 undefined",
+          "name": "TC-LOGIN-022",
           "event": [
             {
               "listen": "test",
@@ -1191,7 +1191,7 @@
           "response": []
         },
         {
-          "name": "TC-LOGIN-023a undefined",
+          "name": "TC-LOGIN-023a",
           "event": [
             {
               "listen": "prerequest",
@@ -1243,7 +1243,7 @@
           "response": []
         },
         {
-          "name": "TC-LOGIN-023 undefined",
+          "name": "TC-LOGIN-023",
           "event": [
             {
               "listen": "test",
@@ -1286,7 +1286,7 @@
           "response": []
         },
         {
-          "name": "TC-LOGIN-023b undefined",
+          "name": "TC-LOGIN-023b",
           "event": [
             {
               "listen": "test",
@@ -1329,7 +1329,7 @@
           "response": []
         },
         {
-          "name": "TC-LOGIN-023c undefined",
+          "name": "TC-LOGIN-023c",
           "event": [
             {
               "listen": "test",
@@ -1375,7 +1375,7 @@
           "response": []
         },
         {
-          "name": "TC-LOGIN-024a undefined",
+          "name": "TC-LOGIN-024a",
           "event": [
             {
               "listen": "prerequest",
@@ -1427,7 +1427,7 @@
           "response": []
         },
         {
-          "name": "TC-LOGIN-024 undefined",
+          "name": "TC-LOGIN-024",
           "event": [
             {
               "listen": "test",
@@ -1470,7 +1470,7 @@
           "response": []
         },
         {
-          "name": "TC-LOGIN-024b undefined",
+          "name": "TC-LOGIN-024b",
           "event": [
             {
               "listen": "test",
@@ -1513,7 +1513,7 @@
           "response": []
         },
         {
-          "name": "TC-LOGIN-024c undefined",
+          "name": "TC-LOGIN-024c",
           "event": [
             {
               "listen": "test",
@@ -1556,7 +1556,7 @@
           "response": []
         },
         {
-          "name": "TC-LOGIN-105 undefined",
+          "name": "TC-LOGIN-105",
           "event": [
             {
               "listen": "test",
@@ -1599,7 +1599,7 @@
       "name": "03-security",
       "item": [
         {
-          "name": "TC-LOGIN-025 undefined",
+          "name": "TC-LOGIN-025",
           "event": [
             {
               "listen": "test",
@@ -1645,7 +1645,7 @@
           "response": []
         },
         {
-          "name": "TC-LOGIN-026 undefined",
+          "name": "TC-LOGIN-026",
           "event": [
             {
               "listen": "test",
@@ -1688,7 +1688,7 @@
           "response": []
         },
         {
-          "name": "TC-LOGIN-027 undefined",
+          "name": "TC-LOGIN-027",
           "event": [
             {
               "listen": "test",
@@ -1731,7 +1731,7 @@
           "response": []
         },
         {
-          "name": "TC-LOGIN-028 undefined",
+          "name": "TC-LOGIN-028",
           "event": [
             {
               "listen": "test",
@@ -1777,7 +1777,7 @@
           "response": []
         },
         {
-          "name": "TC-LOGIN-029 undefined",
+          "name": "TC-LOGIN-029",
           "event": [
             {
               "listen": "test",
@@ -1824,7 +1824,7 @@
           "response": []
         },
         {
-          "name": "TC-LOGIN-030 undefined",
+          "name": "TC-LOGIN-030",
           "event": [
             {
               "listen": "test",
@@ -1871,7 +1871,7 @@
           "response": []
         },
         {
-          "name": "TC-LOGIN-031a undefined",
+          "name": "TC-LOGIN-031a",
           "event": [
             {
               "listen": "prerequest",
@@ -1923,7 +1923,7 @@
           "response": []
         },
         {
-          "name": "TC-LOGIN-031 undefined",
+          "name": "TC-LOGIN-031",
           "event": [
             {
               "listen": "test",
@@ -1966,7 +1966,7 @@
           "response": []
         },
         {
-          "name": "TC-LOGIN-032 undefined",
+          "name": "TC-LOGIN-032",
           "event": [
             {
               "listen": "test",
@@ -2013,7 +2013,7 @@
           "response": []
         },
         {
-          "name": "TC-LOGIN-101 undefined",
+          "name": "TC-LOGIN-101",
           "event": [
             {
               "listen": "test",
@@ -2058,7 +2058,7 @@
           "response": []
         },
         {
-          "name": "TC-LOGIN-101b undefined",
+          "name": "TC-LOGIN-101b",
           "event": [
             {
               "listen": "test",
@@ -2103,7 +2103,7 @@
           "response": []
         },
         {
-          "name": "TC-LOGIN-102 undefined",
+          "name": "TC-LOGIN-102",
           "event": [
             {
               "listen": "test",
@@ -2153,7 +2153,7 @@
       "name": "04-schema",
       "item": [
         {
-          "name": "TC-LOGIN-033 undefined",
+          "name": "TC-LOGIN-033",
           "event": [
             {
               "listen": "test",
@@ -2203,7 +2203,7 @@
           "response": []
         },
         {
-          "name": "TC-LOGIN-034 undefined",
+          "name": "TC-LOGIN-034",
           "event": [
             {
               "listen": "test",
@@ -2252,7 +2252,7 @@
           "response": []
         },
         {
-          "name": "TC-LOGIN-035 undefined",
+          "name": "TC-LOGIN-035",
           "event": [
             {
               "listen": "test",
@@ -2298,7 +2298,7 @@
           "response": []
         },
         {
-          "name": "TC-LOGIN-036 undefined",
+          "name": "TC-LOGIN-036",
           "event": [
             {
               "listen": "test",
@@ -2344,7 +2344,7 @@
           "response": []
         },
         {
-          "name": "TC-LOGIN-037 undefined",
+          "name": "TC-LOGIN-037",
           "event": [
             {
               "listen": "test",
@@ -2391,7 +2391,7 @@
           "response": []
         },
         {
-          "name": "TC-LOGIN-038 undefined",
+          "name": "TC-LOGIN-038",
           "event": [
             {
               "listen": "test",
@@ -2436,7 +2436,7 @@
           "response": []
         },
         {
-          "name": "TC-LOGIN-104 undefined",
+          "name": "TC-LOGIN-104",
           "event": [
             {
               "listen": "test",

@@ -47,19 +47,26 @@ thành 404 và đổi mô tả thành **case đối chứng** (hành vi đúng),
 
 ## Không sửa expected để khớp SUT
 
-Lượt nộp chính thức (`reports/newman/23127183_api-02-apply-coupon_20260831-125109.json`) —
-15/59 assertion đỏ, liệt kê đúng từng ID:
+Lượt nộp chính thức (`reports/newman/23127183_api-02-apply-coupon_20260902-222617.json`) —
+**13/59 assertion đỏ**, liệt kê đúng từng ID:
 
 `TC-COUPON-001 · TC-COUPON-023 · TC-COUPON-028 · TC-COUPON-031 · TC-COUPON-032 · TC-COUPON-033 ·
 TC-COUPON-034 · TC-COUPON-036 · TC-COUPON-037 · TC-COUPON-039 · TC-COUPON-042 · TC-COUPON-043 ·
 TC-COUPON-101`
 
-(`TC-COUPON-102`/`102c` xuất hiện trong danh sách assertion do sinh JSON của chuỗi 5 bước tính riêng
-từng request — 2 dòng này là bước TRUNG GIAN của chuỗi 102, không phải bug độc lập, xem
-`test-cases/test-summary/summary.md` mục ghi chú.)
-
 Mỗi dòng map tới đúng 1 bug trong [`bug-report/bug-report.md`](../../bug-report/bug-report.md), trừ
 `TC-COUPON-001` (trùng nguyên nhân với TC-COUPON-042/043 — cùng 1 bug BUG-07 công thức coupon).
+
+**Ghi chú lượt trước (đã sửa) — `TC-COUPON-102`/`102c` từng đỏ oan vì môi trường, không phải vì
+SUT.** Lượt chạy đầu tiên (31/08/2026) cho **15** assertion đỏ, gồm cả `TC-COUPON-102` (áp `VIP100`
+lần 1) và `TC-COUPON-102c` (lần 2) — cả hai nhận `400` thay vì `200` mong đợi. Khi soát lại, nguyên
+nhân là **hạn mức 2 lượt của mã `VIP100` đã bị tiêu hết từ trước** — cùng buổi làm việc đó, trước khi
+viết bảng test case, đã có một lượt dò dữ liệu thật bằng `curl` (LOG-004) từng gọi `apply-coupon` với
+`VIP100` và `user_id` thật mà **không restart SUT** trước khi chạy lượt Newman "chính thức" ngay sau
+đó. Sau khi khởi động lại SUT thật sạch (DB seed lại từ đầu, xem `docs/01-SETUP.md` §2) rồi chạy lại,
+`TC-COUPON-102`/`102c` **xanh đúng như thiết kế** — 13 đỏ mới là con số chính xác, đã cập nhật lại
+`ci/expected-failures.json` và toàn bộ báo cáo. Đây chính là bài học mà `docs/07-CHAY-NEWMAN-BANG-CHUNG.md`
+§1 đã cảnh báo trước: **restart SUT trước mỗi lượt Newman "chính thức" không phải bước tuỳ chọn.**
 
 ## Bảng audit đầy đủ
 

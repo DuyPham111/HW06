@@ -5,8 +5,8 @@
 - **SUT:** EShop — https://github.com/ttbhanh/eshop-sut · spec: `api_specification.md`
 
 > **Trạng thái: pipeline §6.1–§6.5 đã hoàn tất cho cả 3 API** — 158 test case (141 AI sinh + 20 SV
-> tự thêm, đã audit), chạy Newman thật (163 request/163 assertion, 49 assertion đỏ = 27 bug đã xác
-> nhận, tái hiện được bằng `curl`), regression suite 108 case (0 đỏ), CI chạy thật trên GitHub
+> tự thêm, đã audit), chạy Newman thật (163 request/163 assertion, 47 assertion đỏ = 27 bug đã xác
+> nhận, tái hiện được bằng `curl`), regression suite 110 case (0 đỏ), CI chạy thật trên GitHub
 > Actions (1 lượt xanh + 1 lượt đỏ, cả hai đều có link thật). Việc còn lại **chỉ còn phần bạn phải
 > tự làm** (không tự động hoá được) — xem [`docs/CAN-LAM-TIEP-THEO.md`](docs/CAN-LAM-TIEP-THEO.md).
 
@@ -63,14 +63,14 @@ validate gần như mọi ràng buộc FR-15. Chi tiết đầy đủ: [`bug-rep
 | **Tổng test case** (§6.1 đòi ≥35/API) | 51 | 57 | 50 | **158** |
 | Request đã thực thi | 53 | 59 | 51 | **163** |
 | Assertion | 53 | 59 | 51 | **163** |
-| Passed | 44 | 44 | 26 | **114** |
-| **Failed** (= bắt được bug) | 9 | 15 | 25 | **49** |
+| Passed | 44 | 46 | 26 | **116** |
+| **Failed** (= bắt được bug) | 9 | 13 | 25 | **47** |
 | Bug xác nhận | 9 | 9 | 9 | **27** |
 
 **Bug theo mức độ:** Critical **13** · High **9** · Medium **4** · Low **1** — [`bug-report/bug-report.md`](bug-report/bug-report.md).
 Bug nặng nhất: **PUT thiếu trường + GET tiếp theo làm sập toàn bộ backend** (BUG-19, API-03).
 
-**Regression suite:** 108/157 case đang xanh, chạy thật **0/110 assertion đỏ** (cả local lẫn CI).
+**Regression suite:** 110/157 case đang xanh, chạy thật **0/112 assertion đỏ** (cả local lẫn CI).
 
 **Hai lượt CI mẫu (§6, đã chạy thật trên GitHub Actions):**
 [XANH #33363058905](https://github.com/DuyPham111/HW06/actions/runs/33363058905) ·

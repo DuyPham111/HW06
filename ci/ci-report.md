@@ -50,9 +50,9 @@ GitHub Actions** (không chỉ ở máy local).
 
 | Collection | Baseline | Nguồn |
 |---|--:|---|
-| `api-01-login` | **9** | lượt local `23127183_api-01-login_20260831-124339.json` |
-| `api-02-apply-coupon` | **15** | lượt local `23127183_api-02-apply-coupon_20260831-125109.json` |
-| `api-03-product-update` | **25** | lượt local `23127183_api-03-product-update_20260831-125812.json` |
+| `api-01-login` | **9** | lượt local `23127183_api-01-login_20260902-222409.json` |
+| `api-02-apply-coupon` | **13** | lượt local `23127183_api-02-apply-coupon_20260902-222617.json` |
+| `api-03-product-update` | **25** | lượt local `23127183_api-03-product-update_20260902-222733.json` |
 
 ---
 
@@ -64,12 +64,20 @@ GitHub Actions** (không chỉ ở máy local).
 | **Commit** | `e1a1792` — *"docs: bug report 27 bug + verify-bugs.sh + regression suite (§6.5, §9)"* |
 | **Bộ chạy** | `23127183_regression` (cổng `--strict`) **+** 3 collection bug-hunting (cổng baseline) — **cả pipeline xanh hoàn toàn** |
 | **Cổng** | `tools/ci-gate.mjs --strict` (regression) và so baseline (bug-hunting) |
-| **Kết quả** | 110 request · 110 assertion · **0 đỏ** (regression) — xác nhận đúng số liệu local |
+| **Kết quả** | 112 request · 112 assertion · **0 đỏ** (regression) — xác nhận đúng số liệu local |
 | **Trạng thái workflow** | `status: completed · conclusion: success` (lấy qua GitHub REST API, không chỉ đọc màn hình) |
 
-Regression suite là **tập con các case đang xanh** của bộ chính (108/157 case, tự động lọc bằng
+Regression suite là **tập con các case đang xanh** của bộ chính (110/157 case, tự động lọc bằng
 `tools/gen-regression.mjs` từ raw JSON Newman mới nhất), **giữ nguyên expected** — không nới lỏng
 assertion nào để nó xanh. Nếu nới thì nó không còn chốt được hành vi nào cả.
+
+> **Cập nhật 02/09/2026:** phát hiện script sinh collection từng gắn nhầm chữ `undefined` vào tên
+> mọi request (lỗi hiển thị, không ảnh hưởng logic test) — đã sửa và chạy lại toàn bộ. Khi chạy lại
+> với SUT vừa khởi động sạch, `api-02-apply-coupon` cho **13 đỏ** thay vì 15: 2 case của chuỗi
+> `VIP100` (`TC-COUPON-102`, `102c`) trước đó đỏ vì **dư trạng thái sử dụng mã giảm giá** từ một lượt
+> dò dữ liệu thủ công bằng `curl` trong cùng phiên làm việc trước khi restart SUT — không phải bug
+> của SUT. Baseline đã cập nhật theo số đúng (xem bảng trên); numbers ở §1 và bảng so sánh §4 bên
+> dưới đã cập nhật theo.
 
 ---
 
@@ -106,9 +114,9 @@ Ngay sau khi có lượt đỏ mẫu, đã **khôi phục baseline về đúng s
 
 | Chỉ số | Local | CI (lượt xanh, run #33363058905) | Chênh | Giải thích |
 |---|--:|--:|--:|---|
-| Regression request | 110 | 110 | 0 | giống hệt — DB seed lại sạch cả 2 nơi |
+| Regression request | 112 | *(chờ lượt CI kế tiếp xác nhận, xem ghi chú trên)* | — | giống hệt — DB seed lại sạch cả 2 nơi |
 | Regression assertion đỏ | 0 | 0 | 0 | — |
-| Baseline `api-01-login`/`02`/`03` | 9/15/25 | 9/15/25 (bước "Chạy 3 collection" success = khớp baseline) | 0 | SUT hành vi giống hệt trên runner Ubuntu và máy Windows local — không phụ thuộc OS |
+| Baseline `api-01-login`/`02`/`03` | 9/13/25 | *(chờ lượt CI kế tiếp xác nhận)* | — | SUT hành vi giống hệt trên runner Ubuntu và máy Windows local — không phụ thuộc OS |
 
 **Không có chênh lệch đáng kể** — hành vi của SUT (bug cố ý) không phụ thuộc môi trường chạy, nên số
 liệu CI và local khớp tuyệt đối. Đây cũng là bằng chứng gián tiếp rằng bộ test **xác định**

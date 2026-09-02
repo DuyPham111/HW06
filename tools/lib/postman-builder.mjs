@@ -26,7 +26,7 @@ export function pmItem(c) {
     : c.path;
 
   const item = {
-    name: `${c.id} ${c.name}`,
+    name: c.id,
     event: [],
     request: {
       method: c.method,

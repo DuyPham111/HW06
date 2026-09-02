@@ -115,7 +115,7 @@ kể cả các request bị lỗi (bug) — không phải 1 file/bug. Cách lấ
 | [#26](https://github.com/DuyPham111/HW06/issues/26) | BUG-26 | `23127183_api-03-product-update_*.html` | `TC-PRODUPD-039` |
 | [#27](https://github.com/DuyPham111/HW06/issues/27) | BUG-27 | `23127183_api-03-product-update_*.html` | `TC-PRODUPD-045` |
 
-> `*` trong tên file là phần ngày giờ (`_20260831-124339` v.v.) — chỉ có đúng 1 file mỗi API nên gõ
+> `*` trong tên file là phần ngày giờ (`_20260902-222409` v.v.) — chỉ có đúng 1 file mỗi API nên gõ
 > vài ký tự đầu trong File Explorer là lọc ra ngay.
 
 #### 3 bug đặc biệt — KHÔNG có trong "Failed Tests" (dùng ảnh terminal thay vì ảnh HTML)

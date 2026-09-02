@@ -15,7 +15,7 @@
 3 API (Pool A `POST /api/login`, Pool B `POST /api/apply-coupon`, Pool C `PUT /api/products/:id`)
 đã đi hết pipeline §6.1–§6.5: sinh **158 test case** (138 AI qua 5 bước riêng + 20 sinh viên tự
 thêm), audit qua 5 phép soát kết hợp chạy Newman thật, dựng 3 collection Postman + 1 regression
-suite (108 case). Chạy Newman thật cho **163 request/163 assertion, 49 đỏ**, quy đổi thành **27 bug
+suite (110 case). Chạy Newman thật cho **163 request/163 assertion, 47 đỏ**, quy đổi thành **27 bug
 đã tái hiện độc lập bằng `curl`** (13 Critical). Bug nặng nhất — **PUT thiếu trường trên sản phẩm ID
 chẵn rồi GET lại làm sập toàn bộ backend** (BUG-19) — được phát hiện ngoài ý muốn trong lúc audit,
 không phải AI tự nghĩ ra. CI chạy thật trên GitHub Actions với 2 lượt mẫu có link thật: 1 lượt xanh
@@ -164,8 +164,8 @@ scoping). Chi tiết: [`extended.md`](../test-cases/api-02-apply-coupon/extended
 |---|--:|
 | Request đã chạy | 59 |
 | Assertion | 59 |
-| Pass | 44 |
-| **Fail** | 15 |
+| Pass | 46 |
+| **Fail** | 13 |
 | Bug xác nhận | 9 (BUG-10 → BUG-18) |
 
 Bug nặng nhất: **BUG-10** (Critical) — công thức phần trăm cho `discount_amount` **âm**, khách trả
@@ -238,7 +238,7 @@ Bằng chứng: `bug-report/screenshots/postman-console-gui.png` — log Console
 ### 6.3 Kết quả
 
 Xem bảng đầy đủ ở [`test-cases/test-summary/summary.md`](../test-cases/test-summary/summary.md) —
-163 request, 163 assertion, 114 pass, 49 fail trên cả 3 API.
+163 request, 163 assertion, 116 pass, 47 fail trên cả 3 API.
 
 ### 6.4 Vì sao có nhiều assertion đỏ
 

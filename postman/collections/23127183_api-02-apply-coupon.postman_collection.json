@@ -47,7 +47,7 @@
       "name": "00-setup",
       "item": [
         {
-          "name": "00-setup-admin undefined",
+          "name": "00-setup-admin",
           "event": [
             {
               "listen": "test",
@@ -93,7 +93,7 @@
           "response": []
         },
         {
-          "name": "00-setup-user undefined",
+          "name": "00-setup-user",
           "event": [
             {
               "listen": "test",
@@ -144,7 +144,7 @@
       "name": "01-domain",
       "item": [
         {
-          "name": "TC-COUPON-001 undefined",
+          "name": "TC-COUPON-001",
           "event": [
             {
               "listen": "test",
@@ -192,7 +192,7 @@
           "response": []
         },
         {
-          "name": "TC-COUPON-002 undefined",
+          "name": "TC-COUPON-002",
           "event": [
             {
               "listen": "test",
@@ -240,7 +240,7 @@
           "response": []
         },
         {
-          "name": "TC-COUPON-003 undefined",
+          "name": "TC-COUPON-003",
           "event": [
             {
               "listen": "test",
@@ -283,7 +283,7 @@
           "response": []
         },
         {
-          "name": "TC-COUPON-004 undefined",
+          "name": "TC-COUPON-004",
           "event": [
             {
               "listen": "test",
@@ -326,7 +326,7 @@
           "response": []
         },
         {
-          "name": "TC-COUPON-005 undefined",
+          "name": "TC-COUPON-005",
           "event": [
             {
               "listen": "test",
@@ -369,7 +369,7 @@
           "response": []
         },
         {
-          "name": "TC-COUPON-006 undefined",
+          "name": "TC-COUPON-006",
           "event": [
             {
               "listen": "test",
@@ -412,7 +412,7 @@
           "response": []
         },
         {
-          "name": "TC-COUPON-007 undefined",
+          "name": "TC-COUPON-007",
           "event": [
             {
               "listen": "test",
@@ -455,7 +455,7 @@
           "response": []
         },
         {
-          "name": "TC-COUPON-008 undefined",
+          "name": "TC-COUPON-008",
           "event": [
             {
               "listen": "test",
@@ -498,7 +498,7 @@
           "response": []
         },
         {
-          "name": "TC-COUPON-009 undefined",
+          "name": "TC-COUPON-009",
           "event": [
             {
               "listen": "test",
@@ -541,7 +541,7 @@
           "response": []
         },
         {
-          "name": "TC-COUPON-010 undefined",
+          "name": "TC-COUPON-010",
           "event": [
             {
               "listen": "test",
@@ -584,7 +584,7 @@
           "response": []
         },
         {
-          "name": "TC-COUPON-011 undefined",
+          "name": "TC-COUPON-011",
           "event": [
             {
               "listen": "test",
@@ -627,7 +627,7 @@
           "response": []
         },
         {
-          "name": "TC-COUPON-012 undefined",
+          "name": "TC-COUPON-012",
           "event": [
             {
               "listen": "test",
@@ -670,7 +670,7 @@
           "response": []
         },
         {
-          "name": "TC-COUPON-013 undefined",
+          "name": "TC-COUPON-013",
           "event": [
             {
               "listen": "test",
@@ -715,7 +715,7 @@
           "response": []
         },
         {
-          "name": "TC-COUPON-014 undefined",
+          "name": "TC-COUPON-014",
           "event": [
             {
               "listen": "test",
@@ -758,7 +758,7 @@
           "response": []
         },
         {
-          "name": "TC-COUPON-015 undefined",
+          "name": "TC-COUPON-015",
           "event": [
             {
               "listen": "test",
@@ -801,7 +801,7 @@
           "response": []
         },
         {
-          "name": "TC-COUPON-016 undefined",
+          "name": "TC-COUPON-016",
           "event": [
             {
               "listen": "test",
@@ -844,7 +844,7 @@
           "response": []
         },
         {
-          "name": "TC-COUPON-103 undefined",
+          "name": "TC-COUPON-103",
           "event": [
             {
               "listen": "test",
@@ -895,7 +895,7 @@
       "name": "02-state",
       "item": [
         {
-          "name": "TC-COUPON-017 undefined",
+          "name": "TC-COUPON-017",
           "event": [
             {
               "listen": "test",
@@ -942,7 +942,7 @@
           "response": []
         },
         {
-          "name": "TC-COUPON-018 undefined",
+          "name": "TC-COUPON-018",
           "event": [
             {
               "listen": "test",
@@ -994,7 +994,7 @@
           "response": []
         },
         {
-          "name": "TC-COUPON-019 undefined",
+          "name": "TC-COUPON-019",
           "event": [
             {
               "listen": "test",
@@ -1032,7 +1032,7 @@
           "response": []
         },
         {
-          "name": "TC-COUPON-020 undefined",
+          "name": "TC-COUPON-020",
           "event": [
             {
               "listen": "test",
@@ -1082,7 +1082,7 @@
           "response": []
         },
         {
-          "name": "TC-COUPON-021 undefined",
+          "name": "TC-COUPON-021",
           "event": [
             {
               "listen": "test",
@@ -1132,7 +1132,7 @@
           "response": []
         },
         {
-          "name": "TC-COUPON-022 undefined",
+          "name": "TC-COUPON-022",
           "event": [
             {
               "listen": "test",
@@ -1182,7 +1182,7 @@
           "response": []
         },
         {
-          "name": "TC-COUPON-023 undefined",
+          "name": "TC-COUPON-023",
           "event": [
             {
               "listen": "test",
@@ -1218,7 +1218,7 @@
           "response": []
         },
         {
-          "name": "TC-COUPON-024 undefined",
+          "name": "TC-COUPON-024",
           "event": [
             {
               "listen": "test",
@@ -1268,7 +1268,7 @@
           "response": []
         },
         {
-          "name": "TC-COUPON-025 undefined",
+          "name": "TC-COUPON-025",
           "event": [
             {
               "listen": "test",
@@ -1318,7 +1318,7 @@
           "response": []
         },
         {
-          "name": "TC-COUPON-026 undefined",
+          "name": "TC-COUPON-026",
           "event": [
             {
               "listen": "test",
@@ -1368,7 +1368,7 @@
           "response": []
         },
         {
-          "name": "TC-COUPON-027 undefined",
+          "name": "TC-COUPON-027",
           "event": [
             {
               "listen": "test",
@@ -1404,7 +1404,7 @@
           "response": []
         },
         {
-          "name": "TC-COUPON-028 undefined",
+          "name": "TC-COUPON-028",
           "event": [
             {
               "listen": "test",
@@ -1454,7 +1454,7 @@
           "response": []
         },
         {
-          "name": "TC-COUPON-029 undefined",
+          "name": "TC-COUPON-029",
           "event": [
             {
               "listen": "test",
@@ -1490,7 +1490,7 @@
           "response": []
         },
         {
-          "name": "TC-COUPON-030 undefined",
+          "name": "TC-COUPON-030",
           "event": [
             {
               "listen": "test",
@@ -1540,7 +1540,7 @@
           "response": []
         },
         {
-          "name": "TC-COUPON-102 undefined",
+          "name": "TC-COUPON-102",
           "event": [
             {
               "listen": "test",
@@ -1583,7 +1583,7 @@
           "response": []
         },
         {
-          "name": "TC-COUPON-102b undefined",
+          "name": "TC-COUPON-102b",
           "event": [
             {
               "listen": "test",
@@ -1630,7 +1630,7 @@
           "response": []
         },
         {
-          "name": "TC-COUPON-102c undefined",
+          "name": "TC-COUPON-102c",
           "event": [
             {
               "listen": "test",
@@ -1673,7 +1673,7 @@
           "response": []
         },
         {
-          "name": "TC-COUPON-102d undefined",
+          "name": "TC-COUPON-102d",
           "event": [
             {
               "listen": "test",
@@ -1720,7 +1720,7 @@
           "response": []
         },
         {
-          "name": "TC-COUPON-102e undefined",
+          "name": "TC-COUPON-102e",
           "event": [
             {
               "listen": "test",
@@ -1763,7 +1763,7 @@
           "response": []
         },
         {
-          "name": "TC-COUPON-104 undefined",
+          "name": "TC-COUPON-104",
           "event": [
             {
               "listen": "test",
@@ -1804,7 +1804,7 @@
       "name": "03-security",
       "item": [
         {
-          "name": "TC-COUPON-031 undefined",
+          "name": "TC-COUPON-031",
           "event": [
             {
               "listen": "test",
@@ -1847,7 +1847,7 @@
           "response": []
         },
         {
-          "name": "TC-COUPON-031b undefined",
+          "name": "TC-COUPON-031b",
           "event": [
             {
               "listen": "test",
@@ -1897,7 +1897,7 @@
           "response": []
         },
         {
-          "name": "TC-COUPON-032 undefined",
+          "name": "TC-COUPON-032",
           "event": [
             {
               "listen": "test",
@@ -1947,7 +1947,7 @@
           "response": []
         },
         {
-          "name": "TC-COUPON-033 undefined",
+          "name": "TC-COUPON-033",
           "event": [
             {
               "listen": "test",
@@ -1977,7 +1977,7 @@
           "response": []
         },
         {
-          "name": "TC-COUPON-034 undefined",
+          "name": "TC-COUPON-034",
           "event": [
             {
               "listen": "test",
@@ -2024,7 +2024,7 @@
           "response": []
         },
         {
-          "name": "TC-COUPON-035 undefined",
+          "name": "TC-COUPON-035",
           "event": [
             {
               "listen": "test",
@@ -2067,7 +2067,7 @@
           "response": []
         },
         {
-          "name": "TC-COUPON-036 undefined",
+          "name": "TC-COUPON-036",
           "event": [
             {
               "listen": "test",
@@ -2110,7 +2110,7 @@
           "response": []
         },
         {
-          "name": "TC-COUPON-037 undefined",
+          "name": "TC-COUPON-037",
           "event": [
             {
               "listen": "test",
@@ -2153,7 +2153,7 @@
           "response": []
         },
         {
-          "name": "TC-COUPON-038 undefined",
+          "name": "TC-COUPON-038",
           "event": [
             {
               "listen": "test",
@@ -2196,7 +2196,7 @@
           "response": []
         },
         {
-          "name": "TC-COUPON-039 undefined",
+          "name": "TC-COUPON-039",
           "event": [
             {
               "listen": "test",
@@ -2246,7 +2246,7 @@
           "response": []
         },
         {
-          "name": "TC-COUPON-040 undefined",
+          "name": "TC-COUPON-040",
           "event": [
             {
               "listen": "test",
@@ -2285,7 +2285,7 @@
           "response": []
         },
         {
-          "name": "TC-COUPON-101 undefined",
+          "name": "TC-COUPON-101",
           "event": [
             {
               "listen": "test",
@@ -2332,7 +2332,7 @@
           "response": []
         },
         {
-          "name": "TC-COUPON-105 undefined",
+          "name": "TC-COUPON-105",
           "event": [
             {
               "listen": "test",
@@ -2375,7 +2375,7 @@
       "name": "04-schema",
       "item": [
         {
-          "name": "TC-COUPON-041 undefined",
+          "name": "TC-COUPON-041",
           "event": [
             {
               "listen": "test",
@@ -2425,7 +2425,7 @@
           "response": []
         },
         {
-          "name": "TC-COUPON-042 undefined",
+          "name": "TC-COUPON-042",
           "event": [
             {
               "listen": "test",
@@ -2470,7 +2470,7 @@
           "response": []
         },
         {
-          "name": "TC-COUPON-043 undefined",
+          "name": "TC-COUPON-043",
           "event": [
             {
               "listen": "test",
@@ -2516,7 +2516,7 @@
           "response": []
         },
         {
-          "name": "TC-COUPON-044 undefined",
+          "name": "TC-COUPON-044",
           "event": [
             {
               "listen": "test",
@@ -2563,7 +2563,7 @@
           "response": []
         },
         {
-          "name": "TC-COUPON-045 undefined",
+          "name": "TC-COUPON-045",
           "event": [
             {
               "listen": "test",
@@ -2598,7 +2598,7 @@
           "response": []
         },
         {
-          "name": "TC-COUPON-046 undefined",
+          "name": "TC-COUPON-046",
           "event": [
             {
               "listen": "test",
@@ -2647,7 +2647,7 @@
           "response": []
         },
         {
-          "name": "TC-COUPON-047 undefined",
+          "name": "TC-COUPON-047",
           "event": [
             {
               "listen": "test",

@@ -57,7 +57,7 @@ trường**, không phải vì bug. Đã sửa: cả hai case giờ dùng tài k
 
 ## Không sửa expected để khớp SUT
 
-Các case sau ĐỎ ở lượt nộp chính thức (`reports/newman/23127183_api-01-login_20260831-124339.json`)
+Các case sau ĐỎ ở lượt nộp chính thức (`reports/newman/23127183_api-01-login_20260902-222409.json`)
 — liệt kê đúng từng ID:
 
 `TC-LOGIN-016 · TC-LOGIN-022 · TC-LOGIN-028 · TC-LOGIN-029 · TC-LOGIN-030 · TC-LOGIN-036 ·
