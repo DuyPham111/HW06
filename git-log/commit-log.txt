@@ -1,9 +1,14 @@
 HW06 - API Testing - Git commit log
 SV: Pham Vu Ngoc Duy - 23127183
 Repo: https://github.com/DuyPham111/HW06
-Xuat luc: 2026-09-01T21:24:50+07:00
-Tong so commit: 34
+Xuat luc: 2026-09-02T22:42:21+07:00
+Tong so commit: 39
 
+56dad54  2026-09-02 22:42:20 +0700  DuyPham111  docs: hoan tat tai lieu ve su co CI that + lan chay xanh moi da xac nhan (§6, §9)
+72654a3  2026-09-02 22:36:37 +0700  DuyPham111  fix(ci): restart SUT giua buoc regression va bug-hunting (§6, §11)
+9d08377  2026-09-02 22:33:21 +0700  DuyPham111  fix: sua ten request bi loi 'undefined' trong Postman/Newman + chay lai toan bo (§6.4)
+e845541  2026-09-02 22:20:37 +0700  DuyPham111  docs: soan chi tiet kich ban video demo - thao tac + loi thoai day du (§7)
+2de33e7  2026-09-01 21:24:50 +0700  DuyPham111  docs: cap nhat git commit log (§12)
 744babe  2026-09-01 21:24:37 +0700  DuyPham111  docs: hoan tat B.1 - anh + so lieu that Data-driven, Mock Server, Monitor (§6)
 dc04ac1  2026-09-01 19:21:23 +0700  DuyPham111  docs: data-driven bang Newman CLI thay Postman Runner (bi khoa tra phi) (§6, §8)
 2af19a0  2026-09-01 18:46:56 +0700  DuyPham111  docs: huong dan chi tiet A.4b (moi issue lay anh o dau) va B.1 (Postman GUI tung click)
