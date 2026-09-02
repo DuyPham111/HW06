@@ -243,6 +243,54 @@ số liệu liên quan (`bug-report.md`, `README.md`, `main-report.md`, `ci-repo
 
 ---
 
+### LOG-014 — `npm run test:api1` chết trên máy thật vì AI viết script chỉ đúng trên môi trường của nó
+
+**Bối cảnh:** sinh viên chạy đúng lệnh mà tài liệu hướng dẫn, trong PowerShell, và nhận lỗi:
+
+```text
+> bash tools/run-newman.sh api-01-login
+tools/run-newman.sh: line 29: node: command not found
+preflight that bai - dung lai
+```
+
+**Output ban đầu của AI:** `package.json` đặt `"test:api1": "bash tools/run-newman.sh api-01-login"`.
+
+**AI sai gì:** ba lỗi cùng nằm trong `package.json`, đều thuộc loại "chỉ chạy được ở chỗ AI chạy":
+
+1. Trên Windows, npm chạy script bằng `cmd.exe`; `cmd.exe` resolve `bash` theo PATH và trúng
+   `C:\WINDOWS\system32\bash.exe` (**WSL launcher**) **trước** Git Bash. WSL là hệ thống file riêng,
+   không cài Node → chết ngay ở dòng gọi `preflight`. AI không hề gặp lỗi này vì nó luôn gọi qua
+   Git Bash, nơi `bash` trỏ đúng.
+2. Ba script `pdf` / `verify` / `package` trỏ tới `tools/build-pdfs.sh`, `tools/verify-all.sh`,
+   `tools/package.sh` — **cả ba file chưa từng được tạo**. `npm run package` là lệnh đóng gói nộp
+   bài, nếu tin vào nó tới hạn nộp mới chạy thì hỏng việc.
+3. Kịch bản quay video (`docs/12`) hướng dẫn `cd eshop-sut/backend`, nhưng SUT nằm **ngoài** thư mục
+   bài làm (`.gitignore` bỏ qua `eshop-sut/`) nên đường dẫn đúng phải là `../eshop-sut/backend`.
+
+**Vì sao sai:** `prompt quality` + `model limitations` — AI viết script dựa trên môi trường *nó* đang
+chạy (Git Bash, cwd của nó) và **suy diễn** rằng lệnh sẽ chạy được ở nơi khác, thay vì thực thi thử
+đúng cách người dùng sẽ gõ. Lỗi loại 2 còn tệ hơn: AI khai báo entry point cho file nó chưa viết —
+tức là mô tả một thứ chưa tồn tại như thể đã có.
+
+**Human review (SV 23127183, 03/09/2026):** đã yêu cầu kiểm lại toàn bộ tài liệu thay vì chỉ vá dòng
+báo lỗi. Kết quả đã sửa và **chạy thử thật từ PowerShell**:
+
+- Viết `tools/run-newman.mjs` (Node thuần, không phụ thuộc shell) thay cho `run-newman.sh`; file
+  `.sh` giữ lại làm wrapper mỏng nên lệnh cũ trong tài liệu vẫn dùng được. Chạy lại từ PowerShell
+  ra đúng baseline: regression **112/112/0 đỏ**, và **9 / 13 / 25** đỏ cho 3 API — khớp tuyệt đối
+  `ci/expected-failures.json`.
+- Gỡ 3 entry chết khỏi `package.json`; đã kiểm lại **10/10** script còn lại đều trỏ tới file có thật.
+- Runner nay in thẳng đường dẫn HTML/JSON ở cuối mỗi lượt, khỏi phải mò thư mục lúc quay video.
+- Sửa `docs/12`: đường dẫn SUT, chuỗi log khởi động thật (`Server is running on http://localhost:3000`,
+  không phải `Server running on port 3000`), đường dẫn `../eshop-sut/` trong prompt demo, và cách
+  điều hướng đúng trong báo cáo HTML (tab `Failed Tests` chỉ có thông báo assertion; response body
+  nằm ở danh sách request — đã mở file HTML thật kiểm chứng từng bước).
+
+**Bài học:** một lệnh chưa được chạy đúng theo cách người dùng sẽ gõ thì chưa phải là lệnh đã kiểm
+thử — đây chính là bài học của môn học, áp dụng ngược lại lên chính công cụ làm bài.
+
+---
+
 ## Việc còn cần sinh viên tự làm (không thể hoàn tất qua AI/dòng lệnh)
 
 Xem đầy đủ ở [`docs/CAN-LAM-TIEP-THEO.md`](../docs/CAN-LAM-TIEP-THEO.md): tự vẽ sơ đồ generator

@@ -1,13 +1,13 @@
 # Test summary — sinh tu dong bang `npm run summary`
 
 > **Dung go tay so nao trong file nay.** Moi con so doc tu `reports/newman/*.json`.
-> Sinh luc: 2026-09-02T15:27:57.633Z
+> Sinh luc: 2026-09-02T17:12:00.823Z
 
 | Collection | Request | Assertion | Pass | **Fail** | Raw JSON |
 |---|--:|--:|--:|--:|---|
-| api-01-login | 53 | 53 | 44 | **9** | `23127183_api-01-login_20260902-222409.json` |
-| api-02-apply-coupon | 59 | 59 | 46 | **13** | `23127183_api-02-apply-coupon_20260902-222617.json` |
-| api-03-product-update | 51 | 51 | 26 | **25** | `23127183_api-03-product-update_20260902-222733.json` |
+| api-01-login | 53 | 53 | 44 | **9** | `23127183_api-01-login_20260903-001136.json` |
+| api-02-apply-coupon | 59 | 59 | 46 | **13** | `23127183_api-02-apply-coupon_20260903-001136.json` |
+| api-03-product-update | 51 | 51 | 26 | **25** | `23127183_api-03-product-update_20260903-001136.json` |
 | **Tong** | **163** | **163** | **116** | **47** | |
 
 ## Assertion do — moi dong phai map toi 1 bug trong bug-report/bug-report.md

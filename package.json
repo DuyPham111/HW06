@@ -8,16 +8,13 @@
     "preflight": "node tools/preflight.mjs",
     "gen": "node tools/gen-artifacts.mjs --all",
     "gen:regression": "node tools/gen-regression.mjs",
-    "test:api1": "bash tools/run-newman.sh api-01-login",
-    "test:api2": "bash tools/run-newman.sh api-02-apply-coupon",
-    "test:api3": "bash tools/run-newman.sh api-03-product-update",
-    "test:all": "bash tools/run-newman.sh --all",
-    "test:regression": "bash tools/run-newman.sh regression",
+    "test:api1": "node tools/run-newman.mjs api-01-login",
+    "test:api2": "node tools/run-newman.mjs api-02-apply-coupon",
+    "test:api3": "node tools/run-newman.mjs api-03-product-update",
+    "test:all": "node tools/run-newman.mjs --all",
+    "test:regression": "node tools/run-newman.mjs regression",
     "summary": "node tools/summarize-newman.mjs",
-    "excel": "python tools/tc2xlsx.py",
-    "pdf": "bash tools/build-pdfs.sh",
-    "verify": "bash tools/verify-all.sh",
-    "package": "bash tools/package.sh"
+    "excel": "python tools/tc2xlsx.py"
   },
   "devDependencies": {
     "newman": "^6.2.1",

@@ -27,8 +27,16 @@ npm run test:api1        # hoặc test:api2 / test:api3 / test:all
 npm run summary
 ```
 
-`tools/run-newman.sh` tự gọi `preflight` trước, đặt tên file theo
-`23127183_<slug>_<YYYYmmdd-HHMMSS>` (không ghi đè lượt cũ) và xuất **cả** HTML lẫn JSON.
+`tools/run-newman.mjs` tự gọi `preflight` trước, đặt tên file theo
+`23127183_<slug>_<YYYYmmdd-HHMMSS>` (không ghi đè lượt cũ), xuất **cả** HTML lẫn JSON, và in thẳng
+đường dẫn 2 file đó ở cuối — khỏi phải mò trong thư mục.
+
+> **Vì sao là `.mjs` chứ không phải `.sh`.** Bản cũ gọi qua `bash tools/run-newman.sh`. Trên Windows,
+> npm chạy script bằng `cmd.exe`, mà `cmd.exe` resolve `bash` theo PATH và trúng
+> `C:\WINDOWS\system32\bash.exe` (**WSL**) **trước** Git Bash. WSL là hệ thống file riêng, không có
+> Node → `npm run test:api1` chết ngay ở dòng preflight với `node: command not found`. Bản `.mjs`
+> không phụ thuộc shell nào nên chạy giống hệt trên PowerShell, cmd, Git Bash và trên CI.
+> `tools/run-newman.sh` vẫn còn, nay chỉ là wrapper mỏng gọi sang `.mjs`, nên lệnh cũ vẫn dùng được.
 
 > **Restart SUT giữa các collection.** API-03 tạo/xóa sản phẩm, API-02 tạo đơn hàng và ghi
 > `coupon_usage`. Chạy liền 3 collection trên cùng một DB thì collection sau nhận trạng thái bẩn từ

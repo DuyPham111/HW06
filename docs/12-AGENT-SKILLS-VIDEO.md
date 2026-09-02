@@ -60,13 +60,40 @@ thuộc lòng như trả bài** — nói tự nhiên theo ý, lời thoại ch�
 
 | # | Việc | Vì sao |
 |---|---|---|
-| 1 | Mở sẵn 3 cửa sổ: **VS Code** (đã mở thư mục `HW06-API-Testing`), **terminal** (Git Bash, đã `cd` vào đúng thư mục), **trình duyệt** (2 tab: Postman web hoặc app, GitHub repo) | đỡ mất thời gian tìm/mở giữa lúc quay |
-| 2 | Chạy sẵn SUT: `cd eshop-sut/backend && node server.js`, để cửa sổ này **luôn hiện được** khi cần | chứng minh đang chạy `localhost:3000` thật, không phải giả |
+| 1 | Mở sẵn 3 cửa sổ: **VS Code** (đã mở thư mục `HW06-API-Testing`), **2 terminal** đã `cd` vào `HW06-API-Testing`, **trình duyệt** (2 tab: Postman, GitHub repo) | đỡ mất thời gian tìm/mở giữa lúc quay. Cần 2 terminal vì đoạn demo phải chuyển qua lại giữa Claude Code và `curl` |
+| 2 | **Khởi động lại SUT ngay trước khi quay** — terminal thứ 3, chạy đúng lệnh dưới bảng này. Để cửa sổ này **luôn hiện được** khi cần | ❶ chứng minh `localhost:3000` chạy thật; ❷ **DB được seed lại mỗi lần khởi động** — nếu không restart, dữ liệu rác từ các lần chạy thử trước sẽ làm số liệu lệch ngay trên video |
 | 3 | Mở sẵn Postman, chọn đúng collection `23127183_api-01-login`, environment `HW06-local-23127183`, và **bật sẵn Postman Console** (`Ctrl+Alt+C`) | đỡ thao tác thừa giữa video |
 | 4 | Phóng to chữ terminal + VS Code lên (Ctrl + hoặc Settings → Font size ≥ 16) | quay màn hình nhỏ chữ sẽ không đọc được khi xem trên YouTube |
 | 5 | Mở sẵn tab GitHub: trang Issues (`github.com/DuyPham111/HW06/issues`) và trang Actions (1 lượt xanh, 1 lượt đỏ) | dùng ở phút cuối |
 | 6 | Cài OBS Studio (miễn phí) hoặc dùng **Xbox Game Bar** có sẵn trên Windows 11 (`Win + G` → biểu tượng camera để quay) | ghi màn hình + giọng nói cùng lúc |
 | 7 | Kiểm micro: nói thử 1 câu, nghe lại xem rõ tiếng không | quay xong mới phát hiện mất tiếng thì phải quay lại từ đầu |
+| 8 | **Chạy nháp trọn kịch bản 1 lần** (không quay), rồi **restart lại SUT** trước khi quay thật | phát hiện sớm lệnh nào lỗi; và trả DB về sạch để số liệu trên video khớp báo cáo |
+
+**Lệnh khởi động SUT** — SUT nằm **ngoài** thư mục bài làm (`.gitignore` bỏ qua `eshop-sut/`), nên
+phải lùi một cấp, **không phải** `cd eshop-sut/backend`:
+
+```bash
+cd "D:/Nam3/HK3/Kiểm thử phần mềm/HW06/eshop-sut/backend" && node server.js
+```
+
+Đợi tới khi thấy **đúng 2 dòng** này (dòng đầu chính là bằng chứng DB vừa được seed lại sạch):
+
+```text
+Database initialized and seeded (Phase 2).
+Server is running on http://localhost:3000
+```
+
+Rồi kiểm tra ở terminal khác (lệnh này chạy giống nhau trên cả PowerShell lẫn Git Bash):
+
+```bash
+curl -s http://localhost:3000/api/products
+```
+
+Phải in ra JSON danh sách 5 sản phẩm. Nếu ra rỗng hoặc báo lỗi kết nối thì SUT chưa lên — đừng bắt
+đầu quay.
+
+> Đừng thêm `-o /dev/null` vào lệnh trên: trên PowerShell, `curl.exe` không hiểu `/dev/null` và trả
+> về exit code 23 kèm chữ đỏ, nhìn như lỗi trong khi SUT vẫn bình thường.
 
 ### 3.2 Kịch bản rút gọn ~7:30 — thao tác + lời thoại từng đoạn
 
@@ -108,14 +135,19 @@ thuộc lòng như trả bài** — nói tự nhiên theo ý, lời thoại ch�
 
 **1:40 – 4:40 — Demo chạy thật (đoạn quan trọng nhất — giữ nguyên, đừng cắt)**
 
-**[HÀNH ĐỘNG]** Chuyển qua terminal đã mở sẵn Claude Code (gõ `claude` nếu chưa mở). Gõ prompt:
+**[HÀNH ĐỘNG]** Chuyển qua terminal đã mở sẵn Claude Code (gõ `claude` trong `HW06-API-Testing` nếu
+chưa mở). Gõ prompt sau — **dùng đúng đường dẫn `../eshop-sut/`** vì SUT nằm ngoài thư mục bài làm:
 
 ```text
-Dùng skill api-test-design. Đọc mục 1.2 trong api_specification.md, FR-02 và bảng SEC trong
-README.md của SUT, và server.js dòng 32-66. Bước này CHƯA sinh test case — chỉ trả lời: cơ chế
-khóa tài khoản theo FR-02 là gì (bao nhiêu lần sai thì khóa, khóa bao lâu), và cơ chế thật trong
-code là gì? Hai bên có khớp không?
+Dùng skill api-test-design. Đọc mục 1.2 trong ../eshop-sut/api_specification.md, FR-02 và bảng
+SEC trong ../eshop-sut/README.md, và ../eshop-sut/backend/server.js dòng 32-66. Bước này CHƯA
+sinh test case — chỉ trả lời: cơ chế khóa tài khoản theo FR-02 là gì (bao nhiêu lần sai thì khóa,
+khóa bao lâu), và cơ chế thật trong code là gì? Hai bên có khớp không?
 ```
+
+> ⚠️ **Chạy thử prompt này 1 lần trước khi quay** (bước 8 bảng chuẩn bị). Lần đầu đọc file ngoài
+> thư mục làm việc, Claude Code sẽ hỏi xin quyền truy cập `../eshop-sut` — bấm đồng ý **lúc chạy
+> nháp**, để lúc quay thật nó chạy thẳng, không có hộp thoại chen ngang.
 
 **[NÓI]** (đọc trong lúc AI xử lý)
 > "Đây đúng là bước 1 của skill — chưa sinh test case, chỉ bắt AI đọc và đối chiếu."
@@ -156,17 +188,58 @@ bash bug-report/verify-bugs.sh 02
 
 **5:20 – 6:20 — Chạy Newman thật**
 
-**[HÀNH ĐỘNG]** Terminal: `npm run test:api1`. Đợi chạy xong, để lộ dòng tổng kết + danh sách đỏ.
+**[HÀNH ĐỘNG]** Terminal: gõ `npm run test:api1`. Chạy hết **~5 giây**, không phải chờ lâu.
+
+```bash
+npm run test:api1
+```
+
+Để lộ trên khung hình: bảng tổng kết Newman (cột `executed` / `failed`) và danh sách assertion đỏ.
+
+> **Số liệu đúng phải ra:** `53 request · 53 assertion · 9 đỏ`. Nếu ra số khác → SUT chưa được
+> restart, dừng quay, restart SUT rồi quay lại đoạn này.
 
 **[NÓI]**
 > "Em chạy thật bộ test bằng Newman — hostname luôn là `localhost:3000`, đúng SUT em đang chạy, không
 > giả lập. Kết quả 53 request, 53 assertion, 9 assertion đỏ, mỗi cái map về đúng một bug thật."
 
-**[HÀNH ĐỘNG]** Mở nhanh báo cáo HTML mới nhất, cuộn tới `TC-LOGIN-028`.
+**[HÀNH ĐỘNG]** Mở báo cáo HTML. **Không cần mò trong thư mục** — dòng gần cuối của terminal in sẵn
+đường dẫn đầy đủ, dạng:
+
+```text
+Bao cao HTML: ...\reports\newman\23127183_api-01-login_<YYYYmmdd-HHMMSS>.html
+```
+
+Ctrl+click vào đường dẫn đó (hoặc copy dán vào trình duyệt). Nếu terminal không cho click:
+
+```bash
+start "$(ls -t reports/newman/23127183_api-01-login_*.html | head -1)"
+```
+
+PowerShell thì dùng:
+
+```powershell
+Invoke-Item (Get-ChildItem reports\newman\23127183_api-01-login_*.html | Sort-Object LastWriteTime -Descending)[0].FullName
+```
+
+**Điều hướng trong trang báo cáo — đúng 2 bước** (đã kiểm chứng trên file thật):
+
+| Bước | Thao tác | Thấy gì |
+|---|---|---|
+| 1 | Bấm **tab đỏ `Failed Tests`** (có badge **`9`**) trên thanh tab ngang ở đầu trang | 9 dòng đỏ hiện ra cùng lúc — bằng chứng trực quan cho con số 9 vừa đọc |
+| 2 | Quay lại **tab đầu tiên** (danh sách request), `Ctrl+F` gõ `TC-LOGIN-028` → bấm dòng **`Iteration: 1 - TC-LOGIN-028`** để bung ra → cuộn tới khối **`Response Body`** | JSON response, trong đó có `"password":"Test1234!"` |
+
+> ⚠️ Đừng tìm response body trong tab `Failed Tests` — tab đó **chỉ hiện thông báo assertion**
+> (`... to not have property 'password'`), **không** có response body. Muốn quay được dòng mật khẩu
+> nguyên văn thì bắt buộc phải sang danh sách request ở bước 2.
 
 **[NÓI]**
 > "Bấm vào request đỏ này, thấy field `password` xuất hiện nguyên văn trong response — bug BUG-03,
 > hệ thống lộ mật khẩu dạng thô."
+
+> 💡 **Mẹo:** ngay dưới `Response Body` của cùng request này còn có khối **`Console Logs`** in sẵn
+> `[HW06] X-Student-Id = 23127183 | POST /api/login | <timestamp>`. Nếu lúc quay Postman Console
+> có trục trặc, chỉ cần cuộn thêm vài dòng ở đây là đã có đủ bằng chứng §11 — không phải quay lại.
 
 ---
 
