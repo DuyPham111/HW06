@@ -1,9 +1,11 @@
 HW06 - API Testing - Git commit log
 SV: Pham Vu Ngoc Duy - 23127183
 Repo: https://github.com/DuyPham111/HW06
-Xuat luc: 2026-09-02T22:42:21+07:00
-Tong so commit: 39
+Xuat luc: 2026-09-02T22:51:26+07:00
+Tong so commit: 41
 
+a5727fe  2026-09-02 22:51:13 +0700  DuyPham111  docs: rut gon kich ban video demo tu ~12p xuong ~7:30p (§7)
+e9f355e  2026-09-02 22:42:21 +0700  DuyPham111  docs: cap nhat git commit log (§12)
 56dad54  2026-09-02 22:42:20 +0700  DuyPham111  docs: hoan tat tai lieu ve su co CI that + lan chay xanh moi da xac nhan (§6, §9)
 72654a3  2026-09-02 22:36:37 +0700  DuyPham111  fix(ci): restart SUT giua buoc regression va bug-hunting (§6, §11)
 9d08377  2026-09-02 22:33:21 +0700  DuyPham111  fix: sua ten request bi loi 'undefined' trong Postman/Newman + chay lai toan bo (§6.4)
