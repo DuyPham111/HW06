@@ -14,7 +14,7 @@
 | 3 API × pipeline §6.1–§6.5 | 158 test case (138 AI + 20 SV), 3 collection Postman, chạy Newman thật |
 | Bug report | 27 bug, mỗi bug có `curl` tái hiện độc lập trong `bug-report/verify-bugs.sh` (đã chạy thật, output ở `verify-bugs-output.txt`) |
 | Regression suite | 108 case, chạy thật **0/110 đỏ** cả local lẫn CI |
-| CI/CD | 2 lượt mẫu **đã chạy thật** trên GitHub Actions: [XANH](https://github.com/DuyPham111/HW06/actions/runs/33363058905) · [ĐỎ](https://github.com/DuyPham111/HW06/actions/runs/33363180896) |
+| CI/CD | 2 lượt mẫu **đã chạy thật** trên GitHub Actions: [XANH](https://github.com/DuyPham111/HW06/actions/runs/33649674605) · [ĐỎ](https://github.com/DuyPham111/HW06/actions/runs/33363180896) — kèm 1 sự cố CI thật đã tự phát hiện + sửa (xem `ci/ci-report.md` §5) |
 | AI Audit Report + Critique | 12 log thật + critique 294 từ |
 | Excel | `excel/23127183_HW06_TestCases.xlsx`, 5 sheet, 158 case |
 | Generator | thiết kế 6 giai đoạn + pseudocode + **đã hiện thực chạy thật** (`tools/gen-artifacts.mjs`) |

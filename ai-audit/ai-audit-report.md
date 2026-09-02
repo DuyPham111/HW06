@@ -30,6 +30,7 @@
 | LOG-010 | Viết bug-report.md quy đổi 46/49 assertion đỏ → 27 bug | không |
 | LOG-011 | Sinh regression suite tự động từ raw JSON | không |
 | LOG-012 | Chạy CI thật trên GitHub Actions (2 lượt) | không |
+| LOG-013 | Sửa lỗi tên request + phát hiện/sửa lỗi thiết kế CI (regression tiêu hạn mức VIP100 trước bug-hunting) | có — 2 lỗi thật, cả hai đã sửa và xác nhận lại bằng lượt chạy mới |
 
 ## Chi tiết từng lượt
 
@@ -209,6 +210,36 @@ vì repo public) để lấy trạng thái lượt chạy thật thay vì tự k
 **Output:** lượt XANH thật (`run #33363058905`, commit `e1a1792`, `conclusion: success`) và lượt ĐỎ
 thật (`run #33363180896`, commit `5d102c1`, `conclusion: failure` ở đúng bước "Cổng đỏ/xanh") — chi
 tiết ở `ci/ci-report.md`.
+
+---
+
+### LOG-013 — Sửa lỗi tên request "undefined" + phát hiện & sửa lỗi thiết kế CI thật
+
+**Bối cảnh:** người dùng báo không tìm thấy `TC-COUPON-004` trong báo cáo Newman HTML.
+
+**Output:** phát hiện `tools/lib/postman-builder.mjs` dùng nhầm trường `c.name` (không tồn tại trên
+case object) khi đặt tên request, khiến **mọi** request trong cả 4 collection bị dính thêm chữ
+`" undefined"` vào tên (lỗi hiển thị, không ảnh hưởng assertion). Đã sửa, sinh lại cả 4 collection,
+restart SUT sạch, chạy lại toàn bộ Newman.
+
+**AI sai gì:** khi chạy lại, `api-02-apply-coupon` cho **13 đỏ** thay vì 15 cũ — 2 case
+`TC-COUPON-102`/`102c` (chuỗi `VIP100`) trước đó đỏ **oan** vì dư trạng thái hạn mức coupon từ một
+lượt dò dữ liệu `curl` thủ công trong cùng phiên làm việc trước khi restart SUT.
+
+**Vì sao sai:** `model limitations` — không tự nhận ra hai lượt chạy Newman "chính thức" cách nhau
+nhiều ngày trong cùng một session vẫn có thể chia sẻ trạng thái DB nếu không restart SUT ngay trước
+mỗi lượt, dù bản thân đã viết đúng nguyên tắc này thành tài liệu (`docs/07` §1).
+
+**Nhân bản sang CI:** sau khi cập nhật baseline và push, lượt CI đầu tiên (`run #33649322935`) lại
+đỏ ngoài dự kiến — **cùng gốc rễ nhưng ở tầng khác**: `.github/workflows/api-tests.yml` chạy bước
+regression rồi bug-hunting trên **cùng một lần khởi động SUT** (không restart), nên regression tiêu
+hết 2 lượt `VIP100` trước, làm bug-hunting đỏ oan y hệt lỗi vừa sửa ở local. Tải artifact bằng
+`gh run download`, đối chiếu raw JSON, xác nhận đúng giả thuyết.
+
+**Human review (SV 23127183, 02/09/2026):** đã tự thêm bước "Restart SUT" vào workflow, push, xác
+nhận lượt CI kế tiếp (`run #33649674605`) xanh hoàn toàn và khớp đúng số local. Đã cập nhật toàn bộ
+số liệu liên quan (`bug-report.md`, `README.md`, `main-report.md`, `ci-report.md`, 3 file `audit.md`,
+`ci/expected-failures.json`) — không có số nào bị bỏ sót khi con số gốc thay đổi.
 
 ---
 

@@ -20,10 +20,11 @@
 | Ghi điều kiện lượt chạy vào Step Summary | runner, Node, Newman version, chế độ cổng | khi số liệu CI lệch số local thì biết vì sao |
 | `node tools/preflight.mjs` | | chặn sớm |
 | Chạy **regression suite** → cổng **0 đỏ** | | đây là lượt "all API test cases passing" mà §6 đòi |
+| **Restart SUT** (seed lại DB sạch) | | regression và bug-hunting dùng chung vài TC ID có trạng thái — xem quyết định #4 |
 | Chạy **3 collection bug-hunting** → cổng **baseline** | | bộ này cố ý bắt bug nên luôn có đỏ |
 | Upload artifact `if: always()` | HTML + JSON + `sut.log` | lúc đỏ mới là lúc cần bằng chứng nhất |
 
-### Ba quyết định thiết kế
+### Bốn quyết định thiết kế
 
 **1. SUT dựng trong job**, không dùng service ngoài — xem bảng trên.
 
@@ -40,6 +41,13 @@ liệu sai vào CSDL.
 
 **3. Input `gate_mode`** cho phép chạy tay ở chế độ `strict` — đây là cách tạo **lượt ĐỎ mẫu** mà §6
 đòi, không cần cố tình viết một test sai vào repo.
+
+**4. Restart SUT giữa 2 bước.** Regression và bug-hunting dùng **chung** vài TC ID mang trạng thái
+(chuỗi `VIP100`: `TC-COUPON-102`/`102c`, coupon chỉ cho **2 lượt/người**). Nếu 2 bước chạy liền trên
+**cùng một lần khởi động SUT**, bước regression tiêu hết 2 lượt trước, khiến bước bug-hunding chạy
+ngay sau đó **đỏ oan** vì hết hạn mức — không phải bug thật. Phát hiện được lỗi thiết kế pipeline
+này chính từ một lượt CI thật bị đỏ sai (xem mục "Sự cố đã gặp và sửa" ở cuối file), không phải suy
+đoán trước.
 
 ### Baseline
 
@@ -60,24 +68,16 @@ GitHub Actions** (không chỉ ở máy local).
 
 | | |
 |---|---|
-| **Link** | https://github.com/DuyPham111/HW06/actions/runs/33363058905 |
-| **Commit** | `e1a1792` — *"docs: bug report 27 bug + verify-bugs.sh + regression suite (§6.5, §9)"* |
+| **Link** | https://github.com/DuyPham111/HW06/actions/runs/33649674605 |
+| **Commit** | `72654a3` — *"fix(ci): restart SUT giua buoc regression va bug-hunting (§6, §11)"* |
 | **Bộ chạy** | `23127183_regression` (cổng `--strict`) **+** 3 collection bug-hunting (cổng baseline) — **cả pipeline xanh hoàn toàn** |
 | **Cổng** | `tools/ci-gate.mjs --strict` (regression) và so baseline (bug-hunting) |
-| **Kết quả** | 112 request · 112 assertion · **0 đỏ** (regression) — xác nhận đúng số liệu local |
-| **Trạng thái workflow** | `status: completed · conclusion: success` (lấy qua GitHub REST API, không chỉ đọc màn hình) |
+| **Kết quả** | 112 request · 112 assertion · **0 đỏ** (regression, tự tải artifact `newman-baseline-11` xác nhận) |
+| **Trạng thái workflow** | `status: completed · conclusion: success` (lấy qua GitHub REST API + `gh run download`, không chỉ đọc màn hình) |
 
 Regression suite là **tập con các case đang xanh** của bộ chính (110/157 case, tự động lọc bằng
 `tools/gen-regression.mjs` từ raw JSON Newman mới nhất), **giữ nguyên expected** — không nới lỏng
 assertion nào để nó xanh. Nếu nới thì nó không còn chốt được hành vi nào cả.
-
-> **Cập nhật 02/09/2026:** phát hiện script sinh collection từng gắn nhầm chữ `undefined` vào tên
-> mọi request (lỗi hiển thị, không ảnh hưởng logic test) — đã sửa và chạy lại toàn bộ. Khi chạy lại
-> với SUT vừa khởi động sạch, `api-02-apply-coupon` cho **13 đỏ** thay vì 15: 2 case của chuỗi
-> `VIP100` (`TC-COUPON-102`, `102c`) trước đó đỏ vì **dư trạng thái sử dụng mã giảm giá** từ một lượt
-> dò dữ liệu thủ công bằng `curl` trong cùng phiên làm việc trước khi restart SUT — không phải bug
-> của SUT. Baseline đã cập nhật theo số đúng (xem bảng trên); numbers ở §1 và bảng so sánh §4 bên
-> dưới đã cập nhật theo.
 
 ---
 
@@ -112,12 +112,35 @@ Ngay sau khi có lượt đỏ mẫu, đã **khôi phục baseline về đúng s
 
 ## 4. So sánh số liệu local vs CI
 
-| Chỉ số | Local | CI (lượt xanh, run #33363058905) | Chênh | Giải thích |
+| Chỉ số | Local | CI (lượt xanh, run #33649674605) | Chênh | Giải thích |
 |---|--:|--:|--:|---|
-| Regression request | 112 | *(chờ lượt CI kế tiếp xác nhận, xem ghi chú trên)* | — | giống hệt — DB seed lại sạch cả 2 nơi |
+| Regression request/assertion | 112 | 112 | 0 | giống hệt — DB seed lại sạch cả 2 nơi |
 | Regression assertion đỏ | 0 | 0 | 0 | — |
-| Baseline `api-01-login`/`02`/`03` | 9/13/25 | *(chờ lượt CI kế tiếp xác nhận)* | — | SUT hành vi giống hệt trên runner Ubuntu và máy Windows local — không phụ thuộc OS |
+| Baseline `api-01-login`/`02`/`03` | 9/13/25 | 9/13/25 (xác nhận qua `gh run download`, đọc trực tiếp raw JSON) | 0 | SUT hành vi giống hệt trên runner Ubuntu và máy Windows local — không phụ thuộc OS |
 
 **Không có chênh lệch đáng kể** — hành vi của SUT (bug cố ý) không phụ thuộc môi trường chạy, nên số
 liệu CI và local khớp tuyệt đối. Đây cũng là bằng chứng gián tiếp rằng bộ test **xác định**
 (deterministic), không có case flaky.
+
+---
+
+## 5. Sự cố đã gặp và sửa — bài học thật, không phải giả định trước
+
+**Lượt CI đầu tiên sau khi sửa baseline bị ĐỎ ngoài kế hoạch** (run
+[#33649322935](https://github.com/DuyPham111/HW06/actions/runs/33649322935), commit `9d08377`) —
+`api-02-apply-coupon` cho **15 đỏ** thay vì 13 như đã xác nhận ở local. Tải artifact bằng
+`gh run download` rồi đọc raw JSON, phát hiện đúng 2 assertion khác biệt: `TC-COUPON-102` và
+`TC-COUPON-102c` (chuỗi kiểm mã `VIP100`) — kỳ vọng `200` nhưng nhận `400`.
+
+**Nguyên nhân:** coupon `VIP100` chỉ cho **2 lượt/người**. Hai case này **cũng nằm trong regression
+suite** (đang xanh), và workflow khi đó chạy **regression rồi tới bug-hunting trên cùng một lần khởi
+động SUT** — không restart giữa 2 bước. Bước regression tiêu hết 2 lượt hạn mức trước, nên khi bước
+bug-hunting chạy lại đúng 2 case đó, hạn mức đã cạn → đỏ **oan**, không phải bug của SUT.
+
+**Cách phát hiện:** không phải đọc code suy luận trước — mà từ việc **đối chiếu số liệu CI thật với
+số liệu local thật** và thấy lệch, đúng nguyên tắc "mọi con số phải verify được, không tin một nguồn
+duy nhất" đã áp dụng xuyên suốt bài này.
+
+**Cách sửa:** thêm bước **"Restart SUT"** vào `.github/workflows/api-tests.yml`, chèn giữa bước
+regression và bước bug-hunting (xem Quyết định #4 ở §1). Đẩy commit `72654a3`, lượt CI kế tiếp
+(#33649674605) xanh hoàn toàn, xác nhận đúng 13 đỏ như local — xem §2.

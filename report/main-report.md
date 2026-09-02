@@ -281,13 +281,22 @@ Actions. Chưa làm: Mock Server, Monitor, data-driven CSV qua Collection Runner
 ## 9. CI/CD (§6)
 
 Pipeline chạy SUT ngay trong job (checkout `ttbhanh/eshop-sut`), **hai bộ hai cổng**: regression
-suite (cổng 0 đỏ) + 3 collection bug-hunting (cổng so baseline). Chi tiết đầy đủ + 2 lượt mẫu **đã
-chạy thật** trên GitHub Actions: [`ci/ci-report.md`](../ci/ci-report.md).
+suite (cổng 0 đỏ) + 3 collection bug-hunting (cổng so baseline), có **restart SUT giữa 2 bước** (xem
+lý do ở mục Sự cố dưới). Chi tiết đầy đủ + 2 lượt mẫu **đã chạy thật** trên GitHub Actions:
+[`ci/ci-report.md`](../ci/ci-report.md).
 
 | Lượt | Cổng | Kết quả | Link | Commit |
 |---|---|---|---|---|
-| XANH | `--strict` (regression) + baseline (bug-hunting) | 110/110 pass, cả pipeline `success` | [run #33363058905](https://github.com/DuyPham111/HW06/actions/runs/33363058905) | `e1a1792` |
+| XANH | `--strict` (regression) + baseline (bug-hunting) | 112/112 pass, cả pipeline `success` | [run #33649674605](https://github.com/DuyPham111/HW06/actions/runs/33649674605) | `72654a3` |
 | ĐỎ | baseline `api-01-login` hạ về 0 (demo) | bước "Cổng đỏ/xanh" → `failure` đúng thiết kế | [run #33363180896](https://github.com/DuyPham111/HW06/actions/runs/33363180896) | `5d102c1` |
+
+**Sự cố CI thật đã gặp và tự sửa:** một lượt CI ([run #33649322935](https://github.com/DuyPham111/HW06/actions/runs/33649322935))
+từng đỏ ngoài dự kiến — `api-02-apply-coupon` báo 15 đỏ thay vì 13. Tải artifact bằng `gh run
+download` thì phát hiện nguyên nhân: coupon `VIP100` (2 lượt/người) bị **regression suite tiêu hết
+hạn mức trước**, vì lúc đó pipeline chạy regression rồi bug-hunting trên **cùng một lần khởi động
+SUT**. Đã sửa bằng cách thêm bước restart SUT giữa 2 bước — xem chi tiết đầy đủ ở
+[`ci/ci-report.md`](../ci/ci-report.md) §5. Đây là ví dụ thật của việc **đối chiếu số liệu CI với
+local** bắt được lỗi mà chỉ chạy local sẽ không bao giờ thấy.
 
 ---
 
