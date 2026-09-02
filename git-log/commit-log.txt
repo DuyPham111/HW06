@@ -1,9 +1,11 @@
 HW06 - API Testing - Git commit log
 SV: Pham Vu Ngoc Duy - 23127183
 Repo: https://github.com/DuyPham111/HW06
-Xuat luc: 2026-09-02T22:51:26+07:00
-Tong so commit: 41
+Xuat luc: 2026-09-03T00:13:56+07:00
+Tong so commit: 43
 
+8340b0d  2026-09-03 00:13:42 +0700  DuyPham111  fix: npm run test:* chet tren PowerShell (WSL bash) + sua loi thao tac trong kich ban video
+383ac45  2026-09-02 22:51:26 +0700  DuyPham111  chore: cap nhat git-log/commit-log.txt
 a5727fe  2026-09-02 22:51:13 +0700  DuyPham111  docs: rut gon kich ban video demo tu ~12p xuong ~7:30p (§7)
 e9f355e  2026-09-02 22:42:21 +0700  DuyPham111  docs: cap nhat git commit log (§12)
 56dad54  2026-09-02 22:42:20 +0700  DuyPham111  docs: hoan tat tai lieu ve su co CI that + lan chay xanh moi da xac nhan (§6, §9)
