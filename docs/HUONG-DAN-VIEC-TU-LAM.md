@@ -72,7 +72,7 @@ Chi tiết ở [09-CI-CD.md](09-CI-CD.md) §5–§6.
 
 ---
 
-## 4. Tạo GitHub Issues kèm ảnh — ~40 phút cho 20 bug
+## 4. Tạo GitHub Issues kèm ảnh — ~40 phút cho 27 bug
 
 Chi tiết ở [10-BUG-REPORT-GITHUB-ISSUES.md](10-BUG-REPORT-GITHUB-ISSUES.md) §7.
 

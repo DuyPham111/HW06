@@ -1,9 +1,20 @@
 # Việc bạn cần tự làm — từ phiên 3 trở đi
 
-> Toàn bộ phần dòng lệnh (§6.1–§6.5, §9, §12, §14) **đã làm xong và đã push lên GitHub**, và
-> **sơ đồ generator (A.1, việc quan trọng nhất) bạn đã tự vẽ xong trên draw.io** — xem tóm tắt ở §0.
-> **Tự chấm hiện tại: 100/100.** Phần còn lại (A.2–A.4) là bằng chứng bắt buộc theo câu chữ đề
-> nhưng không đổi điểm 4 tiêu chí chính; nhóm (B) là khuyến khích. Ước tính tổng còn lại: **~1–1,5 giờ**.
+> Toàn bộ phần dòng lệnh (§6.1–§6.5, §9, §12, §14) **đã làm xong và đã push lên GitHub**; sơ đồ
+> generator bạn đã tự vẽ, và **video demo §7 đã quay xong** — xem tóm tắt ở §0.
+> **Tự chấm hiện tại: 100/100.**
+>
+> **Còn đúng 4 việc, đều là chụp ảnh / xuất file, không phải làm lại nội dung:**
+>
+> | | Việc | Bắt buộc? |
+> |---|---|---|
+> | A.4b | Kéo-thả ảnh vào 27 issue | theo câu chữ §11 |
+> | **A.5** | **Chụp 2 ảnh lượt CI** | **§14 — bắt buộc** |
+> | **A.6** | **Chụp ảnh trang GitHub Issues** | **§14 — bắt buộc** |
+> | B.3 | Xuất PDF 6 file | **§14 — bắt buộc** |
+>
+> Ước tính: **~1 giờ**. A.5 và A.6 mỗi cái chỉ 5 phút nhưng §17 ghi *"Missing any required document
+> results in 0 points"* nên đừng bỏ.
 
 ---
 
@@ -13,9 +24,10 @@
 |---|---|
 | 3 API × pipeline §6.1–§6.5 | 158 test case (138 AI + 20 SV), 3 collection Postman, chạy Newman thật |
 | Bug report | 27 bug, mỗi bug có `curl` tái hiện độc lập trong `bug-report/verify-bugs.sh` (đã chạy thật, output ở `verify-bugs-output.txt`) |
-| Regression suite | 108 case, chạy thật **0/110 đỏ** cả local lẫn CI |
+| Regression suite | chạy thật **112 request / 112 assertion / 0 đỏ**, khớp nhau cả local lẫn CI |
 | CI/CD | 2 lượt mẫu **đã chạy thật** trên GitHub Actions: [XANH](https://github.com/DuyPham111/HW06/actions/runs/33649674605) · [ĐỎ](https://github.com/DuyPham111/HW06/actions/runs/33363180896) — kèm 1 sự cố CI thật đã tự phát hiện + sửa (xem `ci/ci-report.md` §5) |
-| AI Audit Report + Critique | 12 log thật + critique 294 từ |
+| AI Audit Report + Critique | 14 log thật + critique 294 từ |
+| **Video demo Agent Skill (§7)** | ✅ **đã xong** — https://www.youtube.com/watch?v=I8-LSwX6y5s |
 | Excel | `excel/23127183_HW06_TestCases.xlsx`, 5 sheet, 158 case |
 | Generator | thiết kế 6 giai đoạn + pseudocode + **đã hiện thực chạy thật** (`tools/gen-artifacts.mjs`) |
 | Agent Skills | 4 skill trong `.claude/skills/` |
@@ -141,6 +153,35 @@ API và đủ 2 kiểu bằng chứng (ảnh HTML report + ảnh terminal).
 > Tối thiểu để không bị 0 điểm §6.5: đã có `bug-report/bug-report.md` **và** 27 issue thật trên
 > GitHub (đạt cả 2 vế *"both in the Markdown report and on your GitHub Issues page"*). Phần ảnh là
 > để đạt trọn §11 (*"screenshot attached to each issue"*), nên đừng bỏ qua nếu còn thời gian.
+
+---
+
+### A.5 — Ảnh chụp 2 lượt CI (§14 đòi *"with screenshots and links"*)
+
+`ci/ci-report.md` hiện **chỉ có link, chưa có ảnh**. §14 đòi cả hai, và §17 ghi *"Missing any
+required document results in 0 points"* — nên đây là việc **bắt buộc**, không phải trang trí.
+
+Mở 2 trang này, chụp màn hình, lưu vào `ci/screenshots/`:
+
+| Lượt | URL | Tên file | Chụp sao cho thấy |
+|---|---|---|---|
+| XANH | https://github.com/DuyPham111/HW06/actions/runs/33649674605 | `ci-run-xanh.png` | tên workflow, dấu ✅ xanh, danh sách các step đều xanh |
+| ĐỎ | https://github.com/DuyPham111/HW06/actions/runs/33363180896 | `ci-run-do.png` | dấu ❌ đỏ, và step **"Cong do/xanh"** đang `failure` (bung step đó ra cho thấy dòng `HOI QUY MOI`) |
+
+Chụp xong báo lại, tôi chèn vào `ci/ci-report.md` §2 và §3 đúng chỗ.
+
+### A.6 — Ảnh trang GitHub Issues (§14 đòi *"screenshots of the bugs on the GitHub Issues page"*)
+
+Khác với A.4b (ảnh **bên trong** từng issue). Ở đây cần ảnh **trang danh sách Issues** để đưa vào
+`bug-report/bug-report.md`, chứng minh 27 bug đã lên Issues thật.
+
+1. Mở https://github.com/DuyPham111/HW06/issues
+2. Chụp trang danh sách sao cho thấy **số 27 Open** và các label mức độ → lưu
+   `bug-report/screenshots/github-issues-list.png`
+3. Mở 1–2 issue nặng nhất (BUG-19 sập server, BUG-10 công thức coupon âm), chụp nội dung issue →
+   `github-issue-bug-19.png`, `github-issue-bug-10.png`
+
+Chụp xong báo lại, tôi chèn vào `bug-report.md` §1 và đúng mục từng bug.
 
 ---
 
@@ -272,11 +313,14 @@ git commit -m "docs: anh Postman data-driven + Mock Server + Monitor (§6)"
 git push
 ```
 
-### B.2 — Video demo Agent Skill (§7, khuyến khích — không bắt buộc)
+### B.2 — Video demo Agent Skill (§7) — ✅ ĐÃ XONG
 
-Kịch bản 12 phút đã có sẵn ở [`docs/12-AGENT-SKILLS-VIDEO.md`](12-AGENT-SKILLS-VIDEO.md) §3. Nếu
-không đủ thời gian, ghi đúng câu đã có sẵn trong README: *"§7 ghi 'encouraged' — video demo là tuỳ
-chọn."* — không mất điểm nếu bỏ qua.
+https://www.youtube.com/watch?v=I8-LSwX6y5s
+
+Link đã điền vào: `README.md` (bảng liên kết), `report/main-report.md` §10, và
+`.claude/skills/demo-video-link.md`. Kịch bản gốc: [`docs/12`](12-AGENT-SKILLS-VIDEO.md) §3.
+
+> Nhớ kiểm lại video đang để **Unlisted**, không phải Private — Private thì TA bấm vào không xem được.
 
 ### B.3 — Xuất PDF cho 6 tài liệu bắt buộc (§14 đòi cả `.md` và `.pdf`)
 
@@ -310,8 +354,10 @@ phản hồi, điền thêm bảng đối chiếu (không bắt buộc, chỉ gi
 - [x] **A.3** Tự tay chạy `verify-bugs.sh` cho ≥3 bug nặng nhất
 - [x] **A.4a** Tạo 27/27 GitHub Issues (đã xong qua `gh` CLI)
 - [ ] **A.4b** Kéo-thả ảnh vào từng issue (ưu tiên 5 Critical nặng nhất nếu thiếu thời gian)
+- [ ] **A.5** Chụp 2 ảnh lượt CI → `ci/screenshots/` — **§14 bắt buộc**
+- [ ] **A.6** Chụp ảnh trang GitHub Issues → `bug-report/screenshots/` — **§14 bắt buộc**
 - [x] **B.1** Data-driven + Mock Server + Monitor — cả 3 đã xong, có ảnh + số liệu thật trong `postman/README.md` §2, §4
-- [ ] **B.2** Video demo (tuỳ chọn)
+- [x] **B.2** Video demo → https://www.youtube.com/watch?v=I8-LSwX6y5s
 - [ ] **B.3** Xuất PDF 6 file
 - [ ] **B.4** Bảng đối chiếu nhóm (tuỳ chọn)
 - [ ] Đóng gói cuối: xem [`docs/16-DONG-GOI-CHECKLIST.md`](16-DONG-GOI-CHECKLIST.md) — kiểm đủ 13

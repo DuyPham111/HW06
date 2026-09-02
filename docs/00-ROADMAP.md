@@ -149,9 +149,12 @@ trong đề cũng liệt kê FR-08/FR-10 là ví dụ hợp lệ.
 
 Liệt kê sớm để bạn xếp lịch, chi tiết ở [`HUONG-DAN-VIEC-TU-LAM.md`](HUONG-DAN-VIEC-TU-LAM.md):
 
-- Chụp ảnh **Postman Console** khi chạy collection trong GUI (§11).
-- **Tự vẽ sơ đồ** AI test generator (§7, §11).
-- Bấm **Run workflow** để tạo 2 lượt CI mẫu, chụp ảnh + lấy link (§6).
-- Tạo **GitHub Issues** và đính ảnh vào từng issue (§6.5).
-- Đọc và ký nhận từng bảng `audit.md` (§6.2 — *"You are fully responsible"*).
-- Quay **video demo Agent Skill** nếu làm (§7, khuyến khích).
+Đã xong: ảnh Postman Console (§11) · sơ đồ tự vẽ (§7, §11) · 2 lượt CI mẫu đã chạy thật (§6) ·
+27 GitHub Issues (§6.5) · ký nhận 3 file `audit.md` (§6.2) · video demo §7
+([link](https://www.youtube.com/watch?v=I8-LSwX6y5s)).
+
+Còn lại — xem [`CAN-LAM-TIEP-THEO.md`](CAN-LAM-TIEP-THEO.md):
+
+- Đính ảnh vào từng GitHub Issue (§6.5, §11).
+- **Chụp ảnh 2 lượt CI** và **trang GitHub Issues** — §14 đòi *"with screenshots and links"*.
+- **Xuất PDF** 6 tài liệu §14 yêu cầu kèm bản PDF.

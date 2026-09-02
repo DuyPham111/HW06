@@ -68,7 +68,7 @@ test: chay Newman 3 collection va xuat bao cao (§6.4)
 docs: dien cot Ket qua vao audit va extended tu summary.md
 docs: anh bang chung X-Student-Id tu Postman Console (§11)
 
-docs: bug report 20 bug + script verify-bugs (§6.5)
+docs: bug report 27 bug + script verify-bugs (§6.5)
 docs: link GitHub Issues vao bug report
 
 test: regression suite - tap con case dang xanh

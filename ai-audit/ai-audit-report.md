@@ -197,8 +197,11 @@ bằng `curl` độc lập, dán nhãn mức độ, trích đúng câu chữ đ�
 **Prompt:** viết `tools/gen-regression.mjs` đọc raw JSON Newman mới nhất, tự động lọc các `TC ID`
 KHÔNG có trong danh sách `failures`, giữ nguyên expected.
 
-**Output:** 108/157 case → collection `23127183_regression`, chạy thật **0/110 assertion đỏ** cả ở
-local lẫn trên GitHub Actions runner.
+**Output:** collection `23127183_regression` gồm **112/163 request đang xanh** của 3 collection
+chính, chạy thật **112 assertion / 0 đỏ** cả ở local lẫn trên GitHub Actions runner.
+
+> Số liệu ở đây đã cập nhật theo lần sinh lại gần nhất (sau khi sửa lỗi đặt tên request ở LOG-013);
+> bản đầu tiên của suite này nhỏ hơn vài case.
 
 ---
 
@@ -293,6 +296,9 @@ thử — đây chính là bài học của môn học, áp dụng ngược lạ
 
 ## Việc còn cần sinh viên tự làm (không thể hoàn tất qua AI/dòng lệnh)
 
-Xem đầy đủ ở [`docs/CAN-LAM-TIEP-THEO.md`](../docs/CAN-LAM-TIEP-THEO.md): tự vẽ sơ đồ generator
-(§11 cấm AI vẽ), thao tác Postman GUI còn lại (Mock Server, Monitor), tạo GitHub Issues kèm ảnh,
-đọc lại và ký tên xác nhận 3 file `audit.md`, quay video demo (tuỳ chọn).
+Đã hoàn tất: tự vẽ sơ đồ generator (§11), Mock Server + Monitor + data-driven, tạo 27 GitHub Issues,
+đọc và ký tên 3 file `audit.md`, quay video demo §7
+([link](https://www.youtube.com/watch?v=I8-LSwX6y5s)).
+
+Còn lại — đều là **chụp ảnh / xuất file**, xem [`docs/CAN-LAM-TIEP-THEO.md`](../docs/CAN-LAM-TIEP-THEO.md):
+đính ảnh vào từng issue, chụp 2 lượt CI và trang Issues (§14 đòi ảnh), xuất PDF 6 tài liệu.

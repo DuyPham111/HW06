@@ -4,11 +4,12 @@
 - **Môn:** Kiểm thử phần mềm — **Bài:** HW06-AI API Testing
 - **SUT:** EShop — https://github.com/ttbhanh/eshop-sut · spec: `api_specification.md`
 
-> **Trạng thái: pipeline §6.1–§6.5 đã hoàn tất cho cả 3 API** — 158 test case (141 AI sinh + 20 SV
+> **Trạng thái: pipeline §6.1–§6.5 đã hoàn tất cho cả 3 API** — 158 test case (138 AI sinh + 20 SV
 > tự thêm, đã audit), chạy Newman thật (163 request/163 assertion, 47 assertion đỏ = 27 bug đã xác
-> nhận, tái hiện được bằng `curl`), regression suite 110 case (0 đỏ), CI chạy thật trên GitHub
-> Actions (1 lượt xanh + 1 lượt đỏ, cả hai đều có link thật). Việc còn lại **chỉ còn phần bạn phải
-> tự làm** (không tự động hoá được) — xem [`docs/CAN-LAM-TIEP-THEO.md`](docs/CAN-LAM-TIEP-THEO.md).
+> nhận, tái hiện được bằng `curl`), regression suite 112 request (0 đỏ), CI chạy thật trên GitHub
+> Actions (1 lượt xanh + 1 lượt đỏ, cả hai đều có link thật), và **video demo Agent Skill §7 đã
+> quay**. Việc còn lại là các bằng chứng phải chụp/xuất thủ công — xem
+> [`docs/CAN-LAM-TIEP-THEO.md`](docs/CAN-LAM-TIEP-THEO.md).
 
 ## Liên kết
 
@@ -27,7 +28,7 @@
 | Thiết kế generator (§7) | [`generator/design.md`](generator/design.md) |
 | GitHub Issues | https://github.com/DuyPham111/HW06/issues — **27/27 đã tạo** (#1–#27), còn thiếu ảnh minh hoạ |
 | GitHub Actions | https://github.com/DuyPham111/HW06/actions |
-| Video demo Agent Skill | _(§7 khuyến khích — điền nếu làm)_ |
+| Video demo Agent Skill (§7) | https://www.youtube.com/watch?v=I8-LSwX6y5s |
 
 ---
 
@@ -70,10 +71,10 @@ validate gần như mọi ràng buộc FR-15. Chi tiết đầy đủ: [`bug-rep
 **Bug theo mức độ:** Critical **13** · High **9** · Medium **4** · Low **1** — [`bug-report/bug-report.md`](bug-report/bug-report.md).
 Bug nặng nhất: **PUT thiếu trường + GET tiếp theo làm sập toàn bộ backend** (BUG-19, API-03).
 
-**Regression suite:** 110/157 case đang xanh, chạy thật **0/112 assertion đỏ** (cả local lẫn CI).
+**Regression suite:** **112/163 request** đang xanh, chạy thật **112 assertion / 0 đỏ** (cả local lẫn CI).
 
 **Hai lượt CI mẫu (§6, đã chạy thật trên GitHub Actions):**
-[XANH #33363058905](https://github.com/DuyPham111/HW06/actions/runs/33363058905) ·
+[XANH #33649674605](https://github.com/DuyPham111/HW06/actions/runs/33649674605) ·
 [ĐỎ #33363180896](https://github.com/DuyPham111/HW06/actions/runs/33363180896) —
 chi tiết [`ci/ci-report.md`](ci/ci-report.md).
 
@@ -93,9 +94,10 @@ chi tiết [`ci/ci-report.md`](ci/ci-report.md).
 | 4 | Agent Skills (AI-driven test generator) | 10 | **10** | thiết kế 6 giai đoạn + pseudocode + generator **đã chạy thật** (`tools/gen-artifacts.mjs`, sinh cả 158 case + 4 collection) · 4 Agent Skill · **sơ đồ tự vẽ trên draw.io** (`generator/diagram/generator-flow-selfdrawn.png` + `.drawio`) |
 | | **Tổng** | **100** | **100** | |
 
-Việc còn lại (GitHub Issues kèm ảnh, Mock Server/Monitor, video demo, xuất PDF) là bằng chứng bổ
-sung/khuyến khích, không nằm trong 4 tiêu chí chấm điểm chính — xem
-[`docs/CAN-LAM-TIEP-THEO.md`](docs/CAN-LAM-TIEP-THEO.md) để biết việc nào bắt buộc, việc nào tuỳ chọn.
+Phần khuyến khích của §7 đã hoàn tất: 4 Agent Skill + **video demo**
+([link](https://www.youtube.com/watch?v=I8-LSwX6y5s)) cho thấy skill sinh test case trực tiếp cho
+API-01. Việc còn lại duy nhất là **xuất PDF** các tài liệu §14 đòi kèm bản PDF — xem
+[`docs/CAN-LAM-TIEP-THEO.md`](docs/CAN-LAM-TIEP-THEO.md).
 
 ---
 

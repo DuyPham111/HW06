@@ -75,7 +75,7 @@ GitHub Actions** (không chỉ ở máy local).
 | **Kết quả** | 112 request · 112 assertion · **0 đỏ** (regression, tự tải artifact `newman-baseline-11` xác nhận) |
 | **Trạng thái workflow** | `status: completed · conclusion: success` (lấy qua GitHub REST API + `gh run download`, không chỉ đọc màn hình) |
 
-Regression suite là **tập con các case đang xanh** của bộ chính (110/157 case, tự động lọc bằng
+Regression suite là **tập con các case đang xanh** của bộ chính (112/163 request, tự động lọc bằng
 `tools/gen-regression.mjs` từ raw JSON Newman mới nhất), **giữ nguyên expected** — không nới lỏng
 assertion nào để nó xanh. Nếu nới thì nó không còn chốt được hành vi nào cả.
 

@@ -114,7 +114,7 @@ rồi mua thật.
 ## 5. Bảng quy đổi assertion đỏ → bug
 
 `bug-report.md` phải có bảng này ở đầu. Nó trả lời câu hỏi đầu tiên của người chấm:
-*"93 assertion đỏ mà chỉ có 20 bug — số nào đúng?"*
+*"47 assertion đỏ mà chỉ có 27 bug — số nào đúng?"* (một bug thường làm đỏ nhiều assertion)
 
 | Bug | Mức độ | API | Test case liên quan | Số assertion đỏ |
 |---|---|---|---|--:|

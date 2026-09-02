@@ -116,13 +116,8 @@ Excel. Nếu có gì hỏng thì sửa rồi zip lại.
 và **ghi rõ trừ vì sao**. Bài tham khảo đã 100đ có hẳn một bảng "trừ vì sao / đóng lại bằng cách nào" —
 sự trung thực đó được đánh giá cao hơn là ghi 100 rồi để người chấm tự tìm chỗ thiếu.
 
-| No. | Tiêu chí | Điểm tối đa | Điểm tự chấm | Căn cứ |
-|---|---|--:|--:|---|
-| 1 | API-01 — full pipeline (generate + audit + extend + execute + bugs) | 30 | | __ case · __ assertion · __ bug · Issue #__–#__ |
-| 2 | API-02 — full pipeline | 30 | | |
-| 3 | API-03 — full pipeline | 30 | | |
-| 4 | Agent Skills (AI-driven test generator) | 10 | | 4 SKILL.md · thiết kế 6 giai đoạn · sơ đồ tự vẽ · pseudocode |
-| | **Tổng** | **100** | | |
+✅ **Đã điền xong** — bảng thật nằm ở [`README.md`](../README.md) §3, tự chấm **100/100**, mỗi dòng
+có cột "Căn cứ" ghi rõ số case / assertion / bug làm chứng. Không cần điền lại ở đây.
 
 ---
 

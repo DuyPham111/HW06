@@ -15,7 +15,7 @@
 3 API (Pool A `POST /api/login`, Pool B `POST /api/apply-coupon`, Pool C `PUT /api/products/:id`)
 đã đi hết pipeline §6.1–§6.5: sinh **158 test case** (138 AI qua 5 bước riêng + 20 sinh viên tự
 thêm), audit qua 5 phép soát kết hợp chạy Newman thật, dựng 3 collection Postman + 1 regression
-suite (110 case). Chạy Newman thật cho **163 request/163 assertion, 47 đỏ**, quy đổi thành **27 bug
+suite (112 request). Chạy Newman thật cho **163 request/163 assertion, 47 đỏ**, quy đổi thành **27 bug
 đã tái hiện độc lập bằng `curl`** (13 Critical). Bug nặng nhất — **PUT thiếu trường trên sản phẩm ID
 chẵn rồi GET lại làm sập toàn bộ backend** (BUG-19) — được phát hiện ngoài ý muốn trong lúc audit,
 không phải AI tự nghĩ ra. CI chạy thật trên GitHub Actions với 2 lượt mẫu có link thật: 1 lượt xanh
@@ -65,7 +65,7 @@ chất liệu §6.3.
 §2 cấm đích danh prompt gộp. Với **mỗi** API, test case được sinh qua **5 bước = 5 lượt riêng**
 (dạy AI về API → chốt bảng phân vùng → sinh Domain → sinh State/Security riêng → sinh Schema), thực
 hiện trực tiếp trong `generator/specs/<api>.mjs` và ghi log đầy đủ ở
-[`ai-audit/ai-audit-report.md`](../ai-audit/ai-audit-report.md) (12 mục LOG).
+[`ai-audit/ai-audit-report.md`](../ai-audit/ai-audit-report.md) (14 mục LOG).
 
 **Điểm khác biệt so với làm tay:** trước khi sinh case, mỗi API đều được **dò hành vi thật bằng
 `curl`** (LOG-002/004/006) — đây là bước không nằm trong 5 bước lý thuyết nhưng bắt buộc trên thực
@@ -273,8 +273,11 @@ gắn label mức độ + API, nội dung khớp `bug-report.md`. Còn thiếu *
 Xem bảng đầy đủ ở [`postman/README.md`](../postman/README.md). Đã dùng: Workspace, Collections (4),
 Folders theo kỹ thuật, Environment (16 biến), Variables (env + dynamic), pre-request script cấp
 collection, `pm.test`/JSON Schema, Postman Console, Newman CLI + htmlextra, Newman trong GitHub
-Actions. Chưa làm: Mock Server, Monitor, data-driven CSV qua Collection Runner (đều là thao tác GUI
-— xem việc còn lại).
+Actions, **Mock Server**, **Monitor**, và **chạy data-driven bằng file CSV**.
+
+> Data-driven chạy qua **Newman CLI** (`newman run ... -d postman/data/*.csv`) chứ không qua
+> Collection Runner của Postman, vì tính năng nạp file dữ liệu trong GUI nay đã bị đưa vào gói trả
+> phí. Kết quả kiểm thử là như nhau và không phải mua gì thêm.
 
 ---
 
@@ -309,15 +312,20 @@ Postman — đã dùng để sinh **toàn bộ 158 case + 4 collection** của b
 kế trên giấy. Chi tiết: [`generator/design.md`](../generator/design.md), pseudocode:
 [`generator/pseudocode.py`](../generator/pseudocode.py).
 
-> **Sơ đồ tự vẽ: CHƯA LÀM.** §11 cấm sơ đồ AI sinh — đây là việc duy nhất còn giữ điểm lại trong cả
-> bài (xem README §3 bảng tự chấm). Hướng dẫn từng bước:
-> [`generator/diagram/README.md`](../generator/diagram/README.md).
+**Sơ đồ tự vẽ (§11):** đã vẽ tay trên draw.io ngày 31/08/2026 —
+[`generator/diagram/generator-flow-selfdrawn.png`](../generator/diagram/generator-flow-selfdrawn.png),
+kèm file nguồn [`.drawio`](../generator/diagram/generator-flow.drawio) để chứng minh không phải ảnh
+do AI sinh.
+
+**Video demo (§7, khuyến khích):** https://www.youtube.com/watch?v=I8-LSwX6y5s — chạy skill
+`api-test-design` trực tiếp để sinh test case nhóm Domain cho `POST /api/login`, đúng yêu cầu
+*"showing it generate tests for one API"*.
 
 ---
 
 ## 11. Human review — AI sai và bỏ sót gì
 
-> Log đầy đủ 12 mục ở [`ai-audit/ai-audit-report.md`](../ai-audit/ai-audit-report.md).
+> Log đầy đủ 14 mục ở [`ai-audit/ai-audit-report.md`](../ai-audit/ai-audit-report.md).
 > Bảng dưới đây tóm tắt 6 lỗi đáng chú ý nhất.
 
 | # | AI sai/bỏ sót gì | Ở đâu | Nhóm lý do | Đã sửa thế nào | Hậu quả nếu không phát hiện |
