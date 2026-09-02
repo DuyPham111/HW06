@@ -17,6 +17,12 @@
 # 3. Input gate_mode=strict cho phep tao LUOT DO MAU ma §6 doi, khong can co tinh
 #    viet mot test sai vao repo.
 #
+# 4. RESTART SUT giua buoc regression va buoc bug-hunting. Ca hai dung CHUNG mot vai TC ID (vd
+#    chuoi VIP100 - coupon chi cho 2 luot/nguoi), nen neu chay lien tiep tren CUNG mot lan boot SUT
+#    thi buoc bug-hunting se do OAN vi buoc regression da tieu het han muc truoc do - khong phai
+#    bug that. Phat hien duoc dieu nay khi doi chieu so lieu local (co restart giua tung lan chay)
+#    voi so lieu CI (ban dau KHONG restart) lech nhau - xem ci/ci-report.md muc "Cap nhat".
+#
 # Chay tay tao luot do:  gh workflow run api-tests.yml -f gate_mode=strict
 # (hoac tab Actions -> api-tests -> Run workflow -> chon strict)
 # ============================================================================
@@ -111,6 +117,30 @@ jobs:
             --reporter-htmlextra-logs \
             --timeout-request 10000 || true
           node tools/ci-gate.mjs reports/newman/ci-regression.json --strict
+
+      # QUAN TRONG: regression suite va bo bug-hunting DUNG CHUNG mot vai TC ID (vd chuoi VIP100
+      # TC-COUPON-102/102c) tren cung mot server, va coupon VIP100 chi cho DUNG 2 luot/nguoi - da
+      # tieu het trong buoc regression o tren thi bo bug-hunting chay ngay sau se do OAN vi con
+      # DB, khong phai vi bug that (dung loai loi da tim thay va sua khi chay lai o local). Vi vay
+      # PHAI restart SUT (seed lai DB sach) truoc khi chay bo bug-hunting, dung nguyen tac da ghi
+      # o docs/07-CHAY-NEWMAN-BANG-CHUNG.md §1.
+      - name: Restart SUT (seed lai DB sach truoc bo bug-hunting)
+        working-directory: eshop-sut/backend
+        run: |
+          set -euo pipefail
+          pkill -f "node server.js" || true
+          for i in $(seq 1 20); do
+            curl -fsS http://localhost:3000/api/products >/dev/null 2>&1 || break
+            sleep 1
+          done
+          node server.js > "$GITHUB_WORKSPACE/sut.log" 2>&1 &
+          for i in $(seq 1 40); do
+            if curl -fsS http://localhost:3000/api/products >/dev/null 2>&1; then
+              echo "SUT san sang sau ${i}s"; exit 0
+            fi
+            sleep 1
+          done
+          echo "SUT khong len sau 40s:"; cat "$GITHUB_WORKSPACE/sut.log"; exit 1
 
       - name: Chay 3 collection bang Newman
         run: |
