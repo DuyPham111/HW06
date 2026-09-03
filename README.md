@@ -26,7 +26,7 @@
 | Bug report | [`bug-report/bug-report.md`](bug-report/bug-report.md) |
 | AI Audit + Critique | [`ai-audit/`](ai-audit/) |
 | Thiết kế generator (§7) | [`generator/design.md`](generator/design.md) |
-| GitHub Issues | https://github.com/DuyPham111/HW06/issues — **27/27 đã tạo** (#1–#27), còn thiếu ảnh minh hoạ |
+| GitHub Issues | https://github.com/DuyPham111/HW06/issues — **27/27 đã tạo** (#1–#27), **23/27 đã đính ảnh** |
 | GitHub Actions | https://github.com/DuyPham111/HW06/actions |
 | Video demo Agent Skill (§7) | https://www.youtube.com/watch?v=I8-LSwX6y5s |
 
@@ -96,8 +96,8 @@ chi tiết [`ci/ci-report.md`](ci/ci-report.md).
 
 Phần khuyến khích của §7 đã hoàn tất: 4 Agent Skill + **video demo**
 ([link](https://www.youtube.com/watch?v=I8-LSwX6y5s)) cho thấy skill sinh test case trực tiếp cho
-API-01. Việc còn lại duy nhất là **xuất PDF** các tài liệu §14 đòi kèm bản PDF — xem
-[`docs/CAN-LAM-TIEP-THEO.md`](docs/CAN-LAM-TIEP-THEO.md).
+API-01. Còn lại 2 việc thủ công: **xuất PDF** 6 tài liệu §14 đòi kèm PDF, và đính ảnh cho 4 issue
+cuối (#1, #2, #10, #13) — xem [`docs/CAN-LAM-TIEP-THEO.md`](docs/CAN-LAM-TIEP-THEO.md).
 
 ---
 
@@ -139,7 +139,7 @@ postman/
 reports/newman/       HTML + raw JSON từng lượt chạy
 excel/                test case + test summary dạng .xlsx (§14)
 generator/            thiết kế AI test generator (§7) + pseudocode + diagram/ (TỰ VẼ)
-ci/                   ci-report.md (2 lượt mẫu) · expected-failures.json (baseline cổng CI)
+ci/                   ci-report.md (2 lượt mẫu + ảnh) · screenshots/ · expected-failures.json (baseline cổng CI)
 report/ ai-audit/ bug-report/ git-log/
 tools/                preflight · run-newman · summarize-newman · ci-gate
 .claude/skills/       4 Agent Skill (§7)

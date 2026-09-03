@@ -75,6 +75,13 @@ GitHub Actions** (không chỉ ở máy local).
 | **Kết quả** | 112 request · 112 assertion · **0 đỏ** (regression, tự tải artifact `newman-baseline-11` xác nhận) |
 | **Trạng thái workflow** | `status: completed · conclusion: success` (lấy qua GitHub REST API + `gh run download`, không chỉ đọc màn hình) |
 
+![Lượt CI XANH — run #33649674605, commit 72654a3, Status: Success](screenshots/ci-run-xanh.png)
+
+Ảnh trên khớp đúng bảng: URL `.../runs/33649674605`, commit `72654a3`, **Status: Success**, job
+`newman` xanh, và khối *"Dieu kien luot chay CI"* do workflow tự ghi ra Step Summary (runner Linux
+x86_64, Node v20.20.2 – Newman 6.2.2, chế độ cổng `baseline`) — đây là phần ghi lại điều kiện chạy
+để đối chiếu khi số liệu CI lệch số local.
+
 Regression suite là **tập con các case đang xanh** của bộ chính (112/163 request, tự động lọc bằng
 `tools/gen-regression.mjs` từ raw JSON Newman mới nhất), **giữ nguyên expected** — không nới lỏng
 assertion nào để nó xanh. Nếu nới thì nó không còn chốt được hành vi nào cả.
@@ -91,6 +98,11 @@ assertion nào để nó xanh. Nếu nới thì nó không còn chốt được 
 | **Bộ chạy** | 3 collection bug-hunting, cổng so với baseline đã hạ |
 | **Kết quả** | Step **"Cong do/xanh"** → `failure` (đúng như thiết kế), 3 bước trước đó (regression, chạy 3 collection) vẫn `success` |
 | **Trạng thái workflow** | `status: completed · conclusion: failure` |
+
+![Lượt CI ĐỎ — run #33363180896, commit 5d102c1, Status: Failure](screenshots/ci-run-do.png)
+
+Ảnh trên khớp đúng bảng: URL `.../runs/33363180896`, commit `5d102c1`, **Status: Failure**, job
+`newman` đỏ. Cùng một workflow, cùng một bộ test như lượt xanh — chỉ khác ngưỡng cổng.
 
 **Các bước của job** (lấy qua GitHub API, không đọc từ ảnh):
 

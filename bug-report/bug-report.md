@@ -2,13 +2,24 @@
 
 - **Sinh viên:** Phạm Vũ Ngọc Duy — 23127183
 - **GitHub Issues:** https://github.com/DuyPham111/HW06/issues — **27/27 đã tạo** (#1–#27), mỗi issue
-  gắn label mức độ + API. **Còn thiếu ảnh minh hoạ** (kéo-thả thủ công, xem `docs/CAN-LAM-TIEP-THEO.md`)
+  gắn label mức độ + API, **23/27 issue đã đính ảnh minh hoạ**
 - **Script tái hiện:** `bash bug-report/verify-bugs.sh` → output ở `verify-bugs-output.txt`
 - Số liệu request/assertion lấy từ [`test-cases/test-summary/summary.md`](../test-cases/test-summary/summary.md)
   (sinh tự động bằng `npm run summary`, không gõ tay).
 
 > **Luật:** mọi bug dưới đây đã **tái hiện bằng request thật** (curl hoặc Newman), không phải suy từ
 > đọc code. Giả thuyết chưa kiểm chứng nằm ở §4.
+
+**Toàn bộ 27 bug trên trang GitHub Issues** (§14 đòi ảnh bug trên trang Issues):
+
+![27 bug đã lên GitHub Issues — Open 27, mỗi issue gắn label mức độ và API](screenshots/github-issues-list.png)
+
+Ảnh cho thấy **Open 27 · Closed 0**, tiêu đề theo khuôn `[BUG-xx][Mức độ][API-xx]`, và nhãn
+`critical`/`high`/`medium`/`low` + `api-01`/`api-02`/`api-03` trên từng dòng.
+
+> **Số issue lệch số BUG một đơn vị ở khoảng giữa.** `BUG-19` được tạo trước tiên nên nhận `#1`,
+> đẩy `BUG-01`…`BUG-18` sang `#2`…`#19`; từ `BUG-20` trở đi thì trùng số (`#20`…`#27`). Cột
+> **Issue** trong bảng §2 dưới đây ghi đúng số thật của từng bug — cứ theo cột đó, đừng suy từ số BUG.
 
 ---
 
@@ -280,6 +291,10 @@ Với `discount_value = 10` (nghĩa là 10%), công thức tính `1 - 10 = -9`, 
 tiền thật ở bước checkout, khách hàng phải trả **nhiều hơn** giá gốc trong khi hệ thống báo "đã giảm
 giá thành công".
 
+**Issue trên GitHub** — [#11](https://github.com/DuyPham111/HW06/issues/11):
+
+![Issue #11 — BUG-10 trên GitHub Issues](screenshots/github-issue-bug-10.png)
+
 ---
 
 ### BUG-11 — `apply-coupon` không yêu cầu xác thực dù FR-09 C4 đòi phải đăng nhập
@@ -438,6 +453,11 @@ dữ liệu `NULL`, `GET` không được để một lỗi kiểu dữ liệu l
 **Ảnh hưởng** — DoS toàn hệ thống chỉ với **2 request tuần tự, không cần quyền admin thật** (route
 này cũng không yêu cầu xác thực — xem BUG-21). Đây là bug bị phát hiện **ngoài ý muốn** trong lúc dò
 lỗi khác — xem ghi chú đầy đủ ở `test-cases/api-03-product-update/audit.md`.
+
+**Issue trên GitHub** — [#1](https://github.com/DuyPham111/HW06/issues/1) (bug này được tạo issue
+đầu tiên vì là bug nặng nhất của cả bài):
+
+![Issue #1 — BUG-19 trên GitHub Issues](screenshots/github-issue-bug-19.png)
 
 ---
 

@@ -4,17 +4,15 @@
 > generator bạn đã tự vẽ, và **video demo §7 đã quay xong** — xem tóm tắt ở §0.
 > **Tự chấm hiện tại: 100/100.**
 >
-> **Còn đúng 4 việc, đều là chụp ảnh / xuất file, không phải làm lại nội dung:**
+> **A.5 và A.6 đã xong** — ảnh 2 lượt CI đã chèn vào `ci/ci-report.md`, ảnh trang Issues đã chèn vào
+> `bug-report/bug-report.md`. Còn **2 việc**:
 >
 > | | Việc | Bắt buộc? |
 > |---|---|---|
-> | A.4b | Kéo-thả ảnh vào 27 issue | theo câu chữ §11 |
-> | **A.5** | **Chụp 2 ảnh lượt CI** | **§14 — bắt buộc** |
-> | **A.6** | **Chụp ảnh trang GitHub Issues** | **§14 — bắt buộc** |
+> | A.4b | Đính ảnh cho **4 issue còn lại**: #1, #2, #10, #13 (23/27 đã có ảnh) | theo câu chữ §11 |
 > | B.3 | Xuất PDF 6 file | **§14 — bắt buộc** |
 >
-> Ước tính: **~1 giờ**. A.5 và A.6 mỗi cái chỉ 5 phút nhưng §17 ghi *"Missing any required document
-> results in 0 points"* nên đừng bỏ.
+> Ước tính: **~30 phút**. §17 ghi *"Missing any required document results in 0 points"* nên đừng bỏ PDF.
 
 ---
 
@@ -73,6 +71,20 @@ vấn đáp (30% sinh viên, §13).
 
 ✅ **27/27 issue đã tạo** qua `gh` CLI — https://github.com/DuyPham111/HW06/issues (#1–#27, đúng
 title + label + nội dung khớp `bug-report.md`).
+
+> **Trạng thái: 23/27 issue đã có ảnh.** Kiểm bằng cách đọc body từng issue qua `gh`, không đếm tay.
+> Còn đúng **4 issue** chưa đính ảnh — và 3 trong số đó là **nhóm đặc biệt** không có mục trong
+> "Failed Tests", nên phải dùng ảnh **terminal** chứ không phải ảnh báo cáo HTML:
+>
+> | Issue | Bug | Vì sao chưa có | Chụp gì thay thế |
+> |---|---|---|---|
+> | [#1](https://github.com/DuyPham111/HW06/issues/1) | BUG-19 | không chạy trong Newman (làm sập SUT) | terminal chạy `bash bug-report/verify-bugs.sh 19` |
+> | [#2](https://github.com/DuyPham111/HW06/issues/2) | BUG-01 | 0 assertion đỏ — *pass* nghĩa là khai thác thành công | terminal chạy `bash bug-report/verify-bugs.sh 01` |
+> | [#10](https://github.com/DuyPham111/HW06/issues/10) | BUG-09 | 0 đỏ — bug chỉ lộ khi **so sánh** 2 case | terminal chạy `bash bug-report/verify-bugs.sh` (phần BUG-09) |
+> | [#13](https://github.com/DuyPham111/HW06/issues/13) | BUG-12 | bị sót — bug này **có** trong Failed Tests | `23127183_api-02-apply-coupon_*.html` → `Ctrl+F` `TC-COUPON-004` |
+>
+> Ba issue đầu chụp cửa sổ terminal sao cho thấy **lệnh đã gõ + output có dòng sai**. Riêng #1 nhớ
+> **khởi động lại SUT** sau khi chạy vì bug đó làm chết tiến trình Node.
 
 **Việc còn lại — kéo-thả ảnh vào từng issue.** GitHub không có cách nào upload ảnh vào issue qua
 API/CLI (chỉ kéo-thả được trên web), nên đây là phần bắt buộc phải làm tay. Chỉ có **4 file HTML**
@@ -156,32 +168,17 @@ API và đủ 2 kiểu bằng chứng (ảnh HTML report + ảnh terminal).
 
 ---
 
-### A.5 — Ảnh chụp 2 lượt CI (§14 đòi *"with screenshots and links"*)
+### A.5 — Ảnh chụp 2 lượt CI — ✅ ĐÃ XONG
 
-`ci/ci-report.md` hiện **chỉ có link, chưa có ảnh**. §14 đòi cả hai, và §17 ghi *"Missing any
-required document results in 0 points"* — nên đây là việc **bắt buộc**, không phải trang trí.
+`ci/screenshots/ci-run-xanh.png` + `ci-run-do.png`, đã chèn vào `ci/ci-report.md` §2 và §3.
+Đã đối chiếu: ảnh xanh đúng run `33649674605` / commit `72654a3` / Status **Success**; ảnh đỏ đúng
+run `33363180896` / commit `5d102c1` / Status **Failure** — khớp bảng trong báo cáo.
 
-Mở 2 trang này, chụp màn hình, lưu vào `ci/screenshots/`:
+### A.6 — Ảnh trang GitHub Issues — ✅ ĐÃ XONG
 
-| Lượt | URL | Tên file | Chụp sao cho thấy |
-|---|---|---|---|
-| XANH | https://github.com/DuyPham111/HW06/actions/runs/33649674605 | `ci-run-xanh.png` | tên workflow, dấu ✅ xanh, danh sách các step đều xanh |
-| ĐỎ | https://github.com/DuyPham111/HW06/actions/runs/33363180896 | `ci-run-do.png` | dấu ❌ đỏ, và step **"Cong do/xanh"** đang `failure` (bung step đó ra cho thấy dòng `HOI QUY MOI`) |
-
-Chụp xong báo lại, tôi chèn vào `ci/ci-report.md` §2 và §3 đúng chỗ.
-
-### A.6 — Ảnh trang GitHub Issues (§14 đòi *"screenshots of the bugs on the GitHub Issues page"*)
-
-Khác với A.4b (ảnh **bên trong** từng issue). Ở đây cần ảnh **trang danh sách Issues** để đưa vào
-`bug-report/bug-report.md`, chứng minh 27 bug đã lên Issues thật.
-
-1. Mở https://github.com/DuyPham111/HW06/issues
-2. Chụp trang danh sách sao cho thấy **số 27 Open** và các label mức độ → lưu
-   `bug-report/screenshots/github-issues-list.png`
-3. Mở 1–2 issue nặng nhất (BUG-19 sập server, BUG-10 công thức coupon âm), chụp nội dung issue →
-   `github-issue-bug-19.png`, `github-issue-bug-10.png`
-
-Chụp xong báo lại, tôi chèn vào `bug-report.md` §1 và đúng mục từng bug.
+3 ảnh trong `bug-report/screenshots/`: `github-issues-list.png` (thấy rõ **Open 27** + nhãn mức độ),
+`github-issue-bug-19.png` (#1), `github-issue-bug-10.png` (#11). Đã chèn vào `bug-report/bug-report.md`
+phần đầu và trong mục BUG-19, BUG-10.
 
 ---
 
@@ -353,9 +350,9 @@ phản hồi, điền thêm bảng đối chiếu (không bắt buộc, chỉ gi
 - [x] **A.2** Đọc + ký tên 3 file `audit.md`
 - [x] **A.3** Tự tay chạy `verify-bugs.sh` cho ≥3 bug nặng nhất
 - [x] **A.4a** Tạo 27/27 GitHub Issues (đã xong qua `gh` CLI)
-- [ ] **A.4b** Kéo-thả ảnh vào từng issue (ưu tiên 5 Critical nặng nhất nếu thiếu thời gian)
-- [ ] **A.5** Chụp 2 ảnh lượt CI → `ci/screenshots/` — **§14 bắt buộc**
-- [ ] **A.6** Chụp ảnh trang GitHub Issues → `bug-report/screenshots/` — **§14 bắt buộc**
+- [ ] **A.4b** Đính ảnh cho 4 issue còn lại: **#1, #2, #10, #13** (23/27 đã xong)
+- [x] **A.5** Ảnh 2 lượt CI → đã chèn vào `ci/ci-report.md` §2, §3
+- [x] **A.6** Ảnh trang GitHub Issues → đã chèn vào `bug-report/bug-report.md`
 - [x] **B.1** Data-driven + Mock Server + Monitor — cả 3 đã xong, có ảnh + số liệu thật trong `postman/README.md` §2, §4
 - [x] **B.2** Video demo → https://www.youtube.com/watch?v=I8-LSwX6y5s
 - [ ] **B.3** Xuất PDF 6 file

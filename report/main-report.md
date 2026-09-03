@@ -263,8 +263,11 @@ Chi tiết từng bug (đặc tả bị vi phạm, vị trí mã nguồn, bướ
 chứng và 2 rủi ro chưa đủ căn cứ gọi là bug — ghi lại để không nhận vơ.
 
 **GitHub Issues:** **27/27 đã tạo** — https://github.com/DuyPham111/HW06/issues (#1–#27), mỗi issue
-gắn label mức độ + API, nội dung khớp `bug-report.md`. Còn thiếu **ảnh minh hoạ** (kéo-thả thủ công,
-`gh`/API không hỗ trợ upload ảnh vào issue) — xem [`docs/CAN-LAM-TIEP-THEO.md`](../docs/CAN-LAM-TIEP-THEO.md).
+gắn label mức độ + API, nội dung khớp `bug-report.md`, **23/27 đã đính ảnh bằng chứng**. Ảnh trang
+Issues và 2 issue tiêu biểu có trong [`bug-report/bug-report.md`](../bug-report/bug-report.md).
+
+> Số issue lệch số BUG ở khoảng giữa: `BUG-19` tạo trước nên nhận `#1`, đẩy `BUG-01`…`BUG-18` sang
+> `#2`…`#19`; từ `BUG-20` trở đi trùng số. Bảng quy đổi trong `bug-report.md` §2 ghi số thật.
 
 ---
 
