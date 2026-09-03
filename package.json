@@ -15,7 +15,8 @@
     "test:regression": "node tools/run-newman.mjs regression",
     "summary": "node tools/summarize-newman.mjs",
     "excel": "python tools/tc2xlsx.py",
-    "pdf": "python tools/build-pdfs.py"
+    "pdf": "python tools/build-pdfs.py",
+    "package": "python tools/package.py"
   },
   "devDependencies": {
     "newman": "^6.2.1",
