@@ -31,6 +31,8 @@
 | LOG-011 | Sinh regression suite tự động từ raw JSON | không |
 | LOG-012 | Chạy CI thật trên GitHub Actions (2 lượt) | không |
 | LOG-013 | Sửa lỗi tên request + phát hiện/sửa lỗi thiết kế CI (regression tiêu hạn mức VIP100 trước bug-hunting) | có — 2 lỗi thật, cả hai đã sửa và xác nhận lại bằng lượt chạy mới |
+| LOG-014 | `npm run test:*` chết trên PowerShell (`bash` trúng WSL) + 3 script npm trỏ file chưa tạo | có — 3 lỗi, đã viết lại runner bằng Node và chạy thật từ PowerShell để xác nhận |
+| LOG-015 | Bảng quy đổi assertion đỏ → bug: tổng đúng 47 nhưng quy sai 2 chỗ bù nhau | có — đã sửa và đối chiếu lại theo **từng API**: 9/9 · 13/13 · 25/25 |
 
 ## Chi tiết từng lượt
 
@@ -291,6 +293,34 @@ báo lỗi. Kết quả đã sửa và **chạy thử thật từ PowerShell**:
 
 **Bài học:** một lệnh chưa được chạy đúng theo cách người dùng sẽ gõ thì chưa phải là lệnh đã kiểm
 thử — đây chính là bài học của môn học, áp dụng ngược lại lên chính công cụ làm bài.
+
+---
+
+### LOG-015 — Bảng quy đổi "assertion đỏ → bug" cộng đúng tổng nhưng quy sai chỗ
+
+**Bối cảnh:** người dùng mở báo cáo HTML của API-02 để chụp ảnh cho Issue #13 và báo *"không có mục
+TC-COUPON-004"*.
+
+**AI sai gì:** bảng §2 của `bug-report.md` gán cho **BUG-12** một assertion đỏ qua `TC-COUPON-004`.
+Kiểm raw JSON thì case đó **xanh**: nó chính là case AI_MISTAKE giữ có chủ đích với `expected = 400`
+— trùng đúng hành vi sai của SUT (dùng `>` thay vì `>=`), nên pass. Đồng thời `TC-PRODUPD-040` **đỏ
+thật** nhưng **không được quy về bug nào**.
+
+**Vì sao không phát hiện sớm hơn:** hai lỗi **triệt tiêu nhau** — thừa 1 ở API-02, thiếu 1 ở API-03 —
+nên **tổng vẫn ra đúng 47**, khớp số Newman. Mọi lần soát trước đều chỉ cộng tổng nên bảng luôn
+"đúng". Chỉ khi đối chiếu **từng dòng theo từng API** mới lộ: API-02 khai 14/13, API-03 khai 24/25.
+
+**Vì sao sai:** `model limitations` — kiểm bằng một con số tổng là phép kiểm quá yếu cho một bảng ánh
+xạ; nó không phân biệt được "đúng" với "hai chỗ sai bù nhau".
+
+**Human review (SV 23127183, 03/09/2026):** đã sửa `BUG-12` về **0 đỏ** kèm giải thích vì sao case
+minh hoạ AI_MISTAKE phải giữ xanh (sửa nó thành 200 sẽ mất ví dụ §6.2), và bổ sung `TC-PRODUPD-040`
+vào **BUG-23** (7 → 8 đỏ) — đúng gốc rễ, vì case đó gửi `name` rỗng lẽ ra nhận `400 {error}` nhưng
+nhận `200`. Viết script đối chiếu **từng API** thay vì cộng tổng: nay 9/9 · 13/13 · 25/25, không còn
+assertion đỏ nào chưa quy về bug. Bằng chứng cho BUG-12 chuyển sang `verify-bugs.sh 12` (curl).
+
+**Bài học:** một tổng khớp không chứng minh từng dòng khớp. Phép kiểm phải chia nhỏ tới mức mà hai
+lỗi ngược dấu không thể che nhau.
 
 ---
 

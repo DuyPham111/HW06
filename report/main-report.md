@@ -65,7 +65,7 @@ chất liệu §6.3.
 §2 cấm đích danh prompt gộp. Với **mỗi** API, test case được sinh qua **5 bước = 5 lượt riêng**
 (dạy AI về API → chốt bảng phân vùng → sinh Domain → sinh State/Security riêng → sinh Schema), thực
 hiện trực tiếp trong `generator/specs/<api>.mjs` và ghi log đầy đủ ở
-[`ai-audit/ai-audit-report.md`](../ai-audit/ai-audit-report.md) (14 mục LOG).
+[`ai-audit/ai-audit-report.md`](../ai-audit/ai-audit-report.md) (15 mục LOG).
 
 **Điểm khác biệt so với làm tay:** trước khi sinh case, mỗi API đều được **dò hành vi thật bằng
 `curl`** (LOG-002/004/006) — đây là bước không nằm trong 5 bước lý thuyết nhưng bắt buộc trên thực
@@ -328,7 +328,7 @@ do AI sinh.
 
 ## 11. Human review — AI sai và bỏ sót gì
 
-> Log đầy đủ 14 mục ở [`ai-audit/ai-audit-report.md`](../ai-audit/ai-audit-report.md).
+> Log đầy đủ 15 mục ở [`ai-audit/ai-audit-report.md`](../ai-audit/ai-audit-report.md).
 > Bảng dưới đây tóm tắt 6 lỗi đáng chú ý nhất.
 
 | # | AI sai/bỏ sót gì | Ở đâu | Nhóm lý do | Đã sửa thế nào | Hậu quả nếu không phát hiện |

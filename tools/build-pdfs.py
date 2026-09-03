@@ -10,6 +10,7 @@ sau do xoa di.
 """
 import os
 import subprocess
+import tempfile
 import sys
 import time
 from pathlib import Path
@@ -92,11 +93,15 @@ def main():
         tmp_html.write_text(html, encoding="utf-8")
 
         try:
-            subprocess.run(
-                [edge, "--headless=new", "--disable-gpu", "--no-pdf-header-footer",
-                 f"--print-to-pdf={pdf}", tmp_html.as_uri()],
-                check=False, capture_output=True, timeout=120,
-            )
+            # --user-data-dir rieng: neu khong, Edge headless se doi/treo khi nguoi dung
+            # dang mo Edge binh thuong (dung chung profile mac dinh).
+            with tempfile.TemporaryDirectory(prefix="edge-pdf-") as profile:
+                subprocess.run(
+                    [edge, "--headless=new", "--disable-gpu", "--no-first-run",
+                     "--no-pdf-header-footer", f"--user-data-dir={profile}",
+                     f"--print-to-pdf={pdf}", tmp_html.as_uri()],
+                    check=False, capture_output=True, timeout=120,
+                )
             for _ in range(20):          # Edge ghi file bat dong bo
                 if pdf.exists() and pdf.stat().st_size > 0:
                     break

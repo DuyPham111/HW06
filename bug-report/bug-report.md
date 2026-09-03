@@ -53,7 +53,7 @@
 | BUG-09 | Medium | 01 | TC-LOGIN-102 (đối chứng với TC-LOGIN-023c) | 0 *(cả 2 đều pass, lộ ra khi SO SÁNH)* | [#10](https://github.com/DuyPham111/HW06/issues/10) |
 | BUG-10 | Critical | 02 | TC-COUPON-001, 042, 043 | 3 | [#11](https://github.com/DuyPham111/HW06/issues/11) |
 | BUG-11 | Critical | 02 | TC-COUPON-031 | 1 | [#12](https://github.com/DuyPham111/HW06/issues/12) |
-| BUG-12 | High | 02 | TC-COUPON-004 | 1 | [#13](https://github.com/DuyPham111/HW06/issues/13) |
+| BUG-12 | High | 02 | TC-COUPON-004 *(xanh có chủ đích — xem §3 BUG-12)* | 0 *(chứng minh bằng `verify-bugs.sh 12`)* | [#13](https://github.com/DuyPham111/HW06/issues/13) |
 | BUG-13 | Critical | 02 | TC-COUPON-036, 037 | 2 | [#14](https://github.com/DuyPham111/HW06/issues/14) |
 | BUG-14 | Critical | 02 | TC-COUPON-034, 101 | 2 | [#15](https://github.com/DuyPham111/HW06/issues/15) |
 | BUG-15 | High | 02 | TC-COUPON-033 | 1 | [#16](https://github.com/DuyPham111/HW06/issues/16) |
@@ -64,7 +64,7 @@
 | BUG-20 | Critical | 03 | TC-PRODUPD-022, 038, 105 | 3 | [#20](https://github.com/DuyPham111/HW06/issues/20) |
 | BUG-21 | Critical | 03 | TC-PRODUPD-027, 028, 030, 102 | 4 | [#21](https://github.com/DuyPham111/HW06/issues/21) |
 | BUG-22 | Critical | 03 | TC-PRODUPD-029 | 1 | [#22](https://github.com/DuyPham111/HW06/issues/22) |
-| BUG-23 | High | 03 | TC-PRODUPD-002, 004, 006, 007, 008, 009, 010 | 7 | [#23](https://github.com/DuyPham111/HW06/issues/23) |
+| BUG-23 | High | 03 | TC-PRODUPD-002, 004, 006, 007, 008, 009, 010, 040 | 8 | [#23](https://github.com/DuyPham111/HW06/issues/23) |
 | BUG-24 | Medium | 03 | TC-PRODUPD-015, 031 | 2 | [#24](https://github.com/DuyPham111/HW06/issues/24) |
 | BUG-25 | Medium | 03 | TC-PRODUPD-014, 024, 025, 042, 043 | 5 | [#25](https://github.com/DuyPham111/HW06/issues/25) |
 | BUG-26 | Low | 03 | TC-PRODUPD-039 | 1 | [#26](https://github.com/DuyPham111/HW06/issues/26) |
@@ -325,7 +325,21 @@ nghĩa.
 | **Test case** | TC-COUPON-004 |
 
 `total_amount` đúng bằng `min_order_amount` (300.000) bị từ chối — theo đặc tả phải được chấp nhận.
-Đây cũng là case AI ban đầu **chép sai** theo hành vi code — xem `audit.md`.
+
+> **Vì sao bug này KHÔNG có assertion đỏ.** `TC-COUPON-004` chính là case AI **chép hành vi code**
+> (`>`) thay vì đọc FR-09 C3 (`>=`), nên `expected = 400` — trùng đúng hành vi sai của SUT và vì thế
+> **xanh**. Case này được **giữ nguyên có chủ đích** làm minh hoạ AI_MISTAKE cho §6.2 (xem
+> [`audit.md`](../test-cases/api-02-apply-coupon/audit.md)); sửa nó thành `200` sẽ mất ví dụ đó.
+> Bug vẫn là bug thật, chỉ là được chứng minh bằng `curl` chứ không bằng assertion đỏ.
+
+**Tái hiện:** `bash bug-report/verify-bugs.sh 12`
+
+```
+POST /api/apply-coupon  {"code":"SAVE10","total_amount":300000}
+-> HTTP 400  {"error":"Đơn hàng chưa đủ giá trị tối thiểu 300,000 ₫ để áp dụng mã này"}
+```
+
+`300000 >= 300000` là **đúng** theo FR-09 C3, nhưng SUT từ chối — tức nó đang dùng `>`.
 
 ---
 
@@ -519,11 +533,13 @@ càng không tồn tại — ghi riêng vì đây là 2 lớp phòng thủ độ
 |---|---|
 | **API** | API-03 |
 | **Mức độ** | High |
-| **Test case** | TC-PRODUPD-002, 004, 006, 007, 008, 009, 010 |
+| **Test case** | TC-PRODUPD-002, 004, 006, 007, 008, 009, 010, 040 |
 
-Tổng hợp 7 test case: `name` rỗng, `name` 256 ký tự (vượt 255), `price = 0`, `price` âm, `price` sai
+Tổng hợp 8 test case: `name` rỗng, `name` 256 ký tự (vượt 255), `price = 0`, `price` âm, `price` sai
 kiểu (chuỗi chữ), `category_id` không tồn tại, `category_id` thiếu — **tất cả đều được chấp nhận**
-(200), không một ràng buộc nào trong FR-15 được thực thi ở phía server.
+(200), không một ràng buộc nào trong FR-15 được thực thi ở phía server. `TC-PRODUPD-040` là hệ quả ở
+tầng schema của chính lỗi này: gửi `name` rỗng lẽ ra phải nhận `400 {error: string}`, nhưng nhận
+`200` nên assertion kiểm shape của response lỗi đỏ (*"expected undefined to be a string"*).
 
 ---
 
