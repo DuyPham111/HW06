@@ -19,7 +19,7 @@ suite (112 request). Chạy Newman thật cho **163 request/163 assertion, 47 đ
 đã tái hiện độc lập bằng `curl`** (13 Critical). Bug nặng nhất — **PUT thiếu trường trên sản phẩm ID
 chẵn rồi GET lại làm sập toàn bộ backend** (BUG-19) — được phát hiện ngoài ý muốn trong lúc audit,
 không phải AI tự nghĩ ra. CI chạy thật trên GitHub Actions với 2 lượt mẫu có link thật: 1 lượt xanh
-hoàn toàn (regression 110/110) và 1 lượt đỏ (cổng bắt đúng hồi quy khi hạ baseline có chủ đích).
+hoàn toàn (regression 112/112) và 1 lượt đỏ (cổng bắt đúng hồi quy khi hạ baseline có chủ đích).
 Điều học được lớn nhất: AI đọc đúng logic tĩnh của code nhưng không mô phỏng được **thứ tự thực thi
 qua nhiều request** và **giá trị số cụ thể** — hai lỗi thiết kế test nghiêm trọng nhất của bài (mô
 hình khóa tài khoản sai, công thức coupon cho số âm) chỉ lộ ra khi chạy thật bằng `curl`, không phải
@@ -96,8 +96,8 @@ dài, hành vi khi body không phải JSON hợp lệ.
 |---|--:|
 | Domain | 18 |
 | State | 12 |
-| Security | 8 |
-| Schema | 7 |
+| Security | 9 |
+| Schema | 6 |
 | **Tổng** | **45** (+6 SV) |
 
 ### 3.5 Audit (§6.2)
@@ -141,8 +141,8 @@ nhập · C5 chưa hết lượt) + máy trạng thái FR-10 (`pending → confi
 |---|--:|
 | Domain | 16 |
 | State | 14 |
-| Security | 10 |
-| Schema | 8 |
+| Security | 11 |
+| Schema | 7 |
 | **Tổng** | **48** (+9 SV) |
 
 ### 4.5 Audit
