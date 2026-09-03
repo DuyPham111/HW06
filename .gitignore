@@ -9,3 +9,6 @@ eshop-sut/
 database.sqlite
 .env
 ~$*
+
+# file HTML trung gian cua tools/build-pdfs.py (neu chay loi giua chung)
+*.pdf.tmp.html

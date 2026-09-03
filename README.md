@@ -96,8 +96,8 @@ chi tiết [`ci/ci-report.md`](ci/ci-report.md).
 
 Phần khuyến khích của §7 đã hoàn tất: 4 Agent Skill + **video demo**
 ([link](https://www.youtube.com/watch?v=I8-LSwX6y5s)) cho thấy skill sinh test case trực tiếp cho
-API-01. Còn lại 2 việc thủ công: **xuất PDF** 6 tài liệu §14 đòi kèm PDF, và đính ảnh cho 4 issue
-cuối (#1, #2, #10, #13) — xem [`docs/CAN-LAM-TIEP-THEO.md`](docs/CAN-LAM-TIEP-THEO.md).
+API-01. Bản PDF của 6 tài liệu §14 đòi đã xuất (`npm run pdf`). Còn lại duy nhất: đính ảnh cho 4
+issue cuối (#1, #2, #10, #13) — xem [`docs/CAN-LAM-TIEP-THEO.md`](docs/CAN-LAM-TIEP-THEO.md).
 
 ---
 
@@ -119,6 +119,7 @@ bash bug-report/verify-bugs.sh > bug-report/verify-bugs-output.txt 2>&1
 
 # 5. Tài liệu
 npm run excel            # bảng test case -> excel/23127183_HW06_TestCases.xlsx
+npm run pdf              # xuất PDF 6 tài liệu §14 đòi kèm bản PDF
 ```
 
 ---

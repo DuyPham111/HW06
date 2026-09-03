@@ -156,5 +156,5 @@ Liệt kê sớm để bạn xếp lịch, chi tiết ở [`HUONG-DAN-VIEC-TU-LA
 Còn lại — xem [`CAN-LAM-TIEP-THEO.md`](CAN-LAM-TIEP-THEO.md):
 
 - Đính ảnh vào từng GitHub Issue (§6.5, §11).
-- **Chụp ảnh 2 lượt CI** và **trang GitHub Issues** — §14 đòi *"with screenshots and links"*.
-- **Xuất PDF** 6 tài liệu §14 yêu cầu kèm bản PDF.
+- Ảnh 2 lượt CI + trang GitHub Issues: ✅ đã chèn vào `ci/ci-report.md` và `bug-report/bug-report.md`.
+- PDF 6 tài liệu: ✅ `npm run pdf` (tự động bằng python-markdown + Edge headless).

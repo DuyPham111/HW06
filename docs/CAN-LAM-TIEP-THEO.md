@@ -4,15 +4,14 @@
 > generator bạn đã tự vẽ, và **video demo §7 đã quay xong** — xem tóm tắt ở §0.
 > **Tự chấm hiện tại: 100/100.**
 >
-> **A.5 và A.6 đã xong** — ảnh 2 lượt CI đã chèn vào `ci/ci-report.md`, ảnh trang Issues đã chèn vào
-> `bug-report/bug-report.md`. Còn **2 việc**:
+> **A.5, A.6 và B.3 đã xong.** Ảnh 2 lượt CI đã chèn vào `ci/ci-report.md`, ảnh trang Issues vào
+> `bug-report/bug-report.md`, và 6 file PDF đã xuất tự động bằng `npm run pdf`.
 >
-> | | Việc | Bắt buộc? |
-> |---|---|---|
-> | A.4b | Đính ảnh cho **4 issue còn lại**: #1, #2, #10, #13 (23/27 đã có ảnh) | theo câu chữ §11 |
-> | B.3 | Xuất PDF 6 file | **§14 — bắt buộc** |
+> **Còn đúng 1 việc:** đính ảnh cho **4 issue cuối** — #1, #2, #10, #13 (23/27 đã có ảnh). Xem A.4.
+> Ba trong bốn issue đó thuộc nhóm **0 assertion đỏ** nên phải chụp ảnh **terminal**, không phải ảnh
+> báo cáo HTML — bảng hướng dẫn ở A.4 ghi rõ chụp gì cho từng cái.
 >
-> Ước tính: **~30 phút**. §17 ghi *"Missing any required document results in 0 points"* nên đừng bỏ PDF.
+> Ước tính: **~15 phút**.
 
 ---
 
@@ -319,22 +318,28 @@ Link đã điền vào: `README.md` (bảng liên kết), `report/main-report.md
 
 > Nhớ kiểm lại video đang để **Unlisted**, không phải Private — Private thì TA bấm vào không xem được.
 
-### B.3 — Xuất PDF cho 6 tài liệu bắt buộc (§14 đòi cả `.md` và `.pdf`)
+### B.3 — Xuất PDF 6 tài liệu (§14) — ✅ ĐÃ XONG, tự động
 
-Không có công cụ dòng lệnh xuất PDF sẵn trên máy (đã kiểm tra: không có `pandoc`/`wkhtmltopdf`/thư
-viện Python). Cách nhanh nhất — VS Code + extension **Markdown PDF**:
+```bash
+npm run pdf
+```
 
-1. Cài extension `yzane.markdown-pdf` trong VS Code.
-2. Mở từng file → `Ctrl+Shift+P` → **Markdown PDF: Export (pdf)**.
+`tools/build-pdfs.py` dùng **python-markdown** (đã có sẵn) + **Microsoft Edge headless**
+(`--print-to-pdf`, có sẵn trên Windows) — không phải cài thêm gì, không cần extension VS Code.
+File `.html` trung gian được ghi **cạnh file `.md`** để đường dẫn ảnh tương đối vẫn phân giải đúng,
+rồi xoá đi.
 
-Danh sách 6 file cần xuất:
+| File | Trang | Ảnh nhúng |
+|---|--:|--:|
+| `report/main-report.pdf` | 9 | — |
+| `ai-audit/ai-audit-report.pdf` | 7 | — |
+| `ai-audit/ai-critique.pdf` | 1 | — |
+| `bug-report/bug-report.pdf` | 16 | 3 |
+| `ci/ci-report.pdf` | 6 | 2 |
+| `generator/design.pdf` | 6 | 1 |
 
-- [ ] `report/main-report.md`
-- [ ] `ai-audit/ai-audit-report.md`
-- [ ] `ai-audit/ai-critique.md`
-- [ ] `bug-report/bug-report.md`
-- [ ] `ci/ci-report.md`
-- [ ] `generator/design.md`
+Đã kiểm: cả 6 file là PDF hợp lệ, **font nhúng kèm bảng ToUnicode** nên tiếng Việt hiển thị đúng và
+**bôi đen/tìm kiếm được** trong PDF. Chạy lại lệnh trên bất cứ khi nào sửa `.md` để PDF khỏi lệch.
 
 ### B.4 — Đối chiếu API với các thành viên khác trong nhóm (nếu họ phản hồi)
 
@@ -355,7 +360,7 @@ phản hồi, điền thêm bảng đối chiếu (không bắt buộc, chỉ gi
 - [x] **A.6** Ảnh trang GitHub Issues → đã chèn vào `bug-report/bug-report.md`
 - [x] **B.1** Data-driven + Mock Server + Monitor — cả 3 đã xong, có ảnh + số liệu thật trong `postman/README.md` §2, §4
 - [x] **B.2** Video demo → https://www.youtube.com/watch?v=I8-LSwX6y5s
-- [ ] **B.3** Xuất PDF 6 file
+- [x] **B.3** Xuất PDF 6 file — `npm run pdf` (tự động, 6/6)
 - [ ] **B.4** Bảng đối chiếu nhóm (tuỳ chọn)
 - [ ] Đóng gói cuối: xem [`docs/16-DONG-GOI-CHECKLIST.md`](16-DONG-GOI-CHECKLIST.md) — kiểm đủ 13
       mục §14, đặt tên zip đúng `23127183_HW06_AI_API_100.zip`
