@@ -100,7 +100,7 @@ bash bug-report/verify-bugs.sh 05
 **Kết quả mong đợi** — `401 Unauthorized` (không có token) hoặc `403 Forbidden` (token không phải
 admin), và dữ liệu sản phẩm **không đổi**.
 
-**Ảnh** — ![](screenshots/bug-05-put-khong-token.png)
+**Ảnh** — `![](screenshots/<ten-anh>.png)` *(khuôn mẫu — thay bằng ảnh thật của bug đang viết)*
 
 **Ảnh hưởng** — bất kỳ ai biết URL đều đổi được giá và tên mọi sản phẩm mà không cần tài khoản.
 Kết hợp với `POST /api/checkout` nhận `total_amount` từ client (BUG-08), kẻ tấn công đặt giá về `1`
@@ -168,7 +168,7 @@ Vào https://github.com/DuyPham111/HW06/issues → **New issue**.
 Kéo-thả file ảnh **thẳng vào ô soạn issue** trên web. GitHub upload và chèn markdown
 `![](https://user-images.githubusercontent.com/...)`. Ảnh hiện **trong** issue.
 
-> **Đừng chỉ ghi đường dẫn tương đối** `![](screenshots/bug-05.png)` trong issue — đường dẫn đó
+> **Đừng chỉ ghi đường dẫn tương đối** kiểu `![](screenshots/ten-anh.png)` trong issue — đường dẫn đó
 > không phân giải được trên trang Issues, ảnh sẽ hiện thành icon vỡ. Trong `bug-report.md` (file
 > trong repo) thì đường dẫn tương đối lại đúng. **Hai nơi dùng hai kiểu link khác nhau.**
 

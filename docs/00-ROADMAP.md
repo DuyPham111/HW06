@@ -147,13 +147,13 @@ trong đề cũng liệt kê FR-08/FR-10 là ví dụ hợp lệ.
 
 ## 7. Việc bạn **phải tự làm**, AI không thay được
 
-Liệt kê sớm để bạn xếp lịch, chi tiết ở [`HUONG-DAN-VIEC-TU-LAM.md`](HUONG-DAN-VIEC-TU-LAM.md):
+Liệt kê sớm để bạn xếp lịch, chi tiết ở [`TRANG-THAI-HOAN-THANH.md`](TRANG-THAI-HOAN-THANH.md):
 
 Đã xong: ảnh Postman Console (§11) · sơ đồ tự vẽ (§7, §11) · 2 lượt CI mẫu đã chạy thật (§6) ·
 27 GitHub Issues (§6.5) · ký nhận 3 file `audit.md` (§6.2) · video demo §7
 ([link](https://www.youtube.com/watch?v=I8-LSwX6y5s)).
 
-Còn lại — xem [`CAN-LAM-TIEP-THEO.md`](CAN-LAM-TIEP-THEO.md):
+Còn lại — xem [`TRANG-THAI-HOAN-THANH.md`](TRANG-THAI-HOAN-THANH.md):
 
 - Đính ảnh vào từng GitHub Issue (§6.5, §11).
 - Ảnh 2 lượt CI + trang GitHub Issues: ✅ đã chèn vào `ci/ci-report.md` và `bug-report/bug-report.md`.

@@ -58,9 +58,9 @@ GitHub Actions** (không chỉ ở máy local).
 
 | Collection | Baseline | Nguồn |
 |---|--:|---|
-| `api-01-login` | **9** | lượt local `23127183_api-01-login_20260902-222409.json` |
-| `api-02-apply-coupon` | **13** | lượt local `23127183_api-02-apply-coupon_20260902-222617.json` |
-| `api-03-product-update` | **25** | lượt local `23127183_api-03-product-update_20260902-222733.json` |
+| `api-01-login` | **9** | lượt local `23127183_api-01-login_20260903-001136.json` |
+| `api-02-apply-coupon` | **13** | lượt local `23127183_api-02-apply-coupon_20260903-001136.json` |
+| `api-03-product-update` | **25** | lượt local `23127183_api-03-product-update_20260903-001136.json` |
 
 ---
 

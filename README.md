@@ -9,7 +9,7 @@
 > nhận, tái hiện được bằng `curl`), regression suite 112 request (0 đỏ), CI chạy thật trên GitHub
 > Actions (1 lượt xanh + 1 lượt đỏ, cả hai đều có link thật), và **video demo Agent Skill §7 đã
 > quay**. Việc còn lại là các bằng chứng phải chụp/xuất thủ công — xem
-> [`docs/CAN-LAM-TIEP-THEO.md`](docs/CAN-LAM-TIEP-THEO.md).
+> [`docs/TRANG-THAI-HOAN-THANH.md`](docs/TRANG-THAI-HOAN-THANH.md).
 
 ## Liên kết
 
@@ -84,7 +84,7 @@ chi tiết [`ci/ci-report.md`](ci/ci-report.md).
 
 > Đuôi tên ZIP là **đúng ba chữ số** theo §14: `23127183_HW06_AI_API_<###>.zip`.
 > Điểm tự chấm dưới đây trừ đúng những chỗ còn thiếu — xem lý do ở
-> [`docs/CAN-LAM-TIEP-THEO.md`](docs/CAN-LAM-TIEP-THEO.md), không ghi 100 mặc định.
+> [`docs/TRANG-THAI-HOAN-THANH.md`](docs/TRANG-THAI-HOAN-THANH.md), không ghi 100 mặc định.
 
 | No. | Tiêu chí | Điểm tối đa | **Điểm tự chấm** | Căn cứ |
 |---|---|--:|--:|---|
@@ -97,7 +97,7 @@ chi tiết [`ci/ci-report.md`](ci/ci-report.md).
 Phần khuyến khích của §7 đã hoàn tất: 4 Agent Skill + **video demo**
 ([link](https://www.youtube.com/watch?v=I8-LSwX6y5s)) cho thấy skill sinh test case trực tiếp cho
 API-01. Bản PDF của 6 tài liệu §14 đòi đã xuất (`npm run pdf`). Còn lại duy nhất: đính ảnh cho 4
-issue cuối (#1, #2, #10, #13) — xem [`docs/CAN-LAM-TIEP-THEO.md`](docs/CAN-LAM-TIEP-THEO.md).
+issue cuối (#1, #2, #10, #13) — xem [`docs/TRANG-THAI-HOAN-THANH.md`](docs/TRANG-THAI-HOAN-THANH.md).
 
 ---
 

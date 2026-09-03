@@ -7,7 +7,7 @@
 > **Trạng thái:** phần dòng lệnh (§1–§4) **đã chạy xong** trong phiên dựng khung — SUT đang chạy nền
 > ở `http://localhost:3000`, `npm run preflight` đã xanh hết. Phần còn lại (§5, §6) là thao tác
 > **Postman GUI, bạn phải tự làm** — xem checklist gộp ở
-> [`CAN-LAM-PHIEN-1-2.md`](CAN-LAM-PHIEN-1-2.md).
+> [`TRANG-THAI-HOAN-THANH.md`](TRANG-THAI-HOAN-THANH.md).
 
 ---
 
@@ -198,6 +198,6 @@ Thiếu một trong hai thì dừng lại sửa ngay — §11 sẽ kiểm đúng
 - [ ] Commit: `chore: setup moi truong HW06 + preflight`
 
 Ba việc còn lại (☐) là thao tác **Postman GUI**, không có công cụ dòng lệnh nào làm thay được.
-Checklist chi tiết từng bước: [`CAN-LAM-PHIEN-1-2.md`](CAN-LAM-PHIEN-1-2.md).
+Checklist chi tiết từng bước: [`TRANG-THAI-HOAN-THANH.md`](TRANG-THAI-HOAN-THANH.md).
 
 Ghi lượt AI (nếu có hỏi AI ở phiên này) vào `ai-audit/ai-audit-report.md` theo mẫu ở [13](13-AI-AUDIT-CRITIQUE.md).

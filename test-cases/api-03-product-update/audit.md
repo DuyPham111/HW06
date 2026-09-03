@@ -44,7 +44,7 @@ một bug** (mất dữ liệu do cập nhật một phần/rỗng), không ph�
 
 ## Không sửa expected để khớp SUT
 
-Lượt nộp chính thức (`reports/newman/23127183_api-03-product-update_20260902-222733.json`) —
+Lượt nộp chính thức (`reports/newman/23127183_api-03-product-update_20260903-001136.json`) —
 25/51 assertion đỏ, liệt kê đúng từng ID:
 
 `TC-PRODUPD-002 · TC-PRODUPD-004 · TC-PRODUPD-006 · TC-PRODUPD-007 · TC-PRODUPD-008 ·

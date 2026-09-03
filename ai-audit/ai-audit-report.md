@@ -12,7 +12,7 @@
 > **Cách đọc file này:** đây là log thật của phiên làm việc, không phải log dựng lại. Một số lượt AI
 > **tự phát hiện lỗi trong chính bộ test AI vừa sinh** (nhờ chạy Newman thật và thấy đỏ bất thường) —
 > phần "Human review" ghi rõ chỗ nào là AI tự sửa dựa trên bằng chứng thực thi, và chỗ nào **vẫn cần
-> sinh viên tự đọc lại và ký xác nhận** trước khi nộp (xem `docs/CAN-LAM-TIEP-THEO.md`).
+> sinh viên tự đọc lại và ký xác nhận** trước khi nộp (xem `docs/TRANG-THAI-HOAN-THANH.md`).
 
 ## Bảng tổng hợp
 
@@ -330,5 +330,5 @@ lỗi ngược dấu không thể che nhau.
 đọc và ký tên 3 file `audit.md`, quay video demo §7
 ([link](https://www.youtube.com/watch?v=I8-LSwX6y5s)).
 
-Còn lại — đều là **chụp ảnh / xuất file**, xem [`docs/CAN-LAM-TIEP-THEO.md`](../docs/CAN-LAM-TIEP-THEO.md):
+Còn lại — đều là **chụp ảnh / xuất file**, xem [`docs/TRANG-THAI-HOAN-THANH.md`](../docs/TRANG-THAI-HOAN-THANH.md):
 đính ảnh vào từng issue, chụp 2 lượt CI và trang Issues (§14 đòi ảnh), xuất PDF 6 tài liệu.

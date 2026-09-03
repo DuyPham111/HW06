@@ -47,7 +47,7 @@ thành 404 và đổi mô tả thành **case đối chứng** (hành vi đúng),
 
 ## Không sửa expected để khớp SUT
 
-Lượt nộp chính thức (`reports/newman/23127183_api-02-apply-coupon_20260902-222617.json`) —
+Lượt nộp chính thức (`reports/newman/23127183_api-02-apply-coupon_20260903-001136.json`) —
 **13/59 assertion đỏ**, liệt kê đúng từng ID:
 
 `TC-COUPON-001 · TC-COUPON-023 · TC-COUPON-028 · TC-COUPON-031 · TC-COUPON-032 · TC-COUPON-033 ·

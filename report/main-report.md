@@ -353,4 +353,4 @@ request**, **trạng thái tích lũy**, hay **giá trị số cụ thể** — 
 | Phát hiện + sửa lỗi thiết kế test qua chạy Newman thật | AI, tự chạy và tự sửa | 3 file `audit.md` |
 | Chọn phạm vi case §6.3 | AI đề xuất, người dùng có thể điều chỉnh | `extended.md` |
 | Dựng collection Postman, chạy Newman, chạy CI | AI (dòng lệnh) | `postman/collections/`, `ci/ci-report.md` |
-| Xác nhận/bổ sung ảnh Postman GUI, GitHub Issues, sơ đồ tự vẽ, video | **người dùng** | xem `docs/CAN-LAM-TIEP-THEO.md` |
+| Xác nhận/bổ sung ảnh Postman GUI, GitHub Issues, sơ đồ tự vẽ, video | **người dùng** | xem `docs/TRANG-THAI-HOAN-THANH.md` |

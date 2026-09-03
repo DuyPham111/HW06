@@ -8,9 +8,8 @@
 | File | Nội dung | Mục của đề |
 |---|---|---|
 | [`00-ROADMAP.md`](00-ROADMAP.md) | Bản đồ toàn bài · phạm vi 3 API · 12 phiên làm việc · luật vàng | tất cả |
+| [`TRANG-THAI-HOAN-THANH.md`](TRANG-THAI-HOAN-THANH.md) | **Bản ghi hoàn thành** — đủ 13 mục §14 · 3 bằng chứng §11 · số liệu chốt | §14, §17 |
 | [`01-SETUP.md`](01-SETUP.md) | Cài đặt · chạy SUT · dữ liệu seed · Postman workspace + environment | — |
-| [`CAN-LAM-PHIEN-1-2.md`](CAN-LAM-PHIEN-1-2.md) | Nhật ký phiên 1+2 — **đã xong** | — |
-| [`CAN-LAM-TIEP-THEO.md`](CAN-LAM-TIEP-THEO.md) | **Việc còn lại của bạn** từ phiên 3 trở đi | — |
 | [`02-CHON-API.md`](02-CHON-API.md) | Chọn 3 API · bảng giả thuyết bug từ mã nguồn | §5 |
 | [`03-GENERATE-AI.md`](03-GENERATE-AI.md) | **Sinh test case bằng AI theo 5 bước** — prompt copy dán được cho cả 3 API | §6.1 |
 | [`04-AUDIT.md`](04-AUDIT.md) | Dán nhãn VALID/INVALID/INCOMPLETE — 5 phép soát | §6.2 |
@@ -26,5 +25,4 @@
 | [`14-EXCEL-TEST-CASES.md`](14-EXCEL-TEST-CASES.md) | Xuất Excel 5 sheet · OpenAPI tuỳ chọn | §14 |
 | [`15-GIT-COMMIT-LOG.md`](15-GIT-COMMIT-LOG.md) | 1 bước = 1 commit · xuất commit log | §12 |
 | [`16-DONG-GOI-CHECKLIST.md`](16-DONG-GOI-CHECKLIST.md) | Checklist 13 mục §14 · 6 phép soát nhất quán · đóng gói zip | §14, §17 |
-| [`HUONG-DAN-VIEC-TU-LAM.md`](HUONG-DAN-VIEC-TU-LAM.md) | Mọi việc cần tay người: chụp ảnh, vẽ, bấm CI, tạo Issue, ký nhận | §11 |
 | [`api-selection.md`](api-selection.md) | **File nộp kèm** — bằng chứng §5 | §5 |
