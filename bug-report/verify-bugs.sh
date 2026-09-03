@@ -81,6 +81,29 @@ if [ -z "$ONLY" ] || [ "$ONLY" = "08" ]; then
   run curl -s -w " -> HTTP %{http_code}\n" "${H[@]}" -X POST "$BASE/api/login" -d "{\"email\":\"$E\",\"password\":\"Pass2!\"}"
 fi
 
+if [ -z "$ONLY" ] || [ "$ONLY" = "09" ]; then
+  bug 09 "Account enumeration qua kenh phu - so sanh status code cua request thu 3"
+  want "email TON TAI va email KHONG ton tai phai cho ket qua GIONG NHAU (FR-02: khong lo chi tiet nguyen nhan)"
+
+  V="enum-$(date +%s)@x.com"
+  run curl -s "${H[@]}" -X POST "$BASE/api/register" -d "{\"name\":\"EN\",\"email\":\"$V\",\"password\":\"Right1!\"}"
+
+  echo "-- A) email TON TAI: 3 lan sai mat khau lien tiep"
+  for i in 1 2 3; do
+    run curl -s -o /dev/null -w "   lan $i -> HTTP %{http_code}
+" "${H[@]}"       -X POST "$BASE/api/login" -d "{\"email\":\"$V\",\"password\":\"sai$i\"}"
+  done
+
+  echo "-- B) email KHONG ton tai: cung 3 lan sai"
+  G="khong-ton-tai-$(date +%s)@x.com"
+  for i in 1 2 3; do
+    run curl -s -o /dev/null -w "   lan $i -> HTTP %{http_code}
+" "${H[@]}"       -X POST "$BASE/api/login" -d "{\"email\":\"$G\",\"password\":\"sai$i\"}"
+  done
+
+  echo "   => Lan 3 khac nhau (403 vs 401) = do duoc email nao CO tai khoan that."
+fi
+
 if [ -z "$ONLY" ] || [ "$ONLY" = "10" ]; then
   bug 10 "Cong thuc coupon percent sai dau - SAVE10 tren 500.000"
   want "discount_amount=50000, final_amount=450000 (FR-09: total x value / 100)"

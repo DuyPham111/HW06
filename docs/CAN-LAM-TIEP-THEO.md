@@ -79,11 +79,30 @@ title + label + nội dung khớp `bug-report.md`).
 > |---|---|---|---|
 > | [#1](https://github.com/DuyPham111/HW06/issues/1) | BUG-19 | không chạy trong Newman (làm sập SUT) | terminal chạy `bash bug-report/verify-bugs.sh 19` |
 > | [#2](https://github.com/DuyPham111/HW06/issues/2) | BUG-01 | 0 assertion đỏ — *pass* nghĩa là khai thác thành công | terminal chạy `bash bug-report/verify-bugs.sh 01` |
-> | [#10](https://github.com/DuyPham111/HW06/issues/10) | BUG-09 | 0 đỏ — bug chỉ lộ khi **so sánh** 2 case | terminal chạy `bash bug-report/verify-bugs.sh` (phần BUG-09) |
+> | [#10](https://github.com/DuyPham111/HW06/issues/10) | BUG-09 | 0 đỏ — bug chỉ lộ khi **so sánh** 2 case | terminal chạy `bash bug-report/verify-bugs.sh 09` |
 > | [#13](https://github.com/DuyPham111/HW06/issues/13) | BUG-12 | bị sót — bug này **có** trong Failed Tests | `23127183_api-02-apply-coupon_*.html` → `Ctrl+F` `TC-COUPON-004` |
 >
 > Ba issue đầu chụp cửa sổ terminal sao cho thấy **lệnh đã gõ + output có dòng sai**. Riêng #1 nhớ
 > **khởi động lại SUT** sau khi chạy vì bug đó làm chết tiến trình Node.
+>
+> **Làm lần lượt 4 lệnh này** (SUT phải đang chạy — xem A.5 nếu chưa bật):
+>
+> ```bash
+> bash bug-report/verify-bugs.sh 19   # -> anh cho #1  (SAU DO PHAI KHOI DONG LAI SUT)
+> bash bug-report/verify-bugs.sh 01   # -> anh cho #2
+> bash bug-report/verify-bugs.sh 09   # -> anh cho #10
+> ```
+>
+> Với **#13** thì không dùng terminal: mở `reports/newman/23127183_api-02-apply-coupon_*.html`,
+> bấm tab đỏ **Failed Tests**, `Ctrl+F` gõ `TC-COUPON-004`, chụp thẻ lỗi đó.
+>
+> Output mong đợi của từng lệnh (để biết mình chụp đúng chỗ):
+>
+> | Lệnh | Dòng đắt giá cần lọt vào ảnh |
+> |---|---|
+> | `19` | stack trace `TypeError ... row.price.toString()` + tiến trình Node thoát hẳn |
+> | `01` | 2 request khoá được tài khoản người khác **mà không cần biết mật khẩu** |
+> | `09` | email **có** tài khoản: `401 401 403` — email **không** có: `401 401 401` |
 
 **Việc còn lại — kéo-thả ảnh vào từng issue.** GitHub không có cách nào upload ảnh vào issue qua
 API/CLI (chỉ kéo-thả được trên web), nên đây là phần bắt buộc phải làm tay. Chỉ có **4 file HTML**

@@ -1,45 +1,45 @@
-verify-bugs.sh | SUT=http://localhost:3000 | SV=23127183 | 2026-08-31T13:06:15+07:00
+verify-bugs.sh | SUT=http://localhost:3000 | SV=23127183 | 2026-09-03T09:49:27+07:00
 
 ===== BUG-01: DoS lockout - khoa tai khoan nguoi khac chi bang email, khong can mat khau =====
 -- DAC TA DOI: request thieu password phai bi tu choi (400) truoc khi cham bo dem sai
-$ curl -s -H Content-Type: application/json -H X-Student-Id: 23127183 -X POST http://localhost:3000/api/register -d {"name":"Victim","email":"victim-1788156375@x.com","password":"RealPass1!"}
+$ curl -s -H Content-Type: application/json -H X-Student-Id: 23127183 -X POST http://localhost:3000/api/register -d {"name":"Victim","email":"victim-1788403767@x.com","password":"RealPass1!"}
 {"message":"User registered successfully","id":3}
 -- request 1 (thieu password):
-$ curl -s -w  -> HTTP %{http_code}\n -H Content-Type: application/json -H X-Student-Id: 23127183 -X POST http://localhost:3000/api/login -d {"email":"victim-1788156375@x.com"}
+$ curl -s -w  -> HTTP %{http_code}\n -H Content-Type: application/json -H X-Student-Id: 23127183 -X POST http://localhost:3000/api/login -d {"email":"victim-1788403767@x.com"}
 {"error":"Invalid email or password"} -> HTTP 401
 
 -- request 2 (thieu password):
-$ curl -s -w  -> HTTP %{http_code}\n -H Content-Type: application/json -H X-Student-Id: 23127183 -X POST http://localhost:3000/api/login -d {"email":"victim-1788156375@x.com"}
+$ curl -s -w  -> HTTP %{http_code}\n -H Content-Type: application/json -H X-Student-Id: 23127183 -X POST http://localhost:3000/api/login -d {"email":"victim-1788403767@x.com"}
 {"error":"Invalid email or password"} -> HTTP 401
 
 -- request 3 (CHU THAT, mat khau DUNG):
-$ curl -s -w  -> HTTP %{http_code}\n -H Content-Type: application/json -H X-Student-Id: 23127183 -X POST http://localhost:3000/api/login -d {"email":"victim-1788156375@x.com","password":"RealPass1!"}
+$ curl -s -w  -> HTTP %{http_code}\n -H Content-Type: application/json -H X-Student-Id: 23127183 -X POST http://localhost:3000/api/login -d {"email":"victim-1788403767@x.com","password":"RealPass1!"}
 {"error":"Tài khoản đã bị khóa. Vui lòng thử lại sau."} -> HTTP 403
 
 
 ===== BUG-02: Khoa tu lan sai thu 2, khong phai lan thu 3 nhu FR-02 =====
 -- DAC TA DOI: request thu 3 (mat khau DUNG) phai THANH CONG vi moi 2 lan sai that su
-$ curl -s -H Content-Type: application/json -H X-Student-Id: 23127183 -X POST http://localhost:3000/api/register -d {"name":"L2","email":"lock2-1788156375@x.com","password":"Right1!"}
+$ curl -s -H Content-Type: application/json -H X-Student-Id: 23127183 -X POST http://localhost:3000/api/register -d {"name":"L2","email":"lock2-1788403768@x.com","password":"Right1!"}
 {"message":"User registered successfully","id":4}
-$ curl -s -w  -> HTTP %{http_code}\n -H Content-Type: application/json -H X-Student-Id: 23127183 -X POST http://localhost:3000/api/login -d {"email":"lock2-1788156375@x.com","password":"sai1"}
+$ curl -s -w  -> HTTP %{http_code}\n -H Content-Type: application/json -H X-Student-Id: 23127183 -X POST http://localhost:3000/api/login -d {"email":"lock2-1788403768@x.com","password":"sai1"}
 {"error":"Invalid email or password"} -> HTTP 401
 
-$ curl -s -w  -> HTTP %{http_code}\n -H Content-Type: application/json -H X-Student-Id: 23127183 -X POST http://localhost:3000/api/login -d {"email":"lock2-1788156375@x.com","password":"sai2"}
+$ curl -s -w  -> HTTP %{http_code}\n -H Content-Type: application/json -H X-Student-Id: 23127183 -X POST http://localhost:3000/api/login -d {"email":"lock2-1788403768@x.com","password":"sai2"}
 {"error":"Invalid email or password"} -> HTTP 401
 
-$ curl -s -w  -> HTTP %{http_code}\n -H Content-Type: application/json -H X-Student-Id: 23127183 -X POST http://localhost:3000/api/login -d {"email":"lock2-1788156375@x.com","password":"Right1!"}
+$ curl -s -w  -> HTTP %{http_code}\n -H Content-Type: application/json -H X-Student-Id: 23127183 -X POST http://localhost:3000/api/login -d {"email":"lock2-1788403768@x.com","password":"Right1!"}
 {"error":"Tài khoản đã bị khóa. Vui lòng thử lại sau."} -> HTTP 403
 
 
 ===== BUG-03: SEC-01: response dang nhap lo nguyen mat khau plaintext =====
 -- DAC TA DOI: user.password KHONG duoc xuat hien trong response
 $ curl -s -H Content-Type: application/json -H X-Student-Id: 23127183 -X POST http://localhost:3000/api/login -d {"email":"test@eshop.com","password":"Test1234!"}
-{"message":"Login successful","token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwicm9sZSI6InVzZXIiLCJpYXQiOjE3ODgxNTYzNzZ9.QqkS-zRCCwYxTzEeJzbqsnpPdjB8GjOeTebpl1yIiIY","user":{"id":2,"name":"Test User","email":"test@eshop.com","password":"Test1234!","role":"user","login_attempts":0,"locked_until":null,"reset_token":null,"shipping_address":null,"phone":null}}
+{"message":"Login successful","token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwicm9sZSI6InVzZXIiLCJpYXQiOjE3ODg0MDM3Njh9.DixegqUbRGxfedL4i2U-4pf-WXKquEEjDEZHgWx8NY0","user":{"id":2,"name":"Test User","email":"test@eshop.com","password":"Test1234!","role":"user","login_attempts":0,"locked_until":null,"reset_token":null,"shipping_address":null,"phone":null}}
 
 ===== BUG-05: SEC-02: JWT khong co claim exp =====
 -- DAC TA DOI: token phai co claim exp
-payload JWT (base64): eyJpZCI6Miwicm9sZSI6InVzZXIiLCJpYXQiOjE3ODgxNTYzNzZ9
-{"id":2,"role":"user","iat":1788156376}(khong decode duoc bang base64 CLI - xem token o tren, dan vao jwt.io)
+payload JWT (base64): eyJpZCI6Miwicm9sZSI6InVzZXIiLCJpYXQiOjE3ODg0MDM3Njh9
+{"id":2,"role":"user","iat":1788403768}(khong decode duoc bang base64 CLI - xem token o tren, dan vao jwt.io)
 
 ===== BUG-06: Crash 500 + lo stack trace khi thieu dung Content-Type =====
 -- DAC TA DOI: khong duoc 500, khong duoc lo duong dan he thong
@@ -60,14 +60,46 @@ HTTP 500
 
 ===== BUG-08: Dang ky email trung khong bi chan - tai khoan sau mat quyen dang nhap =====
 -- DAC TA DOI: tai khoan dang ky SAU phai dang nhap duoc bang DUNG mat khau cua no
-$ curl -s -H Content-Type: application/json -H X-Student-Id: 23127183 -X POST http://localhost:3000/api/register -d {"name":"D1","email":"dup-1788156376@x.com","password":"Pass1!"}
+$ curl -s -H Content-Type: application/json -H X-Student-Id: 23127183 -X POST http://localhost:3000/api/register -d {"name":"D1","email":"dup-1788403769@x.com","password":"Pass1!"}
 {"message":"User registered successfully","id":5}
-$ curl -s -H Content-Type: application/json -H X-Student-Id: 23127183 -X POST http://localhost:3000/api/register -d {"name":"D2","email":"dup-1788156376@x.com","password":"Pass2!"}
+$ curl -s -H Content-Type: application/json -H X-Student-Id: 23127183 -X POST http://localhost:3000/api/register -d {"name":"D2","email":"dup-1788403769@x.com","password":"Pass2!"}
 {"message":"User registered successfully","id":6}
 -- login voi mat khau tai khoan D2 (dang ky SAU):
-$ curl -s -w  -> HTTP %{http_code}\n -H Content-Type: application/json -H X-Student-Id: 23127183 -X POST http://localhost:3000/api/login -d {"email":"dup-1788156376@x.com","password":"Pass2!"}
+$ curl -s -w  -> HTTP %{http_code}\n -H Content-Type: application/json -H X-Student-Id: 23127183 -X POST http://localhost:3000/api/login -d {"email":"dup-1788403769@x.com","password":"Pass2!"}
 {"error":"Invalid email or password"} -> HTTP 401
 
+
+===== BUG-09: Account enumeration qua kenh phu - so sanh status code cua request thu 3 =====
+-- DAC TA DOI: email TON TAI va email KHONG ton tai phai cho ket qua GIONG NHAU (FR-02: khong lo chi tiet nguyen nhan)
+$ curl -s -H Content-Type: application/json -H X-Student-Id: 23127183 -X POST http://localhost:3000/api/register -d {"name":"EN","email":"enum-1788403769@x.com","password":"Right1!"}
+{"message":"User registered successfully","id":7}
+-- A) email TON TAI: 3 lan sai mat khau lien tiep
+$ curl -s -o /dev/null -w    lan 1 -> HTTP %{http_code}
+ -H Content-Type: application/json -H X-Student-Id: 23127183 -X POST http://localhost:3000/api/login -d {"email":"enum-1788403769@x.com","password":"sai1"}
+   lan 1 -> HTTP 401
+
+$ curl -s -o /dev/null -w    lan 2 -> HTTP %{http_code}
+ -H Content-Type: application/json -H X-Student-Id: 23127183 -X POST http://localhost:3000/api/login -d {"email":"enum-1788403769@x.com","password":"sai2"}
+   lan 2 -> HTTP 401
+
+$ curl -s -o /dev/null -w    lan 3 -> HTTP %{http_code}
+ -H Content-Type: application/json -H X-Student-Id: 23127183 -X POST http://localhost:3000/api/login -d {"email":"enum-1788403769@x.com","password":"sai3"}
+   lan 3 -> HTTP 403
+
+-- B) email KHONG ton tai: cung 3 lan sai
+$ curl -s -o /dev/null -w    lan 1 -> HTTP %{http_code}
+ -H Content-Type: application/json -H X-Student-Id: 23127183 -X POST http://localhost:3000/api/login -d {"email":"khong-ton-tai-1788403769@x.com","password":"sai1"}
+   lan 1 -> HTTP 401
+
+$ curl -s -o /dev/null -w    lan 2 -> HTTP %{http_code}
+ -H Content-Type: application/json -H X-Student-Id: 23127183 -X POST http://localhost:3000/api/login -d {"email":"khong-ton-tai-1788403769@x.com","password":"sai2"}
+   lan 2 -> HTTP 401
+
+$ curl -s -o /dev/null -w    lan 3 -> HTTP %{http_code}
+ -H Content-Type: application/json -H X-Student-Id: 23127183 -X POST http://localhost:3000/api/login -d {"email":"khong-ton-tai-1788403769@x.com","password":"sai3"}
+   lan 3 -> HTTP 401
+
+   => Lan 3 khac nhau (403 vs 401) = do duoc email nao CO tai khoan that.
 
 ===== BUG-10: Cong thuc coupon percent sai dau - SAVE10 tren 500.000 =====
 -- DAC TA DOI: discount_amount=50000, final_amount=450000 (FR-09: total x value / 100)
@@ -91,11 +123,11 @@ $ curl -s -w  -> HTTP %{http_code}\n -H Content-Type: application/json -H X-Stud
 -- dung het 2/2 luot That (user_id=2 that):
 $ curl -s -H Content-Type: application/json -H X-Student-Id: 23127183 -X POST http://localhost:3000/api/apply-coupon -d {"code":"VIP100","total_amount":400000,"user_id":2}
 {"success":true,"coupon_id":3,"discount_amount":100000,"final_amount":300000,"message":"Áp dụng thành công! Giảm 100,000 ₫"}
-$ curl -s -H Content-Type: application/json -H X-Student-Id: 23127183 -H Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwicm9sZSI6InVzZXIiLCJpYXQiOjE3ODgxNTYzNzd9.glMrH4eqj4hl8pjI21JgiwFmpXKmRBRTQzYhJIcsKAU -X POST http://localhost:3000/api/coupon-usage -d {"coupon_id":3}
+$ curl -s -H Content-Type: application/json -H X-Student-Id: 23127183 -H Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwicm9sZSI6InVzZXIiLCJpYXQiOjE3ODg0MDM3NzB9.4M67yRWAqhdFGVYgoNMMg2zpQeLTx4kijXjNwLHFAKU -X POST http://localhost:3000/api/coupon-usage -d {"coupon_id":3}
 {"message":"Usage recorded"}
 $ curl -s -H Content-Type: application/json -H X-Student-Id: 23127183 -X POST http://localhost:3000/api/apply-coupon -d {"code":"VIP100","total_amount":400000,"user_id":2}
 {"success":true,"coupon_id":3,"discount_amount":100000,"final_amount":300000,"message":"Áp dụng thành công! Giảm 100,000 ₫"}
-$ curl -s -H Content-Type: application/json -H X-Student-Id: 23127183 -H Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwicm9sZSI6InVzZXIiLCJpYXQiOjE3ODgxNTYzNzd9.glMrH4eqj4hl8pjI21JgiwFmpXKmRBRTQzYhJIcsKAU -X POST http://localhost:3000/api/coupon-usage -d {"coupon_id":3}
+$ curl -s -H Content-Type: application/json -H X-Student-Id: 23127183 -H Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwicm9sZSI6InVzZXIiLCJpYXQiOjE3ODg0MDM3NzB9.4M67yRWAqhdFGVYgoNMMg2zpQeLTx4kijXjNwLHFAKU -X POST http://localhost:3000/api/coupon-usage -d {"coupon_id":3}
 {"message":"Usage recorded"}
 -- lan 3 KHONG gui user_id (phai van bi chan neu C5 dung, nhung se THANH CONG):
 $ curl -s -w  -> HTTP %{http_code}\n -H Content-Type: application/json -H X-Student-Id: 23127183 -X POST http://localhost:3000/api/apply-coupon -d {"code":"VIP100","total_amount":400000}
@@ -104,39 +136,39 @@ $ curl -s -w  -> HTTP %{http_code}\n -H Content-Type: application/json -H X-Stud
 
 ===== BUG-14: Checkout khong xac thuc total_amount (price tampering) =====
 -- DAC TA DOI: 400 - total_amount khong duoc tin tuong tu client khong qua kiem tra
-$ curl -s -w  -> HTTP %{http_code}\n -H Content-Type: application/json -H X-Student-Id: 23127183 -H Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwicm9sZSI6InVzZXIiLCJpYXQiOjE3ODgxNTYzNzd9.glMrH4eqj4hl8pjI21JgiwFmpXKmRBRTQzYhJIcsKAU -X POST http://localhost:3000/api/checkout -d {"total_amount":1,"shipping_address":"gia mao"}
+$ curl -s -w  -> HTTP %{http_code}\n -H Content-Type: application/json -H X-Student-Id: 23127183 -H Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwicm9sZSI6InVzZXIiLCJpYXQiOjE3ODg0MDM3NzB9.4M67yRWAqhdFGVYgoNMMg2zpQeLTx4kijXjNwLHFAKU -X POST http://localhost:3000/api/checkout -d {"total_amount":1,"shipping_address":"gia mao"}
 {"message":"Checkout successful","orderId":1} -> HTTP 200
 
 
 ===== BUG-15: GET /api/orders/:id khong yeu cau xac thuc (IDOR) =====
 -- DAC TA DOI: 401 khi khong co token
 $ curl -s -w  -> HTTP %{http_code}\n http://localhost:3000/api/orders/1
-{"id":1,"user_id":2,"total_amount":1,"status":"pending","shipping_address":"gia mao","created_at":"2026-08-31 06:06:17"} -> HTTP 200
+{"id":1,"user_id":2,"total_amount":1,"status":"pending","shipping_address":"gia mao","created_at":"2026-09-03 02:49:30"} -> HTTP 200
 
 
 ===== BUG-16: Huy duoc don dang shipping (vi pham FR-10) =====
 -- DAC TA DOI: 400 - chi duoc huy khi pending/confirmed
 orderId=2
-$ curl -s -H Content-Type: application/json -H X-Student-Id: 23127183 -H Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzg4MTU2Mzc3fQ.1-dO4_ugutDWIBW0jMVsy1GXKG2vLRGUiABEuA7rQKQ -X PUT http://localhost:3000/api/admin/orders/2/status -d {"status":"confirmed"}
+$ curl -s -H Content-Type: application/json -H X-Student-Id: 23127183 -H Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzg4NDAzNzcxfQ.9pGePpP3JNnM_AQWb09dIelzjYHm8yKM17Z6l0r0m1Q -X PUT http://localhost:3000/api/admin/orders/2/status -d {"status":"confirmed"}
 {"message":"Order status updated"}
-$ curl -s -H Content-Type: application/json -H X-Student-Id: 23127183 -H Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzg4MTU2Mzc3fQ.1-dO4_ugutDWIBW0jMVsy1GXKG2vLRGUiABEuA7rQKQ -X PUT http://localhost:3000/api/admin/orders/2/status -d {"status":"shipping"}
+$ curl -s -H Content-Type: application/json -H X-Student-Id: 23127183 -H Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzg4NDAzNzcxfQ.9pGePpP3JNnM_AQWb09dIelzjYHm8yKM17Z6l0r0m1Q -X PUT http://localhost:3000/api/admin/orders/2/status -d {"status":"shipping"}
 {"message":"Order status updated"}
 -- user tu huy don dang shipping:
-$ curl -s -w  -> HTTP %{http_code}\n -H Content-Type: application/json -H X-Student-Id: 23127183 -H Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwicm9sZSI6InVzZXIiLCJpYXQiOjE3ODgxNTYzNzd9.glMrH4eqj4hl8pjI21JgiwFmpXKmRBRTQzYhJIcsKAU -X PUT http://localhost:3000/api/orders/2/cancel
+$ curl -s -w  -> HTTP %{http_code}\n -H Content-Type: application/json -H X-Student-Id: 23127183 -H Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwicm9sZSI6InVzZXIiLCJpYXQiOjE3ODg0MDM3NzF9.u-7xB-hvvNVm5_ZfUnjLfanA8mzoavCRBdafF3v4GeA -X PUT http://localhost:3000/api/orders/2/cancel
 {"message":"Order canceled successfully"} -> HTTP 200
 
 
 ===== BUG-17: canceled khong phai trang thai ket thuc that (chuyen duoc sang delivered) =====
 -- DAC TA DOI: 400 - canceled la trang thai ket thuc, khong duoc chuyen di dau
-$ curl -s -H Content-Type: application/json -H X-Student-Id: 23127183 -H Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwicm9sZSI6InVzZXIiLCJpYXQiOjE3ODgxNTYzNzh9.Kap9ElVcvGHra928ffzeuLLP1i4grlULYAFuKyb0sjE -X PUT http://localhost:3000/api/orders/3/cancel
+$ curl -s -H Content-Type: application/json -H X-Student-Id: 23127183 -H Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwicm9sZSI6InVzZXIiLCJpYXQiOjE3ODg0MDM3NzF9.u-7xB-hvvNVm5_ZfUnjLfanA8mzoavCRBdafF3v4GeA -X PUT http://localhost:3000/api/orders/3/cancel
 {"message":"Order canceled successfully"}
-$ curl -s -w  -> HTTP %{http_code}\n -H Content-Type: application/json -H X-Student-Id: 23127183 -H Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzg4MTU2Mzc4fQ.OG2vBX_lcmsqd_nHLn3ypuprsX6wXnXDmQZrtSyTG7c -X PUT http://localhost:3000/api/admin/orders/3/status -d {"status":"delivered"}
+$ curl -s -w  -> HTTP %{http_code}\n -H Content-Type: application/json -H X-Student-Id: 23127183 -H Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzg4NDAzNzcxfQ.9pGePpP3JNnM_AQWb09dIelzjYHm8yKM17Z6l0r0m1Q -X PUT http://localhost:3000/api/admin/orders/3/status -d {"status":"delivered"}
 {"message":"Order status updated"} -> HTTP 200
 
 
 ===== BUG-18: Doi trang thai don khong kiem role admin (SEC-03) =====
 -- DAC TA DOI: 403 - user thuong khong duoc goi endpoint admin
-$ curl -s -w  -> HTTP %{http_code}\n -H Content-Type: application/json -H X-Student-Id: 23127183 -H Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwicm9sZSI6InVzZXIiLCJpYXQiOjE3ODgxNTYzNzh9.Kap9ElVcvGHra928ffzeuLLP1i4grlULYAFuKyb0sjE -X PUT http://localhost:3000/api/admin/orders/4/status -d {"status":"confirmed"}
+$ curl -s -w  -> HTTP %{http_code}\n -H Content-Type: application/json -H X-Student-Id: 23127183 -H Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwicm9sZSI6InVzZXIiLCJpYXQiOjE3ODg0MDM3NzJ9.vLKhKZzrlqrlU4GSkeZchiDFwzy-qlMx2hFMQCHioT8 -X PUT http://localhost:3000/api/admin/orders/4/status -d {"status":"confirmed"}
 {"message":"Order status updated"} -> HTTP 200
 
 
@@ -145,7 +177,7 @@ $ curl -s -w  -> HTTP %{http_code}\n -H Content-Type: application/json -H X-Stud
 -- truoc (id=3):
 $ curl -s http://localhost:3000/api/products/3
 {"id":3,"name":"MacBook Pro M3","price":45000000,"description":"Laptop chuyên nghiệp mạnh mẽ","imageUrl":"https://placehold.co/300x300/png?text=Macbook+Pro","category_id":2}
-$ curl -s -H Content-Type: application/json -H X-Student-Id: 23127183 -H Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzg4MTU2Mzc5fQ.S94kBl4Y933pCIPjB1KC85RNqNwlviali78W7_zL91A -X PUT http://localhost:3000/api/products/3 -d {"name":"Chi doi ten"}
+$ curl -s -H Content-Type: application/json -H X-Student-Id: 23127183 -H Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzg4NDAzNzcyfQ.3XKPUwjhwbg42iJ8Gu0BqXxjYm9l7qEbctUJXI-gT9U -X PUT http://localhost:3000/api/products/3 -d {"name":"Chi doi ten"}
 {"message":"Product updated"}
 -- sau (cac truong khac co con khong):
 $ curl -s http://localhost:3000/api/products/3
@@ -164,22 +196,22 @@ $ curl -s http://localhost:3000/api/products/5
 
 ===== BUG-22: PUT khong kiem role admin (SEC-03) =====
 -- DAC TA DOI: 403 - user thuong khong duoc sua san pham
-$ curl -s -w  -> HTTP %{http_code}\n -H Content-Type: application/json -H X-Student-Id: 23127183 -H Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwicm9sZSI6InVzZXIiLCJpYXQiOjE3ODgxNTYzNzl9.YiubOujbNrSmLx9M7VjQwze9fygR4bVX1xpLeKjyX6U -X PUT http://localhost:3000/api/products/1 -d {"name":"x","price":1,"description":"x","imageUrl":"","category_id":1}
+$ curl -s -w  -> HTTP %{http_code}\n -H Content-Type: application/json -H X-Student-Id: 23127183 -H Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwicm9sZSI6InVzZXIiLCJpYXQiOjE3ODg0MDM3NzJ9.vLKhKZzrlqrlU4GSkeZchiDFwzy-qlMx2hFMQCHioT8 -X PUT http://localhost:3000/api/products/1 -d {"name":"x","price":1,"description":"x","imageUrl":"","category_id":1}
 {"message":"Product updated"} -> HTTP 200
 
 
 ===== BUG-23: Khong validate name/price/category_id (FR-15) =====
 -- DAC TA DOI: 400 cho tung truong hop
 -- name rong:
-$ curl -s -w  -> HTTP %{http_code}\n -H Content-Type: application/json -H X-Student-Id: 23127183 -H Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzg4MTU2Mzc5fQ.S94kBl4Y933pCIPjB1KC85RNqNwlviali78W7_zL91A -X PUT http://localhost:3000/api/products/1 -d {"name":"","price":1000,"description":"x","imageUrl":"","category_id":1}
+$ curl -s -w  -> HTTP %{http_code}\n -H Content-Type: application/json -H X-Student-Id: 23127183 -H Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzg4NDAzNzczfQ.gLc5Ai38NIE6HPeEYfOeFDffKucetRVSHuEjyNpUFA4 -X PUT http://localhost:3000/api/products/1 -d {"name":"","price":1000,"description":"x","imageUrl":"","category_id":1}
 {"message":"Product updated"} -> HTTP 200
 
 -- price = 0:
-$ curl -s -w  -> HTTP %{http_code}\n -H Content-Type: application/json -H X-Student-Id: 23127183 -H Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzg4MTU2Mzc5fQ.S94kBl4Y933pCIPjB1KC85RNqNwlviali78W7_zL91A -X PUT http://localhost:3000/api/products/1 -d {"name":"x","price":0,"description":"x","imageUrl":"","category_id":1}
+$ curl -s -w  -> HTTP %{http_code}\n -H Content-Type: application/json -H X-Student-Id: 23127183 -H Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzg4NDAzNzczfQ.gLc5Ai38NIE6HPeEYfOeFDffKucetRVSHuEjyNpUFA4 -X PUT http://localhost:3000/api/products/1 -d {"name":"x","price":0,"description":"x","imageUrl":"","category_id":1}
 {"message":"Product updated"} -> HTTP 200
 
 -- category_id khong ton tai:
-$ curl -s -w  -> HTTP %{http_code}\n -H Content-Type: application/json -H X-Student-Id: 23127183 -H Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzg4MTU2Mzc5fQ.S94kBl4Y933pCIPjB1KC85RNqNwlviali78W7_zL91A -X PUT http://localhost:3000/api/products/1 -d {"name":"x","price":1000,"description":"x","imageUrl":"","category_id":999}
+$ curl -s -w  -> HTTP %{http_code}\n -H Content-Type: application/json -H X-Student-Id: 23127183 -H Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzg4NDAzNzczfQ.gLc5Ai38NIE6HPeEYfOeFDffKucetRVSHuEjyNpUFA4 -X PUT http://localhost:3000/api/products/1 -d {"name":"x","price":1000,"description":"x","imageUrl":"","category_id":999}
 {"message":"Product updated"} -> HTTP 200
 
 
@@ -190,7 +222,7 @@ $ curl -s -w  -> HTTP %{http_code}\n http://localhost:3000/api/products/999999
 {} -> HTTP 200
 
 -- PUT id khong ton tai:
-$ curl -s -w  -> HTTP %{http_code}\n -H Content-Type: application/json -H X-Student-Id: 23127183 -H Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzg4MTU2MzgwfQ.3aXDAGME-apBbOo4mIiSKDiU_7YHYGmT_hfyipIQEjg -X PUT http://localhost:3000/api/products/999999 -d {"name":"Ghost","price":1,"description":"x","imageUrl":"","category_id":1}
+$ curl -s -w  -> HTTP %{http_code}\n -H Content-Type: application/json -H X-Student-Id: 23127183 -H Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzg4NDAzNzczfQ.gLc5Ai38NIE6HPeEYfOeFDffKucetRVSHuEjyNpUFA4 -X PUT http://localhost:3000/api/products/999999 -d {"name":"Ghost","price":1,"description":"x","imageUrl":"","category_id":1}
 {"message":"Product updated"} -> HTTP 200
 
 
@@ -202,22 +234,5 @@ $ curl -s http://localhost:3000/api/products/1
 -- id=2 (CHAN):
 $ curl -s http://localhost:3000/api/products/2
 {"id":2,"name":"Samsung Galaxy S24 Ultra","price":"28000000","description":"Màn hình hiển thị xuất sắc, camera siêu zoom","imageUrl":"https://placehold.co/300x300/png?text=Samsung+S24","category_id":1}
-
-Xong. Nho khoi dong lai SUT truoc khi chay lai bo test chinh thuc (DB duoc seed lai moi lan khoi dong).
-verify-bugs.sh | SUT=http://localhost:3000 | SV=23127183 | 2026-08-31T13:06:43+07:00
-
-===== BUG-19: !!! DoS - PUT thieu truong tren id CHAN + GET lam SAP TOAN BO BACKEND !!! =====
--- DAC TA DOI: PUT thieu truong phai bi tu choi TRUOC khi cham DB; du co NULL thi GET khong duoc crash tien trinh
--- truoc (id=2):
-$ curl -s http://localhost:3000/api/products/2
-{"id":2,"name":"Samsung Galaxy S24 Ultra","price":"28000000","description":"Màn hình hiển thị xuất sắc, camera siêu zoom","imageUrl":"https://placehold.co/300x300/png?text=Samsung+S24","category_id":1}
--- PUT chi gui {name} tren id=2 (CHAN):
-$ curl -s -H Content-Type: application/json -H X-Student-Id: 23127183 -H Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzg4MTU2NDAzfQ.nziqv1ZfvXQHeZVNUTPlsaGkTKzaSsMl32VZnPA-dvE -X PUT http://localhost:3000/api/products/2 -d {"name":"Trigger Crash"}
-{"message":"Product updated"}
--- GET lai id=2 (SE LAM SAP SERVER):
-$ curl -s --max-time 5 http://localhost:3000/api/products/2
-
-
-!!! SUT DA CHET. Phai khoi dong lai truoc khi chay bug khac: cd eshop-sut/backend && node server.js !!!
 
 Xong. Nho khoi dong lai SUT truoc khi chay lai bo test chinh thuc (DB duoc seed lai moi lan khoi dong).

@@ -264,6 +264,9 @@ thứ 3 trả **403**. Kẻ tấn công dò được **chính xác** email nào 
 request sai liên tiếp và xem status code cuối — vi phạm đúng nguyên tắc FR-02 đã nêu, chỉ là qua kênh
 gián tiếp (nhiều request) thay vì lộ trong 1 response.
 
+**Tái hiện:** `bash bug-report/verify-bugs.sh 09` — email **có** tài khoản cho `401 · 401 · 403`,
+email **không** tồn tại cho `401 · 401 · 401`. Chính chỗ khác nhau ở request thứ 3 là kênh rò rỉ.
+
 ---
 
 ### BUG-10 — Công thức phần trăm coupon sai dấu — giảm giá ÂM, tổng cuối LỚN HƠN đơn gốc
