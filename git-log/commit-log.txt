@@ -1,9 +1,11 @@
 HW06 - API Testing - Git commit log
 SV: Pham Vu Ngoc Duy - 23127183
 Repo: https://github.com/DuyPham111/HW06
-Xuat luc: 2026-09-03T11:49:36+07:00
-Tong so commit: 59
+Xuat luc: 2026-09-03T11:50:57+07:00
+Tong so commit: 61
 
+87956f6  2026-09-03 11:50:25 +0700  DuyPham111  feat(tools): script dong goi file nop §14
+315c360  2026-09-03 11:49:37 +0700  DuyPham111  chore: cap nhat git-log/commit-log.txt
 d9af7a5  2026-09-03 11:49:36 +0700  DuyPham111  chore: don ban final de nop - go file du thua, gop 3 file theo doi lam 1
 0100806  2026-09-03 10:13:11 +0700  DuyPham111  chore: cap nhat git-log/commit-log.txt
 655b556  2026-09-03 10:13:11 +0700  DuyPham111  fix(bug-report): bang quy doi assertion do -> bug quy sai 2 cho bu nhau
